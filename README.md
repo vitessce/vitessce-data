@@ -48,18 +48,16 @@ or genes:
 
 ```
 
+### Raw counts (HDF5)
+
+TODO
+
 ### Segmentation (Pickle)
 
 ```
 >>> from segmentation_pickle_reader import SegPickleReader
 >>> sp = SegPickleReader('fixtures/polyT_seg.42.pkl')
 >>> sp['42']
-array([[ 3750, 15088],
-       [ 3751, 15085],
-       [ 3751, 15086],
-       ...,
-       [ 3911, 15105],
-       [ 3911, 15106],
-       [ 3911, 15107]], dtype=uint32)
+array([[ 3750, 15088]...[ 3911, 15107]], dtype=uint32)
 
 ```
