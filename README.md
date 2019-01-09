@@ -1,7 +1,12 @@
 # hubmap-data-loader
 Utils for loading HuBMAP data formats
 
-Working with data from [Linnarson Lab](http://linnarssonlab.org/osmFISH/availability/):
+## OSM FISH
+
+Sample data is from [Linnarson Lab](http://linnarssonlab.org/osmFISH/availability/).
+
+### Loom
+
 ```
 >>> from loom_reader import LoomReader
 >>> lr = LoomReader('fixtures/osmFISH.loom')
@@ -40,5 +45,21 @@ or genes:
 ```
 >>> lr.by_gene('Gad2')['42']
 7
+
+```
+
+### Segmentation (Pickle)
+
+```
+>>> from segmentation_pickle_reader import SegPickleReader
+>>> sp = SegPickleReader('fixtures/polyT_seg.42.pkl')
+>>> sp['42']
+array([[ 3750, 15088],
+       [ 3751, 15085],
+       [ 3751, 15086],
+       ...,
+       [ 3911, 15105],
+       [ 3911, 15106],
+       [ 3911, 15107]], dtype=uint32)
 
 ```
