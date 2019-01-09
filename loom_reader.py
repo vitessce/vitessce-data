@@ -6,6 +6,9 @@ class LoomReader:
     def __init__(self, filename):
         self.ds = loompy.connect(filename)
 
+        self.cells = list(self.ds.ca['CellID'])
+        self.genes = list(self.ds.ra['Gene'])
+
     def clusters(self):
         '''
         Returns information about each cluster.
@@ -77,3 +80,29 @@ class LoomReader:
             if valid:
                 cells[cell_id] = (x, y)
         return cells
+
+    def by_cell(self, cell_id):
+        '''
+        Given a cell_id, returns a dict with the values for each gene.
+
+        >>> lr = LoomReader('fixtures/osmFISH.loom')
+        >>> lr.by_cell('42')['Gad2']
+        7
+        '''
+        return dict(zip(
+            self.genes,
+            (x[0] for x in self.ds[:, self.ds.ca.CellID == cell_id])
+        ))
+
+    def by_gene(self, gene):
+        '''
+        Given a gene, returns a dict with the values for each cell.
+
+        >>> lr = LoomReader('fixtures/osmFISH.loom')
+        >>> lr.by_gene('Gad2')['42']
+        7
+        '''
+        return dict(zip(
+            self.cells,
+            self.ds[self.ds.ra.Gene == gene, :].tolist()[0]
+        ))
