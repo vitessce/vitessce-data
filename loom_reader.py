@@ -44,7 +44,7 @@ class LoomReader:
         >>> lr = LoomReader('fixtures/osmFISH.loom')
         >>> tsne = lr.tsne()
         >>> tsne['42']
-        (-6.917270183563232, 16.644561767578125)
+        (-6.917..., 16.644...)
         '''
         cells = {}
 
@@ -66,7 +66,7 @@ class LoomReader:
         >>> lr = LoomReader('fixtures/osmFISH.loom')
         >>> xy = lr.xy()
         >>> xy['42']
-        (21164.715090522037, 35788.13777399956)
+        (21164.7..., 35788.1...)
         '''
         cells = {}
 

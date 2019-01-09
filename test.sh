@@ -9,5 +9,5 @@ flake8
 end flake8
 
 start doctest
-python -m doctest *.py *.md
+python -m doctest *.py *.md -o ELLIPSIS
 end doctest
