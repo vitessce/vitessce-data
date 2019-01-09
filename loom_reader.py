@@ -33,3 +33,47 @@ class LoomReader:
                 else:
                     clusters[cluster_id] = Cluster(cluster_name, [cell_id])
         return clusters
+
+    def tsne(self):
+        '''
+        Returns a tSNE pair for each valid cell.
+
+        >>> lr = LoomReader('fixtures/osmFISH.loom')
+        >>> tsne = lr.tsne()
+        >>> tsne['42']
+        (-6.917270183563232, 16.644561767578125)
+        '''
+        cells = {}
+
+        tsne_zip = zip(
+            self.ds.ca['Valid'],
+            self.ds.ca['CellID'],
+            self.ds.ca['_tSNE_1'],
+            self.ds.ca['_tSNE_2']
+        )
+        for (valid, cell_id, tsne1, tsne2) in tsne_zip:
+            if valid:
+                cells[cell_id] = (tsne1, tsne2)
+        return cells
+
+    def xy(self):
+        '''
+        Returns the xy position for each valid cell.
+
+        >>> lr = LoomReader('fixtures/osmFISH.loom')
+        >>> xy = lr.xy()
+        >>> xy['42']
+        (21164.715090522037, 35788.13777399956)
+        '''
+        cells = {}
+
+        tsne_zip = zip(
+            self.ds.ca['Valid'],
+            self.ds.ca['CellID'],
+            self.ds.ca['X'],
+            self.ds.ca['Y']
+        )
+        for (valid, cell_id, x, y) in tsne_zip:
+            if valid:
+                cells[cell_id] = (x, y)
+        return cells
