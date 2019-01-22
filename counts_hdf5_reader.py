@@ -11,8 +11,8 @@ class CountsHdf5Reader:
         # >>> reader = CountsHdf5Reader(path)
         # >>> len(reader.keys())
         # 39
-        # >>> sorted(list(reader.keys()))[:3]
-        # ['Acta2_Hybridization5', 'Aldoc_Hybridization1', 'Anln_Hybridization9']
+        # >>> sorted(list(reader.keys()))[:2]
+        # ['Acta2_Hybridization5', 'Aldoc_Hybridization1']
 
         '''
         return self.data.keys()
