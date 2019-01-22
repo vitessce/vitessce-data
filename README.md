@@ -50,7 +50,7 @@ or genes:
 
 ### Raw counts (HDF5)
 
-TODO
+TODO: Make small fixture
 
 ### Segmentation (Pickle)
 
@@ -61,3 +61,10 @@ TODO
 array([[ 3750, 15088]...[ 3911, 15107]], dtype=uint32)
 
 ```
+
+### Imaging
+
+
+Coordinates: http://pklab.med.harvard.edu/viktor/data/spatial/linnarson/mRNA_coords_updated.hdf5
+
+Both stainings: http://pklab.med.harvard.edu/viktor/data/spatial/linnarson/Nuclei_polyT.int16.sf.hdf5
