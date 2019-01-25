@@ -59,6 +59,3 @@ if __name__ == '__main__':
             print(json.dumps(pair), end='')
         print(']', end='')
     print('}', end='')
-    # print(json.dumps({
-    #     k:[pair for pair in reader[k][:10]] for k in reader.keys()
-    # }))
