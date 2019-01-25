@@ -24,13 +24,13 @@ class CountsHdf5Reader:
 
     def __getitem__(self, key):
         '''
-        >>> path = 'fixtures/mRNA_coords_raw_counting.hdf5'
-        >>> reader = CountsHdf5Reader(path)
-        >>> pairs = list(reader['Acta2_Hybridization5'])
-        >>> len(pairs)
-        13052
-        >>> pairs[0]
-        [18215.0, 20052.0]
+        # >>> path = 'fixtures/mRNA_coords_raw_counting.hdf5'
+        # >>> reader = CountsHdf5Reader(path)
+        # >>> pairs = list(reader['Acta2_Hybridization5'])
+        # >>> len(pairs)
+        # 13052
+        # >>> pairs[0]
+        # [18215.0, 20052.0]
 
         '''
         return (list(pair) for pair in self.data[key])
