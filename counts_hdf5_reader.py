@@ -35,6 +35,7 @@ class CountsHdf5Reader:
         '''
         return (list(pair) for pair in self.data[key])
 
+
 if __name__ == '__main__':
     if len(argv) != 2:
         print('Requires single HDF5 file')
