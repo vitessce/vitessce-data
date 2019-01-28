@@ -7,10 +7,14 @@ from pickle import load
 from loom_reader import LoomReader
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Create JSON with cell metadata and segmentation.')
-    parser.add_argument('--loom', required=True,
+    parser = argparse.ArgumentParser(
+        description='Create JSON with cell metadata and, '
+                    'optionally, segmentation.')
+    parser.add_argument(
+        '--loom', required=True,
         help='Loom file with cell metadata')
-    parser.add_argument('--pickle',
+    parser.add_argument(
+        '--pickle',
         help='Pickle file with cell segmentation data')
     args = parser.parse_args()
 
