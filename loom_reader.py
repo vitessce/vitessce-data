@@ -9,6 +9,32 @@ class LoomReader:
         self.cells = list(self.ds.ca['CellID'])
         self.genes = list(self.ds.ra['Gene'])
 
+    def data(self):
+        '''
+        Returns all data for each cell.
+        '''
+        cells = {}
+        data_zip = zip(
+            self.ds.ca['Valid'],
+            self.ds.ca['CellID'],
+            self.ds.ca['_tSNE_1'],
+            self.ds.ca['_tSNE_2'],
+            self.ds.ca['ClusterID'],
+            self.ds.ca['ClusterName'],
+            self.ds.ca['X'],
+            self.ds.ca['Y']
+        )
+        for (valid, cell_id, tsne1, tsne2,
+             cluster_id, cluster_name, x, y) in data_zip:
+            if valid:
+                cells[cell_id] = {
+                    'tsne': [tsne1, tsne2],
+                    'cluster': cluster_name,
+                    'genes': self.by_cell(cell_id),
+                    'xy': [x, y]
+                }
+        return cells
+
     def clusters(self):
         '''
         Returns information about each cluster.
@@ -91,7 +117,7 @@ class LoomReader:
         '''
         return dict(zip(
             self.genes,
-            (x[0] for x in self.ds[:, self.ds.ca.CellID == cell_id])
+            (int(x[0]) for x in self.ds[:, self.ds.ca.CellID == cell_id])
         ))
 
     def by_gene(self, gene):
