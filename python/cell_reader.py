@@ -34,7 +34,12 @@ if __name__ == '__main__':
                 indices = np.linspace(
                     0, poly.shape[0], num=args.sample,
                     endpoint=False, dtype=int)
-                simpler_poly = np.take(poly, axis=0, indices=indices).tolist()
-                metadata[cell_id]['poly'] = simpler_poly
+                vertices = np.take(poly, axis=0, indices=indices)
+                # This isn't perfect: fails if ray from center crosses boundary multiple times.
+                center = np.mean(vertices, axis=0)
+                centered = vertices - center
+                angles = np.arctan2(centered[:,0], centered[:,1])
+                order = np.argsort(angles)
+                metadata[cell_id]['poly'] = vertices[order].tolist()
 
     print(json.dumps(metadata, indent=1))
