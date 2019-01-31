@@ -1,0 +1,2 @@
+# We want to be sure Travis will need to recreate these files each time.
+output/
