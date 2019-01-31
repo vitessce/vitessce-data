@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -o errexit
 
 start() { echo travis_fold':'start:$1; echo $1; }
