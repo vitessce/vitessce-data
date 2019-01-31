@@ -5,6 +5,8 @@ main() {
   process_molecules
   process_cells
   process_images
+  echo 'Done!'
+  ls -lh "$OUTPUT"/*
 }
 
 ### Globals
