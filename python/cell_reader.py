@@ -14,7 +14,7 @@ if __name__ == '__main__':
         '--loom', required=True,
         help='Loom file with cell metadata')
     parser.add_argument(
-        '--pickle',
+        '--pkl',
         help='Pickle file with cell segmentation data')
     args = parser.parse_args()
 
