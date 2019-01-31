@@ -1,5 +1,6 @@
-# hubmap-data-loader
-Utils for loading HuBMAP data formats
+# 🚄  vitessce-data
+
+Utils to pre-process data for [vitessce](http://github.com/hms-dbmi/vitessce/)
 
 Right now, the focus is reading the particular formats supplied by
 the [Linnarson Lab](http://linnarssonlab.org/osmFISH/availability/)
