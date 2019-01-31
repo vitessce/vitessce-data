@@ -1,6 +1,6 @@
 # 🚄  vitessce-data
 
-Utils to pre-process data for [vitessce](http://github.com/hms-dbmi/vitessce/)
+Utils to pre-process data for [vitessce](http://github.com/hms-dbmi/vitessce/#readme)
 
 Right now, the focus is reading the particular formats supplied by
 the [Linnarson Lab](http://linnarssonlab.org/osmFISH/availability/)
