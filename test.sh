@@ -10,5 +10,13 @@ flake8
 end flake8
 
 start doctest
-python -m doctest *.py *.md -o ELLIPSIS
+python -m doctest python/*.py -o ELLIPSIS
 end doctest
+
+start endtoend
+rm fake-files/output/* || mkdir fake-files/output
+CI=true ./linnarsson-osmfish.sh
+# CI to get it to run as test locally;
+# Redundant on Travis, but doesn't hurt anything.
+diff -qr fake-files/output fake-files/output-expected/
+end endtoend

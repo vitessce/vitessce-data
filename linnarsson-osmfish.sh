@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 set -o errexit
 
+die() { set +v; echo "$*" 1>&2 ; exit 1; }
+
 main() {
   process_molecules
   process_cells
   process_images
-  echo 'Done!'
+
+  echo
+  echo 'input:'
+  ls -lh "$INPUT"/*
+
+  echo
+  echo 'output:'
   ls -lh "$OUTPUT"/*
 }
 
@@ -16,8 +24,18 @@ BASE=`dirname "$0"`
 BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
 
-INPUT="$BASE/big-files/input"
-OUTPUT="$BASE/big-files/output"
+if [[ "$CI" = 'true' ]]
+then
+  wget() {
+    die "Add fixture to 'fake-files/input': Should not 'wget' in test run: 'wget $*'"
+  }
+  FILES="$BASE/fake-files"
+else
+  FILES="$BASE/big-files"
+fi
+
+INPUT="$FILES/input"
+OUTPUT="$FILES/output"
 
 [ -d "$INPUT" ] || mkdir "$INPUT"
 [ -d "$OUTPUT" ] || mkdir "$OUTPUT"

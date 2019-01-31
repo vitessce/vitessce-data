@@ -31,7 +31,9 @@ if __name__ == '__main__':
             segmentation = pickle.load(f)
         for cell_id, poly in segmentation.items():
             if cell_id in metadata:
-                indices = np.linspace(0, poly.shape[0], num=args.sample, endpoint=False, dtype=int)
+                indices = np.linspace(
+                    0, poly.shape[0], num=args.sample,
+                    endpoint=False, dtype=int)
                 simpler_poly = np.take(poly, axis=0, indices=indices).tolist()
                 metadata[cell_id]['poly'] = simpler_poly
 

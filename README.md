@@ -11,10 +11,9 @@ and not so inefficient as to cause problems with storage or processing.
 For example: The mRNA HDF5 is 30M, but as JSON it is still only 37M.
 
 Python scripts can be called individually, or `linnarson-osmfish.sh`
-will do everything.
+will do everything and drop the results in `bit-files/`
 
-### Imaging
-
+## Other data: TODO
 
 Coordinates: http://pklab.med.harvard.edu/viktor/data/spatial/linnarson/mRNA_coords_updated.hdf5
 
