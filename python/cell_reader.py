@@ -31,16 +31,23 @@ if __name__ == '__main__':
             segmentation = pickle.load(f)
         for cell_id, poly in segmentation.items():
             if cell_id in metadata:
-                indices = np.linspace(
-                    0, poly.shape[0], num=args.sample,
-                    endpoint=False, dtype=int)
-                vertices = np.take(poly, axis=0, indices=indices)
-                # This isn't perfect:
-                # fails if ray from center crosses boundary multiple times.
-                center = np.mean(vertices, axis=0)
-                centered = vertices - center
-                angles = np.arctan2(centered[:, 0], centered[:, 1])
-                order = np.argsort(angles)
-                metadata[cell_id]['poly'] = vertices[order].tolist()
+                # SciPy has ConvexHull, but it segfaulted on me: perhaps
+                #   https://github.com/scipy/scipy/issues/9751
+                # ... and even if I fixed it locally,
+                # not sure I'd want that fragility.
+                #
+                # Also: The goal is really just to get a simplified shape...
+                # A convex hull is too precise in some ways,
+                # while in others it falls short, ie, concavities.
+                w = int(np.min(poly[:, [0]]))
+                e = int(np.max(poly[:, [0]]))
+                n = int(np.min(poly[:, [1]]))
+                s = int(np.max(poly[:, [1]]))
+                metadata[cell_id]['poly'] = [
+                    [w, n],
+                    [w, s],
+                    [e, s],
+                    [e, n]
+                ]
 
     print(json.dumps(metadata, indent=1))
