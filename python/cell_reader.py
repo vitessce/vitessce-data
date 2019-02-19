@@ -127,6 +127,8 @@ if __name__ == '__main__':
                 if 'xy' in cell:
                     cell['xy'] = apply_transform(transform, cell['xy'])
                 if 'poly' in cell:
-                    cell['poly'] = [apply_transform(transform, xy) for xy in cell['poly']]
+                    cell['poly'] = [
+                        apply_transform(transform, xy) for xy in cell['poly']
+                    ]
 
     print(json.dumps(metadata, indent=1))
