@@ -74,7 +74,7 @@ def mean_coord(coords):
 
 
 def get_transform(metadata):
-    xy_array = np.array([cell.xy for cell in metadata.values()])
+    xy_array = np.array([cell['xy'] for cell in metadata.values()])
     max_xy = np.max(xy_array, axis=0)
     min_xy = np.min(xy_array, axis=0)
     return {
@@ -124,7 +124,9 @@ if __name__ == '__main__':
             transform = get_transform(metadata)
             json.dump(transform, f, indent=1)
             for cell in metadata.values():
-                cell['xy'] = apply_transform(transform, cell['xy'])
-                cell['poly'] = [apply_transform(xy) for xy in cell['poly']]
+                if 'xy' in cell:
+                    cell['xy'] = apply_transform(transform, cell['xy'])
+                if 'poly' in cell:
+                    cell['poly'] = [apply_transform(transform, xy) for xy in cell['poly']]
 
     print(json.dumps(metadata, indent=1))
