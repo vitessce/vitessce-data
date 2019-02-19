@@ -73,6 +73,25 @@ def mean_coord(coords):
     return np.mean(coords, axis=0).tolist()
 
 
+def get_transform(metadata):
+    xy_array = np.array([cell.xy for cell in metadata.values()])
+    max_xy = np.max(xy_array, axis=0)
+    min_xy = np.min(xy_array, axis=0)
+    return {
+        'x_shift': - (max_xy[0] + min_xy[0]) / 2,
+        'y_shift': - (max_xy[1] + min_xy[1]) / 2,
+        'x_scale': 2000 / (max_xy[0] - min_xy[0]),
+        'y_scale': 2000 / (max_xy[1] - min_xy[1])
+    }
+
+
+def apply_transform(transform, xy):
+    return [
+        (xy[0] - transform['x_shift']) * transform['x_scale'],
+        (xy[1] - transform['y_shift']) * transform['y_scale']
+    ]
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -84,9 +103,9 @@ if __name__ == '__main__':
         '--pkl',
         help='Pickle file with cell segmentation data')
     parser.add_argument(
-        '--sample',
-        default=16,
-        help='Number of points to sample from each polygon')
+        '--save_transform',
+        help='Center the data at (0, 0), and save the transformation.'
+    )
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
@@ -100,5 +119,12 @@ if __name__ == '__main__':
                 xy = mean_coord(simple_poly)
                 metadata[cell_id]['poly'] = simple_poly
                 metadata[cell_id]['xy'] = xy
+    if args.save_transform:
+        with open(args.save_transform, 'w') as f:
+            transform = get_transform(metadata)
+            json.dump(transform, f, indent=1)
+            for cell in metadata.values():
+                cell['xy'] = apply_transform(transform, cell['xy'])
+                cell['poly'] = [apply_transform(xy) for xy in cell['poly']]
 
     print(json.dumps(metadata, indent=1))
