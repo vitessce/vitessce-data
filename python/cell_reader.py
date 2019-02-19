@@ -61,6 +61,18 @@ def octagon(poly):
     ]
 
 
+def mean_coord(coords):
+    '''
+    The xy values in the Linnarsson data are not good:
+    They take a different corner as the origin.
+    So... we find the center of our polygon instead
+    >>> mean_coord([[1,2], [3,4], [5,6]])
+    [3.0, 4.0]
+
+    '''
+    return np.mean(coords, axis=0).tolist()
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -84,6 +96,9 @@ if __name__ == '__main__':
             segmentation = pickle.load(f)
         for cell_id, poly in segmentation.items():
             if cell_id in metadata:
-                metadata[cell_id]['poly'] = octagon(poly)
+                simple_poly = octagon(poly)
+                xy = mean_coord(simple_poly)
+                metadata[cell_id]['poly'] = simple_poly
+                metadata[cell_id]['xy'] = xy
 
     print(json.dumps(metadata, indent=1))
