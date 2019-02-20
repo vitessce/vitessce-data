@@ -18,5 +18,5 @@ rm fake-files/output/* || mkdir fake-files/output
 CI=true ./linnarsson-osmfish.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
-diff -r fake-files/output fake-files/output-expected/ -x .DS_Store
+diff -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100
 end endtoend
