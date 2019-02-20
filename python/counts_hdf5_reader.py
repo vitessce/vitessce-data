@@ -5,6 +5,8 @@ import json
 
 from h5py import File
 
+from transform import apply_transform
+
 
 class CountsHdf5Reader:
     def __init__(self, filename):
@@ -34,14 +36,6 @@ class CountsHdf5Reader:
 
         '''
         return (list(pair) for pair in self.data[key])
-
-
-def apply_transform(transform, xy):
-    # TODO: Rounding should be based on precision of input.
-    return [
-        round((xy[0] + transform['x_shift']) * transform['x_scale'], 2),
-        round((xy[1] + transform['y_shift']) * transform['y_scale'], 2)
-    ]
 
 
 if __name__ == '__main__':
