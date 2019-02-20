@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from sys import argv
+import argparse
 import json
 
 from h5py import File
@@ -36,11 +36,40 @@ class CountsHdf5Reader:
         return (list(pair) for pair in self.data[key])
 
 
+def apply_transform(transform, xy):
+    # TODO: Rounding should be based on precision of input.
+    return [
+        round((xy[0] - transform['x_shift']) * transform['x_scale'], 2),
+        round((xy[1] - transform['y_shift']) * transform['y_scale'], 2)
+    ]
+
+
 if __name__ == '__main__':
-    if len(argv) != 2:
-        print('Requires single HDF5 file')
-        exit(1)
-    reader = CountsHdf5Reader(argv[1])
+    parser = argparse.ArgumentParser(
+        description='Create JSON with molecule locations')
+    parser.add_argument(
+        '--hdf5', required=True,
+        help='HDF5 file with molecule locations')
+    parser.add_argument(
+        '--transform',
+        help='Transform the coordinates')
+    args = parser.parse_args()
+
+    transform = {
+
+    }
+    if args.transform:
+        with open(args.transform) as f:
+            transform = json.loads(f.read())
+    else:
+        transform = {
+            'x_shift': 0,
+            'y_shift': 0,
+            'x_scale': 1,
+            'y_scale': 1
+        }
+
+    reader = CountsHdf5Reader(args.hdf5)
     # Doing the serialization by hand so we get immediate output,
     # and don't need an extra intermediate object
     print('{')
@@ -57,6 +86,7 @@ if __name__ == '__main__':
                 first_pair = False
             else:
                 print(',')
-            print(json.dumps(pair), end='')
+            transformed = apply_transform(transform, pair)
+            print(json.dumps(transformed), end='')
         print(']', end='')
     print('}', end='')

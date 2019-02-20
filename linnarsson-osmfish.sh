@@ -73,6 +73,8 @@ process_cells() {
 process_molecules() {
   HDF5_IN="$INPUT/linnarsson.molecules.hdf5"
   JSON_OUT="$OUTPUT/linnarsson.molecules.json"
+  TRANSORM_IN="$OUTPUT/linnarsson.transform.json"
+  # Stored in the OUTPUT directory by the previous step.
 
   if [ -e "$JSON_OUT" ]
   then
@@ -88,7 +90,10 @@ process_molecules() {
     h5dump "$HDF5_IN" | head
 
   echo 'Generating JSON may take a while...'
-  "$BASE/python/counts_hdf5_reader.py" "$HDF5_IN" > "$JSON_OUT"
+  "$BASE/python/counts_hdf5_reader.py" \
+    --hdf5 "$HDF5_IN" \
+    --transform "$TRANSORM_IN" \
+    > "$JSON_OUT"
   head "$JSON_OUT"
 }
 
