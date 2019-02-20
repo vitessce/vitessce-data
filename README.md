@@ -10,7 +10,7 @@ JSON is our target format right now because it is easily read by Javascript,
 and not so inefficient as to cause problems with storage or processing.
 For example: The mRNA HDF5 is 30M, but as JSON it is still only 37M.
 
-Python scripts can be called individually, or `linnarson-osmfish.sh`
+Python scripts can be called individually, or `linnarsson-osmfish.sh`
 will do everything and drop the results in `big-files/`
 
 ## Other data: TODO

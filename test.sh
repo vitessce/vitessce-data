@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -o errexit
+set -o pipefail
 
 start() { echo travis_fold':'start:$1; echo $1; }
 end() { set +v; echo travis_fold':'end:$1; echo; echo; }
@@ -18,5 +19,5 @@ rm fake-files/output/* || mkdir fake-files/output
 CI=true ./linnarsson-osmfish.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
-diff -r fake-files/output fake-files/output-expected/ -x .DS_Store
+diff -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100
 end endtoend

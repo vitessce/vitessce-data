@@ -7,6 +7,7 @@ import pickle
 import numpy as np
 
 from loom_reader import LoomReader
+from transform import apply_transform, get_transform
 
 
 def octagon(poly):
@@ -61,6 +62,18 @@ def octagon(poly):
     ]
 
 
+def mean_coord(coords):
+    '''
+    The xy values in the Linnarsson data are not good:
+    They take a different corner as the origin.
+    So... we find the center of our polygon instead
+    >>> mean_coord([[1,2], [3,4], [5,6]])
+    [3.0, 4.0]
+
+    '''
+    return np.mean(coords, axis=0).tolist()
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -72,9 +85,9 @@ if __name__ == '__main__':
         '--pkl',
         help='Pickle file with cell segmentation data')
     parser.add_argument(
-        '--sample',
-        default=16,
-        help='Number of points to sample from each polygon')
+        '--save_transform',
+        help='Center the data at (0, 0), and save the transformation.'
+    )
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
@@ -84,6 +97,20 @@ if __name__ == '__main__':
             segmentation = pickle.load(f)
         for cell_id, poly in segmentation.items():
             if cell_id in metadata:
-                metadata[cell_id]['poly'] = octagon(poly)
+                simple_poly = octagon(poly)
+                xy = mean_coord(simple_poly)
+                metadata[cell_id]['poly'] = simple_poly
+                metadata[cell_id]['xy'] = xy
+    if args.save_transform:
+        with open(args.save_transform, 'w') as f:
+            transform = get_transform(metadata)
+            json.dump(transform, f, indent=1)
+            for cell in metadata.values():
+                if 'xy' in cell:
+                    cell['xy'] = apply_transform(transform, cell['xy'])
+                if 'poly' in cell:
+                    cell['poly'] = [
+                        apply_transform(transform, xy) for xy in cell['poly']
+                    ]
 
     print(json.dumps(metadata, indent=1))

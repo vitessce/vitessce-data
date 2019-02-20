@@ -4,8 +4,8 @@ set -o errexit
 die() { set +v; echo "$*" 1>&2 ; exit 1; }
 
 main() {
-  process_molecules
   process_cells
+  process_molecules
   process_images
 
   echo
@@ -15,6 +15,15 @@ main() {
   echo
   echo 'output:'
   ls -lh "$OUTPUT"/*
+
+  echo
+  echo 'AWS:'
+  if [[ "$CI" = 'true' ]]
+  then
+    echo 'CI: Skip push to AWS'
+  else
+    aws s3 cp --recursive "$OUTPUT" s3://vitessce-data
+  fi
 }
 
 ### Globals
@@ -42,32 +51,11 @@ OUTPUT="$FILES/output"
 
 ### Functions
 
-process_molecules() {
-  HDF5_IN="$INPUT/linnarsson.molecules.hdf5"
-  JSON_OUT="$OUTPUT/linnarsson.molecules.json"
-
-  if [ -e "$JSON_OUT" ]
-  then
-    echo "Skipping molecules -- output already exists: $JSON_OUT"
-    return
-  fi
-
-  echo "Download and process molecules..."
-
-  [ -e "$HDF5_IN" ] || \
-    wget "$BLOBS_URL/osmFISH/data/mRNA_coords_raw_counting.hdf5" -O "$HDF5_IN"
-  which h5dump && \
-    h5dump "$HDF5_IN" | head
-
-  echo 'Generating JSON may take a while...'
-  "$BASE/python/counts_hdf5_reader.py" "$HDF5_IN" > "$JSON_OUT"
-  head "$JSON_OUT"
-}
-
 process_cells() {
   LOOM_IN="$INPUT/linnarsson.cells.loom"
   PKL_IN="$INPUT/linnarsson.cells.pkl"
   JSON_OUT="$OUTPUT/linnarsson.cells.json"
+  TRANSFORM_OUT="$OUTPUT/linnarsson.transform.json"
 
   if [ -e "$JSON_OUT" ]
   then
@@ -83,7 +71,38 @@ process_cells() {
     wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
 
   echo 'Generating JSON may take a while...'
-  "$BASE/python/cell_reader.py" --loom "$LOOM_IN" --pkl "$PKL_IN" --sample 16 > "$JSON_OUT"
+  "$BASE/python/cell_reader.py" \
+    --loom "$LOOM_IN" \
+    --pkl "$PKL_IN" \
+    --save_transform "$TRANSFORM_OUT" \
+    > "$JSON_OUT"
+  head "$JSON_OUT"
+}
+
+process_molecules() {
+  HDF5_IN="$INPUT/linnarsson.molecules.hdf5"
+  JSON_OUT="$OUTPUT/linnarsson.molecules.json"
+  TRANSORM_IN="$OUTPUT/linnarsson.transform.json"
+  # Stored in the OUTPUT directory by the previous step.
+
+  if [ -e "$JSON_OUT" ]
+  then
+    echo "Skipping molecules -- output already exists: $JSON_OUT"
+    return
+  fi
+
+  echo "Download and process molecules..."
+
+  [ -e "$HDF5_IN" ] || \
+    wget "$BLOBS_URL/osmFISH/data/mRNA_coords_raw_counting.hdf5" -O "$HDF5_IN"
+  which h5dump && \
+    h5dump "$HDF5_IN" | head
+
+  echo 'Generating JSON may take a while...'
+  "$BASE/python/counts_hdf5_reader.py" \
+    --hdf5 "$HDF5_IN" \
+    --transform "$TRANSORM_IN" \
+    > "$JSON_OUT"
   head "$JSON_OUT"
 }
 
