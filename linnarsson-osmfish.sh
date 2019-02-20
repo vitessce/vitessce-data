@@ -15,6 +15,15 @@ main() {
   echo
   echo 'output:'
   ls -lh "$OUTPUT"/*
+
+  echo
+  echo 'AWS:'
+  if [[ "$CI" = 'true' ]]
+  then
+    echo 'CI: Skip push to AWS'
+  else
+    aws s3 cp --recursive "$OUTPUT" s3://vitessce-data
+  fi
 }
 
 ### Globals
