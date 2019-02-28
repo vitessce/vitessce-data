@@ -1,6 +1,11 @@
+#!/usr/bin/env python3
+
 from h5py import File
 import numpy as np
 import png
+import argparse
+import json
+from os.path import basename
 
 
 class ImgHdf5Reader:
@@ -48,20 +53,50 @@ class ImgHdf5Reader:
 
         return sample / max_found * max_allowed
 
-    def to_png(self, key, step, path):
-        '''
-        # >>> path = 'fixtures/Nuclei_polyT.int16.sf.hdf5'
-        # >>> reader = ImgHdf5Reader(path)
-        # >>> reader.to_png('polyT', 20, '/tmp/polyT-20.png')
-        # >>> reader.to_png('nuclei', 20, '/tmp/nuclei-20.png')
-        '''
+    def to_png_json(self, key, step, png_path, json_path):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
         scaled_sample = self.scale_sample(key, step, MAX_ALLOWED)\
             .astype(NP_TYPE)
-        image = png.from_array(scaled_sample, mode='L')
+        scaled_sample_transposed = np.transpose(scaled_sample)
+
+        # Bug with PNG generation from transposed numpy arrays:
+        # https://github.com/drj11/pypng/issues/91
+        # Work-around is to dump and reload.
+        hack = np.array(scaled_sample_transposed.tolist()).astype(NP_TYPE)
+
+        image = png.from_array(hack, mode='L')
         # TODO: Would like "L;4" but get error message.
         # TODO: Online PNG compression tools reduce size by 50%...
         #       Check Python PNG encoding options.
-        image.save(path)
+        image.save(png_path)
+
+        with open(args.json_out, 'w') as f:
+            base = basename(png_path)
+            f.write(json.dumps({
+                'href': 'https://s3.amazonaws.com/vitessce-data/{}'.format(base),
+                'height': hack.shape[0],
+                'width': hack.shape[1],
+            }))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Create PNG file and JSON file with metadata')
+    parser.add_argument(
+        '--hdf5', required=True,
+        help='HDF5 file with raster data')
+    parser.add_argument(
+        '--channel', required=True,
+        help='Channel to generate image for')
+    parser.add_argument(
+        '--json_out', required=True,
+        help='JSON file will include image dimensions and location')
+    parser.add_argument(
+        '--png_out', required=True,
+        help='Raster as a PNG')
+    args = parser.parse_args()
+
+    reader = ImgHdf5Reader(args.hdf5)
+    reader.to_png_json(args.channel, 20, args.png_out, args.json_out)

@@ -107,7 +107,26 @@ process_molecules() {
 }
 
 process_images() {
-  echo 'TODO: images'
+  PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
+  HDF5_IN="$INPUT/linnarsson.polyt.hdf5"
+  JSON_OUT="$OUTPUT/linnarsson.polyt.json"
+  PNG_OUT="$OUTPUT/linnarsson.polyt.png"
+
+  if [ -e "$PNG_OUT" ]
+  then
+    echo "Skipping imagery -- output already exists: $PNG_OUT"
+    return
+  fi
+
+  [ -e "$HDF5_IN" ] || \
+    wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
+
+  "$BASE/python/img_hdf5_reader.py" \
+    --hdf5 "$HDF5_IN" \
+    --channel 'polyT' \
+    --json_out "$JSON_OUT" \
+    --png_out "$PNG_OUT"
+  head "$JSON_OUT"
 }
 
 ### Main
