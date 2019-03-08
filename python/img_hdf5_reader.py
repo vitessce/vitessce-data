@@ -53,7 +53,7 @@ class ImgHdf5Reader:
 
         return sample / max_found * max_allowed
 
-    def to_png_json(self, key, step, png_path, json_path):
+    def to_png_json(self, key, step, png_path, json_path, s3_target):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
@@ -75,7 +75,9 @@ class ImgHdf5Reader:
         with open(args.json_out, 'w') as f:
             base = basename(png_path)
             f.write(json.dumps({
-                'href': 'https://s3.amazonaws.com/vitessce-data/{}'.format(base),
+                'href': 'https://s3.amazonaws.com/{}/{}'.format(
+                    s3_target, base
+                ),
                 'height': hack.shape[0],
                 'width': hack.shape[1],
             }))
@@ -96,7 +98,19 @@ if __name__ == '__main__':
     parser.add_argument(
         '--png_out', required=True,
         help='Raster as a PNG')
+    parser.add_argument(
+        '--sample', required=True, type=int,
+        help='Sample 1 pixel out of N')
+    parser.add_argument(
+        '--s3_target', required=True,
+        help='S3 bucket and path')
     args = parser.parse_args()
 
     reader = ImgHdf5Reader(args.hdf5)
-    reader.to_png_json(args.channel, 20, args.png_out, args.json_out)
+    reader.to_png_json(
+        key=args.channel,
+        step=args.sample,
+        png_path=args.png_out,
+        json_path=args.json_out,
+        s3_target=args.s3_target
+    )
