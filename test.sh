@@ -14,6 +14,10 @@ start doctest
 python -m doctest python/*.py -o ELLIPSIS
 end doctest
 
+start matrix
+./matrix-test.sh
+end matrix
+
 start endtoend
 rm fake-files/output/* || mkdir fake-files/output
 CI=true ./linnarsson-osmfish.sh
