@@ -18,7 +18,7 @@ main() {
 
   echo
   echo 'AWS:'
-  if [[ "$CI" = 'true' ]]
+  if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
   then
     echo 'CI: Skip push to AWS'
   else
@@ -111,7 +111,9 @@ process_images() {
   PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
   HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
 
-  for CHANNEL in 'polyT' 'nuclei'; do
+  for CHANNEL_CLIP in 'polyT:50' 'nuclei:5'; do
+    CHANNEL=`echo $CHANNEL_CLIP | cut -d ':' -f 1`
+    CLIP=`echo $CHANNEL_CLIP | cut -d ':' -f 2`
     JSON_OUT="$OUTPUT/linnarsson.$CHANNEL.json"
     PNG_OUT="$OUTPUT/linnarsson.$CHANNEL.png"
 
@@ -130,6 +132,7 @@ process_images() {
       --json_out "$JSON_OUT" \
       --png_out "$PNG_OUT" \
       --sample 5 \
+      --clip $CLIP \
       --s3_target "$S3_TARGET"
     echo "head $JSON_OUT:"
     head "$JSON_OUT"

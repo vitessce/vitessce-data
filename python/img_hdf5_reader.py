@@ -38,7 +38,7 @@ class ImgHdf5Reader:
         '''
         return self.data[key][::step, ::step]
 
-    def scale_sample(self, key, step, max_allowed):
+    def scale_sample(self, key, step, max_allowed, clip):
         '''
         Assumes there are no negative values
 
@@ -48,17 +48,19 @@ class ImgHdf5Reader:
         # (318, 517)
 
         '''
-        sample = self.sample(key, step)
-        max_found = np.max(sample)
+        sample = np.clip(self.sample(key, step), 0, clip)
+        return sample / clip * max_allowed
 
-        return sample / max_found * max_allowed
-
-    def to_png_json(self, key, step, png_path, json_path, s3_target):
+    def to_png_json(self, key, step, png_path, json_path, s3_target, clip):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
-        scaled_sample = self.scale_sample(key, step, MAX_ALLOWED)\
-            .astype(NP_TYPE)
+        scaled_sample = self.scale_sample(
+            key=key,
+            step=step,
+            max_allowed=MAX_ALLOWED,
+            clip=clip
+        ).astype(NP_TYPE)
         scaled_sample_transposed = np.transpose(scaled_sample)
 
         # Bug with PNG generation from transposed numpy arrays:
@@ -104,6 +106,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--s3_target', required=True,
         help='S3 bucket and path')
+    parser.add_argument(
+        '--clip', required=True, type=int,
+        help='Clip any values greater than this')
     args = parser.parse_args()
 
     reader = ImgHdf5Reader(args.hdf5)
@@ -112,5 +117,6 @@ if __name__ == '__main__':
         step=args.sample,
         png_path=args.png_out,
         json_path=args.json_out,
-        s3_target=args.s3_target
+        s3_target=args.s3_target,
+        clip=args.clip
     )
