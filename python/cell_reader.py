@@ -86,8 +86,7 @@ if __name__ == '__main__':
         help='Pickle file with cell segmentation data')
     parser.add_argument(
         '--save_transform',
-        help='Center the data at (0, 0), and save the transformation.'
-    )
+        help='Center the data at (0, 0), and save the transformation.')
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()

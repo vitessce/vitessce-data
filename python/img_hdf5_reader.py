@@ -57,7 +57,8 @@ class ImgHdf5Reader:
 
         '''
         sample = np.clip(self.sample(key, step), 0, clip)
-        return sample / clip * max_allowed
+        # 255 displays as black... color table issue?
+        return sample / clip * (max_allowed - 1)
 
     def to_png_json(self, key, step, png_path, json_path, s3_target, clip):
         MAX_ALLOWED = 256
