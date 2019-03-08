@@ -18,17 +18,18 @@ main() {
 
   echo
   echo 'AWS:'
-  if [[ "$CI" = 'true' ]]
+  if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
   then
     echo 'CI: Skip push to AWS'
   else
-    aws s3 cp --recursive "$OUTPUT" s3://vitessce-data
+    aws s3 cp --recursive "$OUTPUT" s3://"$S3_TARGET"
   fi
 }
 
 ### Globals
 
 BASE=`dirname "$0"`
+S3_TARGET=`cat s3_target.txt`
 
 BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
@@ -108,25 +109,34 @@ process_molecules() {
 
 process_images() {
   PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
-  HDF5_IN="$INPUT/linnarsson.polyt.hdf5"
-  JSON_OUT="$OUTPUT/linnarsson.polyt.json"
-  PNG_OUT="$OUTPUT/linnarsson.polyt.png"
+  HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
 
-  if [ -e "$PNG_OUT" ]
-  then
-    echo "Skipping imagery -- output already exists: $PNG_OUT"
-    return
-  fi
+  for CHANNEL_CLIP in 'polyT:50' 'nuclei:5'; do
+    CHANNEL=`echo $CHANNEL_CLIP | cut -d ':' -f 1`
+    CLIP=`echo $CHANNEL_CLIP | cut -d ':' -f 2`
+    JSON_OUT="$OUTPUT/linnarsson.$CHANNEL.json"
+    PNG_OUT="$OUTPUT/linnarsson.$CHANNEL.png"
 
-  [ -e "$HDF5_IN" ] || \
-    wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
+    if [ -e "$PNG_OUT" ] && [ -e "$JSON_OUT" ]
+    then
+      echo "Skipping $CHANNEL imagery -- output already exists: $PNG_OUT"
+      continue
+    fi
 
-  "$BASE/python/img_hdf5_reader.py" \
-    --hdf5 "$HDF5_IN" \
-    --channel 'polyT' \
-    --json_out "$JSON_OUT" \
-    --png_out "$PNG_OUT"
-  head "$JSON_OUT"
+    [ -e "$HDF5_IN" ] || \
+      wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
+
+    "$BASE/python/img_hdf5_reader.py" \
+      --hdf5 "$HDF5_IN" \
+      --channel "$CHANNEL" \
+      --json_out "$JSON_OUT" \
+      --png_out "$PNG_OUT" \
+      --sample 5 \
+      --clip $CLIP \
+      --s3_target "$S3_TARGET"
+    echo "head $JSON_OUT:"
+    head "$JSON_OUT"
+  done
 }
 
 ### Main

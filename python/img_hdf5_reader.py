@@ -14,12 +14,12 @@ class ImgHdf5Reader:
 
     def keys(self):
         '''
-        # >>> path = 'fixtures/Nuclei_polyT.int16.sf.hdf5'
-        # >>> reader = ImgHdf5Reader(path)
-        # >>> len(reader.keys())
-        # 2
-        # >>> sorted(list(reader.keys()))
-        # ['nuclei', 'polyT']
+        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> reader = ImgHdf5Reader(path)
+        >>> len(reader.keys())
+        2
+        >>> sorted(list(reader.keys()))
+        ['nuclei', 'polyT']
 
         '''
         return self.data.keys()
@@ -29,36 +29,46 @@ class ImgHdf5Reader:
 
     def sample(self, key, step):
         '''
-        # >>> path = 'fixtures/Nuclei_polyT.int16.sf.hdf5'
-        # >>> reader = ImgHdf5Reader(path)
-        # >>> sample = reader.sample('polyT', 100)
-        # >>> sample.shape
-        # (318, 517)
+        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> reader = ImgHdf5Reader(path)
+        >>> sample = reader.sample('polyT', 2)
+        >>> sample.shape
+        (25, 25)
 
         '''
         return self.data[key][::step, ::step]
 
-    def scale_sample(self, key, step, max_allowed):
+    def scale_sample(self, key, step, max_allowed, clip):
         '''
         Assumes there are no negative values
 
-        # >>> path = 'fixtures/Nuclei_polyT.int16.sf.hdf5'
-        # >>> reader = ImgHdf5Reader(path)
-        # >>> reader.scale_sample('polyT', 100, 255).shape
-        # (318, 517)
+        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> reader = ImgHdf5Reader(path)
+        >>> sample = reader.scale_sample('polyT', 10, 255, 20)
+        >>> sample.shape
+        (5, 5)
+        >>> for l in sample.tolist():
+        ...   print(l)
+        [0.0, 127.5, 255.0, 255.0, 255.0]
+        [0.0, 127.5, 255.0, 255.0, 255.0]
+        [0.0, 127.5, 255.0, 255.0, 255.0]
+        [0.0, 127.5, 255.0, 255.0, 255.0]
+        [0.0, 127.5, 255.0, 255.0, 255.0]
 
         '''
-        sample = self.sample(key, step)
-        max_found = np.max(sample)
+        sample = np.clip(self.sample(key, step), 0, clip)
+        return sample / clip * max_allowed
 
-        return sample / max_found * max_allowed
-
-    def to_png_json(self, key, step, png_path, json_path):
+    def to_png_json(self, key, step, png_path, json_path, s3_target, clip):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
-        scaled_sample = self.scale_sample(key, step, MAX_ALLOWED)\
-            .astype(NP_TYPE)
+        scaled_sample = self.scale_sample(
+            key=key,
+            step=step,
+            max_allowed=MAX_ALLOWED,
+            clip=clip
+        ).astype(NP_TYPE)
         scaled_sample_transposed = np.transpose(scaled_sample)
 
         # Bug with PNG generation from transposed numpy arrays:
@@ -75,7 +85,9 @@ class ImgHdf5Reader:
         with open(args.json_out, 'w') as f:
             base = basename(png_path)
             f.write(json.dumps({
-                'href': 'https://s3.amazonaws.com/vitessce-data/{}'.format(base),
+                'href': 'https://s3.amazonaws.com/{}/{}'.format(
+                    s3_target, base
+                ),
                 'height': hack.shape[0],
                 'width': hack.shape[1],
             }))
@@ -96,7 +108,23 @@ if __name__ == '__main__':
     parser.add_argument(
         '--png_out', required=True,
         help='Raster as a PNG')
+    parser.add_argument(
+        '--sample', required=True, type=int,
+        help='Sample 1 pixel out of N')
+    parser.add_argument(
+        '--s3_target', required=True,
+        help='S3 bucket and path')
+    parser.add_argument(
+        '--clip', required=True, type=int,
+        help='Clip any values greater than this')
     args = parser.parse_args()
 
     reader = ImgHdf5Reader(args.hdf5)
-    reader.to_png_json(args.channel, 20, args.png_out, args.json_out)
+    reader.to_png_json(
+        key=args.channel,
+        step=args.sample,
+        png_path=args.png_out,
+        json_path=args.json_out,
+        s3_target=args.s3_target,
+        clip=args.clip
+    )
