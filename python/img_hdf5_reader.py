@@ -14,12 +14,12 @@ class ImgHdf5Reader:
 
     def keys(self):
         '''
-        # >>> path = 'fixtures/Nuclei_polyT.int16.sf.hdf5'
-        # >>> reader = ImgHdf5Reader(path)
-        # >>> len(reader.keys())
-        # 2
-        # >>> sorted(list(reader.keys()))
-        # ['nuclei', 'polyT']
+        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> reader = ImgHdf5Reader(path)
+        >>> len(reader.keys())
+        2
+        >>> sorted(list(reader.keys()))
+        ['nuclei', 'polyT']
 
         '''
         return self.data.keys()
@@ -29,11 +29,11 @@ class ImgHdf5Reader:
 
     def sample(self, key, step):
         '''
-        # >>> path = 'fixtures/Nuclei_polyT.int16.sf.hdf5'
-        # >>> reader = ImgHdf5Reader(path)
-        # >>> sample = reader.sample('polyT', 100)
-        # >>> sample.shape
-        # (318, 517)
+        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> reader = ImgHdf5Reader(path)
+        >>> sample = reader.sample('polyT', 2)
+        >>> sample.shape
+        (25, 25)
 
         '''
         return self.data[key][::step, ::step]
@@ -42,10 +42,17 @@ class ImgHdf5Reader:
         '''
         Assumes there are no negative values
 
-        # >>> path = 'fixtures/Nuclei_polyT.int16.sf.hdf5'
-        # >>> reader = ImgHdf5Reader(path)
-        # >>> reader.scale_sample('polyT', 100, 255).shape
-        # (318, 517)
+        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> reader = ImgHdf5Reader(path)
+        >>> sample = reader.scale_sample('polyT', 10, 255, 20)
+        >>> sample.shape
+        (5, 5)
+        >>> sample
+        array([[  0. , 127.5, 255. , 255. , 255. ],
+               [  0. , 127.5, 255. , 255. , 255. ],
+               [  0. , 127.5, 255. , 255. , 255. ],
+               [  0. , 127.5, 255. , 255. , 255. ],
+               [  0. , 127.5, 255. , 255. , 255. ]])
 
         '''
         sample = np.clip(self.sample(key, step), 0, clip)
