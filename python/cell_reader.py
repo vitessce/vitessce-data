@@ -74,6 +74,41 @@ def mean_coord(coords):
     return np.mean(coords, axis=0).tolist()
 
 
+LOOKUP = {
+  "Astrocyte Gfap": "Astrocyte",
+  "Astrocyte Mfge8": "Astrocyte",
+  "C. Plexus": "Ventricle",
+  "Endothelial 1": "Vasculature",
+  "Endothelial": "Vasculature",
+  "Ependymal": "Ventricle",
+  "Hippocampus": "Excitatory neurons",
+  "Inhibitory CP": "Inhibitory neurons",
+  "Inhibitory Cnr1": "Inhibitory neurons",
+  "Inhibitory Crhbp": "Inhibitory neurons",
+  "Inhibitory IC": "Inhibitory neurons",
+  "Inhibitory Kcnip2": "Inhibitory neurons",
+  "Inhibitory Pthlh": "Inhibitory neurons",
+  "Inhibitory Vip": "Inhibitory neurons",
+  "Microglia": "Brain immune",
+  "Oligodendrocyte COP": "Oligodendrocytes",
+  "Oligodendrocyte MF": "Oligodendrocytes",
+  "Oligodendrocyte Mature": "Oligodendrocytes",
+  "Oligodendrocyte NF": "Oligodendrocytes",
+  "Oligodendrocyte Precursor cells": "Oligodendrocytes",
+  "Pericytes": "Vasculature",
+  "Perivascular Macrophages": "Brain immune",
+  "Pyramidal Cpne5": "Excitatory",
+  "Pyramidal Kcnip2": "Excitatory",
+  "Pyramidal L2-3 L5": "Excitatory",
+  "Pyramidal L2-3": "Excitatory",
+  "Pyramidal L3-4": "Excitatory",
+  "Pyramidal L5": "Excitatory",
+  "Pyramidal L6": "Excitatory",
+  "Vascular Smooth Muscle": "Vasculature",
+  "pyramidal L4": "Excitatory"
+}
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -91,6 +126,16 @@ if __name__ == '__main__':
 
     metadata = LoomReader(args.loom).data()
 
+    for cell in metadata.values():
+        cluster = cell['cluster']
+        del cell['cluster']
+        # "Clusters" in the raw data are called "subclusters"
+        # in http://linnarssonlab.org/osmFISH/clusters/
+        cell['factor'] = {
+            'subcluster': cluster,
+            'cluster': LOOKUP[cluster]
+        }
+
     if args.pkl:
         with open(args.pkl, 'rb') as f:
             segmentation = pickle.load(f)
@@ -100,6 +145,7 @@ if __name__ == '__main__':
                 xy = mean_coord(simple_poly)
                 metadata[cell_id]['poly'] = simple_poly
                 metadata[cell_id]['xy'] = xy
+
     if args.save_transform:
         with open(args.save_transform, 'w') as f:
             transform = get_transform(metadata)
