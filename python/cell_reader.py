@@ -131,7 +131,7 @@ if __name__ == '__main__':
         del cell['cluster']
         # "Clusters" in the raw data are called "subclusters"
         # in http://linnarssonlab.org/osmFISH/clusters/
-        cell['factor'] = {
+        cell['factors'] = {
             'subcluster': cluster,
             'cluster': LOOKUP[cluster]
         }
