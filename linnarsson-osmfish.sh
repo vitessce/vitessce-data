@@ -111,7 +111,7 @@ process_images() {
   PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
   HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
 
-  for CHANNEL_CLIP in 'polyT:50' 'nuclei:5'; do
+  for CHANNEL_CLIP in 'polyT:200' 'nuclei:20'; do
     CHANNEL=`echo $CHANNEL_CLIP | cut -d ':' -f 1`
     CLIP=`echo $CHANNEL_CLIP | cut -d ':' -f 2`
     JSON_OUT="$OUTPUT/linnarsson.$CHANNEL.json"

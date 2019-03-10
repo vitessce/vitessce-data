@@ -49,15 +49,16 @@ class ImgHdf5Reader:
         (5, 5)
         >>> for l in sample.tolist():
         ...   print(l)
-        [0.0, 127.5, 255.0, 255.0, 255.0]
-        [0.0, 127.5, 255.0, 255.0, 255.0]
-        [0.0, 127.5, 255.0, 255.0, 255.0]
-        [0.0, 127.5, 255.0, 255.0, 255.0]
-        [0.0, 127.5, 255.0, 255.0, 255.0]
+        [0.0, 127.0, 254.0, 254.0, 254.0]
+        [0.0, 127.0, 254.0, 254.0, 254.0]
+        [0.0, 127.0, 254.0, 254.0, 254.0]
+        [0.0, 127.0, 254.0, 254.0, 254.0]
+        [0.0, 127.0, 254.0, 254.0, 254.0]
 
         '''
         sample = np.clip(self.sample(key, step), 0, clip)
-        return sample / clip * max_allowed
+        # 255 displays as black... color table issue?
+        return sample / clip * (max_allowed - 1)
 
     def to_png_json(self, key, step, png_path, json_path, s3_target, clip):
         MAX_ALLOWED = 256
