@@ -10,6 +10,7 @@ import numpy as np
 from loom_reader import LoomReader
 from transform import apply_transform, get_transform
 from cluster import cluster
+from delaunay import DictDelaunay2d
 
 
 def octagon(poly):
@@ -111,6 +112,36 @@ LOOKUP = {
 }
 
 
+def get_neighborhoods(cells):
+    '''
+    >>> cells = {
+    ...   'O': { 'xy': [0,0], 'extra': 'field'},
+    ...   'N':    { 'xy': [0,1], 'extra': 'field'},
+    ...   'E':  { 'xy': [1,0], 'extra': 'field'},
+    ...   'S': { 'xy': [0,-1], 'extra': 'field'},
+    ...   'W':   { 'xy': [-1,0], 'extra': 'field'}
+    ... }
+    >>> neighborhoods = get_neighborhoods(cells)
+    >>> neighborhoods.keys()
+    dict_keys(['O::E::N', 'O::N::W', 'O::S::E', 'O::W::S'])
+    >>> neighborhoods['O::E::N']
+    {'poly': [[0, 0], [1, 0], [0, 1]]}
+
+    '''
+    coords = {}
+    for (k, v) in cells.items():
+        coords[k] = v['xy']
+    triangles = DictDelaunay2d(coords).getTriangles()
+    neighborhoods = {}
+    for triangle in triangles:
+        key = '::'.join(triangle)
+        value = {
+            'poly': [coords[point] for point in triangle]
+        }
+        neighborhoods[key] = value
+    return neighborhoods
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -132,7 +163,10 @@ if __name__ == '__main__':
         help='Write the cleaned cell data to this file.')
     parser.add_argument(
         '--genes_out', type=argparse.FileType('w'),
-        help='Write a list of genes to this file.')
+        help='Write a list of genes to this file.'),
+    parser.add_argument(
+        '--neighborhoods_out', type=argparse.FileType('w'),
+        help='Write the cell neighborhoods to this file.')
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
@@ -183,3 +217,7 @@ if __name__ == '__main__':
     if args.genes_out:
         genes = list(list(metadata.values())[0]['genes'].keys())
         json.dump(genes, args.genes_out)
+
+    if args.neighborhoods_out:
+        neighborhoods = get_neighborhoods(metadata)
+        json.dump(neighborhoods, args.neighborhoods_out)
