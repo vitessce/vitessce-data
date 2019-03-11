@@ -12,6 +12,9 @@ import math
 import copy
 
 
+class DictDelaunay2d:
+    pass
+
 class Delaunay2d:
     '''
     The algorithm uses the S-hull method by D A Sinclair (http://www.s-hull.org/paper/s_hull.pdf).
@@ -29,21 +32,20 @@ class Delaunay2d:
     treaded by removing triangles, edges, and points that are contained inside a given closed path.
 
     Start with these points:
-     3 5
-     1
-      24
+      3   5
+      1
+        2 4
     0
 
-    >>> pairs = [[0,0], [1,2], [2,1], [1,3], [3,1], [3,3]]
-    >>> np_points = [numpy.array(pair) for pair in pairs]
-    >>> delaunay = Delaunay2d(np_points)
+    >>> points = [[0,0], [1,2], [2,1], [1,3], [3,1], [3,3]]
+    >>> delaunay = Delaunay2d(points)
     >>> [list(point) for point in delaunay.points]
     [[1, 2], [2, 1], [1, 3], [3, 1], [3, 3], [0, 0]]
 
     Points have been reordered:
-     2 4
-     0
-      13
+      2   4
+      0
+        1 3
     5
 
     >>> delaunay.triangles
@@ -59,10 +61,10 @@ class Delaunay2d:
 
     EPS = 1.23456789e-14
 
-    def __init__(self, points):
+    def __init__(self, pairs):
 
         # data structures
-        self.points = points[:]  # copy
+        self.points = [numpy.array(pair) for pair in pairs]
         self.triangles = []  # cells
         self.edge2Triangles = {}  # edge to triangle(s) map
         self.boundaryEdges = set()
@@ -71,9 +73,9 @@ class Delaunay2d:
 
         # compute center of gravity
         cg = numpy.zeros((2,), numpy.float64)
-        for pt in points:
+        for pt in self.points:
             cg += pt
-        cg /= len(points)
+        cg /= len(self.points)
 
         # sort
         def distanceSquare(pt):
@@ -88,7 +90,7 @@ class Delaunay2d:
         area = 0.0
         index = 0
         stop = False
-        while not stop and index + 2 < len(points):
+        while not stop and index + 2 < len(self.points):
             area = self.getArea(index, index + 1, index + 2)
             if abs(area) < self.EPS:
                 del self.points[index]
