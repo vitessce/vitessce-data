@@ -76,7 +76,7 @@ process_cells() {
     --loom "$LOOM_IN" \
     --pkl "$PKL_IN" \
     --save_transform "$TRANSFORM_OUT" \
-    > "$JSON_OUT"
+    --cells_out "$JSON_OUT"
   head "$JSON_OUT"
 }
 

@@ -67,9 +67,9 @@ def _to_dataframe(cells):
 def cluster(cells):
     '''
     >>> cells = {
-    ...   'cell-1': { 'genes': {'a':8, 'b':1, 'c': 7}, 'extra': 'field'},
+    ...   'cell-1': { 'genes': {'a':8, 'b':2, 'c': 7}, 'extra': 'field'},
     ...   'cell-2': { 'genes': {'a':1, 'b':1, 'c': 1}, 'extra': 'field'},
-    ...   'cell-3': { 'genes': {'a':9, 'b':1, 'c': 8}, 'extra': 'field'}
+    ...   'cell-3': { 'genes': {'a':9, 'b':2, 'c': 8}, 'extra': 'field'}
     ... }
     >>> clustered = cluster(cells)
     >>> clustered['rows']
@@ -77,7 +77,7 @@ def cluster(cells):
     >>> clustered['cols']
     ['cell-2', 'cell-1', 'cell-3']
     >>> clustered['matrix']
-    [[1, 1, 1], [1, 8, 9], [1, 7, 8]]
+    [[1, 2, 2], [1, 8, 9], [1, 7, 8]]
 
     '''
     df = _to_dataframe(cells)
