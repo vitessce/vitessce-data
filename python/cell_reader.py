@@ -3,6 +3,7 @@
 import json
 import argparse
 import pickle
+import re
 
 import numpy as np
 
@@ -167,4 +168,11 @@ if __name__ == '__main__':
 
     if args.cluster_out:
         clustered = cluster(metadata)
-        json.dump(clustered, args.cluster_out, indent=1)
+        cluster_json = json.dumps(clustered)
+        # Line-break after every element is too much, but this works:
+        spaced_cluster_json = re.sub(
+           r'\],',
+           '],\n',
+           cluster_json
+        )
+        print(spaced_cluster_json, file=args.cluster_out)
