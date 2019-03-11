@@ -13,7 +13,32 @@ import copy
 
 
 class DictDelaunay2d:
-    pass
+    '''
+    Wrapper for Delaunay2d: Instead of supplying a list and getting indices, this takes a dict and
+    returns keys for the dict.
+
+    Start with these points:
+      D   F
+      B
+        C E
+    A
+
+    >>> points = {'A':[0,0], 'B':[1,2], 'C':[2,1], 'D':[1,3], 'E':[3,1], 'F':[3,3]}
+    >>> delaunay = DictDelaunay2d(points)
+    >>> delaunay.getTriangles()
+    [['B', 'C', 'F'], ['B', 'F', 'D'], ['C', 'F', 'E'], ['B', 'A', 'C'], ['C', 'A', 'E'], ['B', 'D', 'A']]
+
+    '''
+    def __init__(self, pairs_dict):
+        items = pairs_dict.items()
+        self.keys = [item[0] for item in items]
+        pairs = [item[1] for item in items]
+        self.delaunay = Delaunay2d(pairs)
+
+    def getTriangles(self):
+        triangles = self.delaunay.getTriangles()
+        return [[self.keys[point] for point in tri] for tri in triangles]
+
 
 class Delaunay2d:
     '''
