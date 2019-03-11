@@ -126,7 +126,7 @@ class Delaunay2d:
         """
         @return triangles
         """
-        return self.triangles
+        return [[point for point in tri] for tri in self.triangles]
 
     def getEdges(self):
         """
