@@ -130,6 +130,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--cells_out', type=argparse.FileType('w'),
         help='Write the cleaned cell data to this file.')
+    parser.add_argument(
+        '--genes_out', type=argparse.FileType('w'),
+        help='Write a list of genes to this file.')
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
@@ -176,3 +179,7 @@ if __name__ == '__main__':
            cluster_json
         )
         print(spaced_cluster_json, file=args.cluster_out)
+
+    if args.genes_out:
+        genes = list(list(metadata.values())[0]['genes'].keys())
+        json.dump(genes, args.genes_out)

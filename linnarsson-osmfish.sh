@@ -58,6 +58,7 @@ process_cells() {
   CELLS_OUT="$OUTPUT/linnarsson.cells.json"
   CLUSTER_OUT="$OUTPUT/linnarsson.cluster.json"
   TRANSFORM_OUT="$OUTPUT/linnarsson.transform.json"
+  GENES_OUT="$OUTPUT/linnarsson.genes.json"
 
   if [ -e "$JSON_OUT" ]
   then
@@ -78,7 +79,8 @@ process_cells() {
     --pkl "$PKL_IN" \
     --save_transform "$TRANSFORM_OUT" \
     --cells_out "$CELLS_OUT" \
-    --cluster_out "$CLUSTER_OUT"
+    --cluster_out "$CLUSTER_OUT" \
+    --genes_out "$GENES_OUT"
   echo "head $CELLS_OUT:"
   head "$CELLS_OUT"
   echo "head $CLUSTER_OUT:"
