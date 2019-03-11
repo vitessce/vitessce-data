@@ -49,7 +49,12 @@ class Delaunay2d:
     >>> delaunay.triangles
     [[0, 1, 4], [0, 4, 2], [1, 4, 3], [0, 5, 1], [1, 5, 3], [0, 2, 5]]
 
-    Refers to the index in the reordered list.
+    Internal order!
+
+    >>> delaunay.getTriangles()
+    [[1, 2, 5], [1, 5, 3], [2, 5, 4], [1, 0, 2], [2, 0, 4], [1, 3, 0]]
+
+    Original order!
     '''
 
     EPS = 1.23456789e-14
@@ -126,7 +131,7 @@ class Delaunay2d:
         """
         @return triangles
         """
-        return [[point for point in tri] for tri in self.triangles]
+        return [[self.order[point] for point in tri] for tri in self.triangles]
 
     def getEdges(self):
         """
