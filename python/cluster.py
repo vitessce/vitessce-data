@@ -47,21 +47,23 @@ def _order(dataframe):
 def _to_dataframe(cells):
     '''
     >>> cells = {
-    ...   'cell-1': { 'genes': {'a':8, 'b':1, 'c': 7}, 'extra': 'field'},
+    ...   'cell-1': { 'genes': {'a':8, 'b':1, 'c': 7.777777}, 'extra': 'f'},
     ...   'cell-2': { 'genes': {'a':1, 'b':1, 'c': 1}, 'extra': 'field'},
-    ...   'cell-3': { 'genes': {'a':9, 'b':1, 'c': 8}, 'extra': 'field'}
+    ...   'cell-3': { 'genes': {'a':9, 'b':1, 'c': 10}, 'extra': 'field'}
     ... }
     >>> _to_dataframe(cells)
        cell-1  cell-2  cell-3
-    a       8       1       9
-    b       1       1       1
-    c       7       1       8
+    a   0.800     0.1     0.9
+    b   0.100     0.1     0.1
+    c   0.778     0.1     1.0
 
     '''
     clean = {}
     for k, v in cells.items():
         clean[k] = v['genes']
-    return pd.DataFrame(clean)
+    df = pd.DataFrame(clean)
+    df_max = df.values.max()
+    return (df / df_max).round(3)
 
 
 def cluster(cells):
@@ -69,7 +71,7 @@ def cluster(cells):
     >>> cells = {
     ...   'cell-1': { 'genes': {'a':8, 'b':2, 'c': 7}, 'extra': 'field'},
     ...   'cell-2': { 'genes': {'a':1, 'b':1, 'c': 1}, 'extra': 'field'},
-    ...   'cell-3': { 'genes': {'a':9, 'b':2, 'c': 8}, 'extra': 'field'}
+    ...   'cell-3': { 'genes': {'a':9, 'b':2, 'c': 10}, 'extra': 'field'}
     ... }
     >>> clustered = cluster(cells)
     >>> clustered['rows']
@@ -77,7 +79,7 @@ def cluster(cells):
     >>> clustered['cols']
     ['cell-2', 'cell-1', 'cell-3']
     >>> clustered['matrix']
-    [[1, 2, 2], [1, 8, 9], [1, 7, 8]]
+    [[0.1, 0.2, 0.2], [0.1, 0.8, 0.9], [0.1, 0.7, 1.0]]
 
     '''
     df = _to_dataframe(cells)
