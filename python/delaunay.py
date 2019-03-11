@@ -74,7 +74,9 @@ class Delaunay2d:
         def distanceSquare(pt):
             d = pt - cg
             return numpy.dot(d, d)
-        self.points.sort(key=distanceSquare)
+        dSqFromCenter = numpy.array([distanceSquare(pt) for pt in self.points])
+        self.order = list(dSqFromCenter.argsort())
+        self.points = [self.points[i] for i in self.order]
 
         # create first triangle, make sure we're getting a non-zero area otherwise
         # drop the points
