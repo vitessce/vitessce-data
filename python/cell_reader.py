@@ -3,11 +3,14 @@
 import json
 import argparse
 import pickle
+import re
 
 import numpy as np
 
 from loom_reader import LoomReader
 from transform import apply_transform, get_transform
+from cluster import cluster
+from delaunay import DictDelaunay2d
 
 
 def octagon(poly):
@@ -109,6 +112,36 @@ LOOKUP = {
 }
 
 
+def get_neighborhoods(cells):
+    '''
+    >>> cells = {
+    ...   'O': { 'xy': [0,0], 'extra': 'field'},
+    ...   'N':    { 'xy': [0,1], 'extra': 'field'},
+    ...   'E':  { 'xy': [1,0], 'extra': 'field'},
+    ...   'S': { 'xy': [0,-1], 'extra': 'field'},
+    ...   'W':   { 'xy': [-1,0], 'extra': 'field'}
+    ... }
+    >>> neighborhoods = get_neighborhoods(cells)
+    >>> neighborhoods.keys()
+    dict_keys(['O::E::N', 'O::N::W', 'O::S::E', 'O::W::S'])
+    >>> neighborhoods['O::E::N']
+    {'poly': [[0, 0], [1, 0], [0, 1]]}
+
+    '''
+    coords = {}
+    for (k, v) in cells.items():
+        coords[k] = v['xy']
+    triangles = DictDelaunay2d(coords).getTriangles()
+    neighborhoods = {}
+    for triangle in triangles:
+        key = '::'.join(triangle)
+        value = {
+            'poly': [coords[point] for point in triangle]
+        }
+        neighborhoods[key] = value
+    return neighborhoods
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -117,28 +150,38 @@ if __name__ == '__main__':
         '--loom', required=True,
         help='Loom file with cell metadata')
     parser.add_argument(
-        '--pkl',
+        '--pkl', type=argparse.FileType('rb'),
         help='Pickle file with cell segmentation data')
     parser.add_argument(
-        '--save_transform',
+        '--save_transform', type=argparse.FileType('w'),
         help='Center the data at (0, 0), and save the transformation.')
+    parser.add_argument(
+        '--cluster_out', type=argparse.FileType('w'),
+        help='Write the hierarchically clustered data to this file.')
+    parser.add_argument(
+        '--cells_out', type=argparse.FileType('w'),
+        help='Write the cleaned cell data to this file.')
+    parser.add_argument(
+        '--genes_out', type=argparse.FileType('w'),
+        help='Write a list of genes to this file.'),
+    parser.add_argument(
+        '--neighborhoods_out', type=argparse.FileType('w'),
+        help='Write the cell neighborhoods to this file.')
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
 
     for cell in metadata.values():
-        cluster = cell['cluster']
-        del cell['cluster']
         # "Clusters" in the raw data are called "subclusters"
         # in http://linnarssonlab.org/osmFISH/clusters/
-        cell['factor'] = {
-            'subcluster': cluster,
-            'cluster': LOOKUP[cluster]
+        subcluster = cell.pop('cluster')
+        cell['factors'] = {
+            'subcluster': subcluster,
+            'cluster': LOOKUP[subcluster]
         }
 
     if args.pkl:
-        with open(args.pkl, 'rb') as f:
-            segmentation = pickle.load(f)
+        segmentation = pickle.load(args.pkl)
         for cell_id, poly in segmentation.items():
             if cell_id in metadata:
                 simple_poly = octagon(poly)
@@ -147,15 +190,34 @@ if __name__ == '__main__':
                 metadata[cell_id]['xy'] = xy
 
     if args.save_transform:
-        with open(args.save_transform, 'w') as f:
-            transform = get_transform(metadata)
-            json.dump(transform, f, indent=1)
-            for cell in metadata.values():
-                if 'xy' in cell:
-                    cell['xy'] = apply_transform(transform, cell['xy'])
-                if 'poly' in cell:
-                    cell['poly'] = [
-                        apply_transform(transform, xy) for xy in cell['poly']
-                    ]
+        transform = get_transform(metadata)
+        json.dump(transform, args.save_transform, indent=1)
+        for cell in metadata.values():
+            if 'xy' in cell:
+                cell['xy'] = apply_transform(transform, cell['xy'])
+            if 'poly' in cell:
+                cell['poly'] = [
+                    apply_transform(transform, xy) for xy in cell['poly']
+                ]
 
-    print(json.dumps(metadata, indent=1))
+    if args.cells_out:
+        json.dump(metadata, args.cells_out, indent=1)
+
+    if args.cluster_out:
+        clustered = cluster(metadata)
+        cluster_json = json.dumps(clustered)
+        # Line-break after every element is too much, but this works:
+        spaced_cluster_json = re.sub(
+           r'\],',
+           '],\n',
+           cluster_json
+        )
+        print(spaced_cluster_json, file=args.cluster_out)
+
+    if args.genes_out:
+        genes = list(list(metadata.values())[0]['genes'].keys())
+        json.dump(genes, args.genes_out)
+
+    if args.neighborhoods_out:
+        neighborhoods = get_neighborhoods(metadata)
+        json.dump(neighborhoods, args.neighborhoods_out)

@@ -3,7 +3,7 @@
 Utils to pre-process data for [vitessce](http://github.com/hms-dbmi/vitessce/#readme)
 
 Right now, the focus is reading the particular formats supplied by
-the [Linnarson Lab](http://linnarssonlab.org/osmFISH/availability/)
+the [Linnarsson Lab](http://linnarssonlab.org/osmFISH/availability/)
 and translating them into JSON for our viewer.
 
 JSON is our target format right now because it is easily read by Javascript,

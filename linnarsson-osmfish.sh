@@ -55,12 +55,15 @@ OUTPUT="$FILES/output"
 process_cells() {
   LOOM_IN="$INPUT/linnarsson.cells.loom"
   PKL_IN="$INPUT/linnarsson.cells.pkl"
-  JSON_OUT="$OUTPUT/linnarsson.cells.json"
+  CELLS_OUT="$OUTPUT/linnarsson.cells.json"
+  CLUSTER_OUT="$OUTPUT/linnarsson.cluster.json"
   TRANSFORM_OUT="$OUTPUT/linnarsson.transform.json"
+  GENES_OUT="$OUTPUT/linnarsson.genes.json"
+  NEIGHBORHOODS_OUT="$OUTPUT/linnarsson.neighborhoods.json"
 
-  if [ -e "$JSON_OUT" ]
+  if [ -e "$CELLS_OUT" ]
   then
-    echo "Skipping cells -- output already exists: $JSON_OUT"
+    echo "Skipping cells -- output already exists: $CELLS_OUT"
     return
   fi
 
@@ -71,13 +74,20 @@ process_cells() {
   [ -e "$PKL_IN" ] || \
     wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
 
-  echo 'Generating JSON may take a while...'
+  echo 'Generating cells JSON may take a while...'
   "$BASE/python/cell_reader.py" \
     --loom "$LOOM_IN" \
     --pkl "$PKL_IN" \
     --save_transform "$TRANSFORM_OUT" \
-    > "$JSON_OUT"
-  head "$JSON_OUT"
+    --cells_out "$CELLS_OUT" \
+    --cluster_out "$CLUSTER_OUT" \
+    --genes_out "$GENES_OUT"
+    # TODO: too slow right now for tests: need to make smaller sample.
+    # --neighborhoods_out "$NEIGHBORHOODS_OUT"
+  echo "head $CELLS_OUT:"
+  head "$CELLS_OUT"
+  echo "head $CLUSTER_OUT:"
+  cut -c 1-80 "$CLUSTER_OUT" | head
 }
 
 process_molecules() {
@@ -99,15 +109,17 @@ process_molecules() {
   which h5dump && \
     h5dump "$HDF5_IN" | head
 
-  echo 'Generating JSON may take a while...'
+  echo 'Generating molecules JSON may take a while...'
   "$BASE/python/counts_hdf5_reader.py" \
     --hdf5 "$HDF5_IN" \
     --transform "$TRANSORM_IN" \
     > "$JSON_OUT"
+  echo "head $JSON_OUT:"
   head "$JSON_OUT"
 }
 
 process_images() {
+  # NOTE: The name is actually "Linnarsson", with two "S"s, but this is the URL.
   PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
   HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
 
