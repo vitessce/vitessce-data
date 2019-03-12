@@ -153,19 +153,19 @@ if __name__ == '__main__':
         '--pkl', type=argparse.FileType('rb'),
         help='Pickle file with cell segmentation data')
     parser.add_argument(
-        '--save_transform', type=argparse.FileType('w'),
+        '--transform_file', type=argparse.FileType('x'),
         help='Center the data at (0, 0), and save the transformation.')
     parser.add_argument(
-        '--cluster_out', type=argparse.FileType('w'),
+        '--cluster_file', type=argparse.FileType('x'),
         help='Write the hierarchically clustered data to this file.')
     parser.add_argument(
-        '--cells_out', type=argparse.FileType('w'),
+        '--cells_file', type=argparse.FileType('x'),
         help='Write the cleaned cell data to this file.')
     parser.add_argument(
-        '--genes_out', type=argparse.FileType('w'),
+        '--genes_file', type=argparse.FileType('x'),
         help='Write a list of genes to this file.'),
     parser.add_argument(
-        '--neighborhoods_out', type=argparse.FileType('w'),
+        '--neighborhoods_file', type=argparse.FileType('x'),
         help='Write the cell neighborhoods to this file.')
     args = parser.parse_args()
 
@@ -189,9 +189,9 @@ if __name__ == '__main__':
                 metadata[cell_id]['poly'] = simple_poly
                 metadata[cell_id]['xy'] = xy
 
-    if args.save_transform:
+    if args.transform_file:
         transform = get_transform(metadata)
-        json.dump(transform, args.save_transform, indent=1)
+        json.dump(transform, args.transform_file, indent=1)
         for cell in metadata.values():
             if 'xy' in cell:
                 cell['xy'] = apply_transform(transform, cell['xy'])
@@ -200,10 +200,10 @@ if __name__ == '__main__':
                     apply_transform(transform, xy) for xy in cell['poly']
                 ]
 
-    if args.cells_out:
-        json.dump(metadata, args.cells_out, indent=1)
+    if args.cells_file:
+        json.dump(metadata, args.cells_file, indent=1)
 
-    if args.cluster_out:
+    if args.cluster_file:
         clustered = cluster(metadata)
         cluster_json = json.dumps(clustered)
         # Line-break after every element is too much, but this works:
@@ -212,12 +212,12 @@ if __name__ == '__main__':
            '],\n',
            cluster_json
         )
-        print(spaced_cluster_json, file=args.cluster_out)
+        print(spaced_cluster_json, file=args.cluster_file)
 
-    if args.genes_out:
+    if args.genes_file:
         genes = list(list(metadata.values())[0]['genes'].keys())
-        json.dump(genes, args.genes_out)
+        json.dump(genes, args.genes_file)
 
-    if args.neighborhoods_out:
+    if args.neighborhoods_file:
         neighborhoods = get_neighborhoods(metadata)
-        json.dump(neighborhoods, args.neighborhoods_out)
+        json.dump(neighborhoods, args.neighborhoods_file)

@@ -52,20 +52,27 @@ OUTPUT="$FILES/output"
 
 ### Functions
 
+add_arg() {
+  FILE_TYPE=$1
+  FILE="$OUTPUT/linnarsson.$FILE_TYPE.json"
+  if [ -e "$FILE" ]
+  then
+    echo "$FILE_TYPE output already exists: $FILE"
+  else
+    CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
+  fi
+}
+
 process_cells() {
   LOOM_IN="$INPUT/linnarsson.cells.loom"
   PKL_IN="$INPUT/linnarsson.cells.pkl"
-  CELLS_OUT="$OUTPUT/linnarsson.cells.json"
-  CLUSTER_OUT="$OUTPUT/linnarsson.cluster.json"
-  TRANSFORM_OUT="$OUTPUT/linnarsson.transform.json"
-  GENES_OUT="$OUTPUT/linnarsson.genes.json"
-  NEIGHBORHOODS_OUT="$OUTPUT/linnarsson.neighborhoods.json"
 
-  if [ -e "$CELLS_OUT" ]
-  then
-    echo "Skipping cells -- output already exists: $CELLS_OUT"
-    return
-  fi
+  CLI_ARGS=''
+  add_arg 'cells'
+  add_arg 'cluster'
+  add_arg 'transform'
+  add_arg 'genes'
+  add_arg 'neighborhoods'
 
   echo "Download and process cells..."
 
@@ -75,19 +82,9 @@ process_cells() {
     wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
 
   echo 'Generating cells JSON may take a while...'
-  "$BASE/python/cell_reader.py" \
-    --loom "$LOOM_IN" \
-    --pkl "$PKL_IN" \
-    --save_transform "$TRANSFORM_OUT" \
-    --cells_out "$CELLS_OUT" \
-    --cluster_out "$CLUSTER_OUT" \
-    --genes_out "$GENES_OUT"
-    # TODO: too slow right now for tests: need to make smaller sample.
-    # --neighborhoods_out "$NEIGHBORHOODS_OUT"
-  echo "head $CELLS_OUT:"
-  head "$CELLS_OUT"
-  echo "head $CLUSTER_OUT:"
-  cut -c 1-80 "$CLUSTER_OUT" | head
+  CMD="$BASE/python/cell_reader.py --loom $LOOM_IN --pkl $PKL_IN $CLI_ARGS"
+  echo "running: $CMD"
+  $CMD
 }
 
 process_molecules() {

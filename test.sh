@@ -15,7 +15,13 @@ python -m doctest python/*.py -o ELLIPSIS
 end doctest
 
 start endtoend
-rm fake-files/output/* || mkdir fake-files/output
+rm fake-files/output/* || echo 'Nothing to delete'
+mkdir fake-files/output || echo 'Did not mkdir'
+
+cp fake-files/output{-expected,}/linnarsson.neighborhoods.json
+# Calculating neightborhoods is slow, and not a requirement right now,
+# so copy over the expected output, and it will not be regenerated.
+
 CI=true ./linnarsson-osmfish.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
