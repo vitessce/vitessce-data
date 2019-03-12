@@ -59,10 +59,11 @@ process_cells() {
   CLUSTER_OUT="$OUTPUT/linnarsson.cluster.json"
   TRANSFORM_OUT="$OUTPUT/linnarsson.transform.json"
   GENES_OUT="$OUTPUT/linnarsson.genes.json"
+  NEIGHBORHOODS_OUT="$OUTPUT/linnarsson.neighborhoods.json"
 
-  if [ -e "$JSON_OUT" ]
+  if [ -e "$CELLS_OUT" ]
   then
-    echo "Skipping cells -- output already exists: $JSON_OUT"
+    echo "Skipping cells -- output already exists: $CELLS_OUT"
     return
   fi
 
@@ -81,6 +82,8 @@ process_cells() {
     --cells_out "$CELLS_OUT" \
     --cluster_out "$CLUSTER_OUT" \
     --genes_out "$GENES_OUT"
+    # TODO: too slow right now for tests: need to make smaller sample.
+    # --neighborhoods_out "$NEIGHBORHOODS_OUT"
   echo "head $CELLS_OUT:"
   head "$CELLS_OUT"
   echo "head $CLUSTER_OUT:"
