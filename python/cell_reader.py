@@ -9,7 +9,7 @@ import numpy as np
 
 from loom_reader import LoomReader
 from transform import apply_transform, get_transform
-from cluster import cluster as get_cluster
+from cluster import cluster as get_clusters
 from delaunay import DictDelaunay2d
 
 
@@ -114,7 +114,7 @@ LOOKUP = {
 }
 
 
-def get_neighborhoods(cells):
+def get_neighborhoods(metadata):
     '''
     >>> cells = {
     ...   'O': { 'xy': [0,0], 'extra': 'field'},
@@ -131,7 +131,7 @@ def get_neighborhoods(cells):
 
     '''
     coords = {}
-    for (k, v) in cells.items():
+    for (k, v) in metadata.items():
         coords[k] = v['xy']
     triangles = DictDelaunay2d(coords).getTriangles()
     neighborhoods = {}
@@ -142,6 +142,55 @@ def get_neighborhoods(cells):
         }
         neighborhoods[key] = value
     return neighborhoods
+
+
+def get_genes(metadata):
+    '''
+    >>> metadata = {
+    ...   'cell-1': {'genes': {'a': 1, 'b': 20}},
+    ...   'cell-2': {'genes': {'a': 2, 'b': 10}}
+    ... }
+    >>> genes = get_genes(metadata)
+    >>> genes['a']
+    {'max': 2, 'cells': {'cell-1': 1, 'cell-2': 2}}
+    >>> genes['b']
+    {'max': 20, 'cells': {'cell-1': 20, 'cell-2': 10}}
+
+    '''
+    genes = defaultdict(lambda: {'max': 0, 'cells': {}})
+    for cell_id, cell_data in metadata.items():
+        for gene_id, expression_level in cell_data['genes'].items():
+            gene_data = genes[gene_id]
+            gene_data['cells'][cell_id] = expression_level
+            if gene_data['max'] < expression_level:
+                gene_data['max'] = expression_level
+    return genes
+
+
+def get_factors(metadata):
+    '''
+    >>> metadata = {
+    ...   "Santa's Little Helper": {'factors':{'eng': 'dog', 'sci': 'canine'}},
+    ...   "Snowball II": {'factors':{'eng': 'cat', 'sci': 'feline'}}
+    ... }
+    >>> factors = get_factors(metadata)
+    >>> list(factors['eng'].keys())
+    ['map', 'cells']
+    >>> factors['eng']['map']
+    ['dog', 'cat']
+    >>> factors['eng']['cells']
+    {"Santa's Little Helper": 0, 'Snowball II': 1}
+
+    '''
+    factors = defaultdict(lambda: {'map': [], 'cells': {}})
+    for cell_id, cell_data in metadata.items():
+        for factor_id, factor_value in cell_data['factors'].items():
+            factor_data = factors[factor_id]
+            if factor_value not in factor_data['map']:
+                factor_data['map'].append(factor_value)
+            factor_index = factor_data['map'].index(factor_value)
+            factor_data['cells'][cell_id] = factor_index
+    return factors
 
 
 if __name__ == '__main__':
@@ -209,7 +258,7 @@ if __name__ == '__main__':
         json.dump(metadata, args.cells_file, indent=1)
 
     if args.clusters_file:
-        clusters = get_cluster(metadata)
+        clusters = get_clusters(metadata)
         clusters_json = json.dumps(clusters)
         # Line-break after every element is too much, but this works:
         spaced_clusters_json = clusters_json.replace(
@@ -219,13 +268,7 @@ if __name__ == '__main__':
         print(spaced_clusters_json, file=args.clusters_file)
 
     if args.genes_file:
-        genes = defaultdict(lambda: {'max': 0, 'cells': {}})
-        for cell_id, cell_data in metadata.items():
-            for gene_id, expression_level in cell_data['genes'].items():
-                gene_data = genes[gene_id]
-                gene_data['cells'][cell_id] = expression_level
-                if gene_data['max'] < expression_level:
-                    gene_data['max'] = expression_level
+        genes = get_genes(metadata)
         genes_json = json.dumps(genes)
         spaced_genes_json = genes_json.replace(
             '},',
@@ -234,14 +277,7 @@ if __name__ == '__main__':
         print(spaced_genes_json, file=args.genes_file)
 
     if args.factors_file:
-        factors = defaultdict(lambda: {'map': [], 'cells': {}})
-        for cell_id, cell_data in metadata.items():
-            for factor_id, factor_value in cell_data['factors'].items():
-                factor_data = factors[factor_id]
-                if factor_value not in factor_data['map']:
-                    factor_data['map'].append(factor_value)
-                factor_index = factor_data['map'].index(factor_value)
-                factor_data['cells'][cell_id] = factor_index
+        factors = get_factors(metadata)
         factors_json = json.dumps(factors)
         spaced_factors_json = factors_json.replace(
             '},',
