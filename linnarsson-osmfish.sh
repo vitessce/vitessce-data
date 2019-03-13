@@ -69,10 +69,11 @@ process_cells() {
 
   CLI_ARGS=''
   add_arg 'cells'
-  add_arg 'cluster'
+  add_arg 'clusters'
   add_arg 'transform'
   add_arg 'genes'
   add_arg 'neighborhoods'
+  add_arg 'factors'
 
   echo "Download and process cells..."
 
