@@ -79,6 +79,7 @@ def mean_coord(coords):
     return np.mean(coords, axis=0).tolist()
 
 
+# Taken from http://linnarssonlab.org/osmFISH/clusters/
 LOOKUP = {
   "Astrocyte Gfap": "Astrocyte",
   "Astrocyte Mfge8": "Astrocyte",
@@ -102,15 +103,15 @@ LOOKUP = {
   "Oligodendrocyte Precursor cells": "Oligodendrocytes",
   "Pericytes": "Vasculature",
   "Perivascular Macrophages": "Brain immune",
-  "Pyramidal Cpne5": "Excitatory",
-  "Pyramidal Kcnip2": "Excitatory",
-  "Pyramidal L2-3 L5": "Excitatory",
-  "Pyramidal L2-3": "Excitatory",
-  "Pyramidal L3-4": "Excitatory",
-  "Pyramidal L5": "Excitatory",
-  "Pyramidal L6": "Excitatory",
+  "Pyramidal Cpne5": "Excitatory neurons",
+  "Pyramidal Kcnip2": "Excitatory neurons",
+  "Pyramidal L2-3 L5": "Excitatory neurons",
+  "Pyramidal L2-3": "Excitatory neurons",
+  "Pyramidal L3-4": "Excitatory neurons",
+  "Pyramidal L5": "Excitatory neurons",
+  "Pyramidal L6": "Excitatory neurons",
   "Vascular Smooth Muscle": "Vasculature",
-  "pyramidal L4": "Excitatory"
+  "pyramidal L4": "Excitatory neurons"
 }
 
 
@@ -118,10 +119,10 @@ def get_neighborhoods(metadata):
     '''
     >>> cells = {
     ...   'O': { 'xy': [0,0], 'extra': 'field'},
-    ...   'N':    { 'xy': [0,1], 'extra': 'field'},
-    ...   'E':  { 'xy': [1,0], 'extra': 'field'},
+    ...   'N': { 'xy': [0,1], 'extra': 'field'},
+    ...   'E': { 'xy': [1,0], 'extra': 'field'},
     ...   'S': { 'xy': [0,-1], 'extra': 'field'},
-    ...   'W':   { 'xy': [-1,0], 'extra': 'field'}
+    ...   'W': { 'xy': [-1,0], 'extra': 'field'}
     ... }
     >>> neighborhoods = get_neighborhoods(cells)
     >>> neighborhoods.keys()
