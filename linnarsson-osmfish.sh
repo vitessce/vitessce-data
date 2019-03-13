@@ -73,6 +73,7 @@ process_cells() {
   add_arg 'transform'
   add_arg 'genes'
   add_arg 'neighborhoods'
+  add_arg 'factors'
 
   echo "Download and process cells..."
 
