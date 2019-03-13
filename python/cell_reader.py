@@ -3,7 +3,7 @@
 import json
 import argparse
 import pickle
-import re
+from collections import defaultdict
 
 import numpy as np
 
@@ -207,16 +207,27 @@ if __name__ == '__main__':
         clustered = cluster(metadata)
         cluster_json = json.dumps(clustered)
         # Line-break after every element is too much, but this works:
-        spaced_cluster_json = re.sub(
-           r'\],',
-           '],\n',
-           cluster_json
+        spaced_cluster_json = cluster_json.replace(
+            '],',
+            '],\n'
         )
         print(spaced_cluster_json, file=args.cluster_file)
 
     if args.genes_file:
-        genes = list(list(metadata.values())[0]['genes'].keys())
-        json.dump(genes, args.genes_file)
+        genes = defaultdict(lambda: {'max': 0, 'cells': {}})
+        for cell_id, cell_data in metadata.items():
+            for gene_id, expression_level in cell_data['genes'].items():
+                expression_level = cell_data['genes'][gene_id]
+                gene_data = genes[gene_id]
+                gene_data['cells'][cell_id] = expression_level
+                if gene_data['max'] < expression_level:
+                    gene_data['max'] = expression_level
+        genes_json = json.dumps(genes)
+        spaced_genes_json = genes_json.replace(
+            '},',
+            '},\n'
+        )
+        print(spaced_genes_json, file=args.genes_file)
 
     if args.neighborhoods_file:
         neighborhoods = get_neighborhoods(metadata)
