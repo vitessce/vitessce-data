@@ -9,7 +9,7 @@ import numpy as np
 
 from loom_reader import LoomReader
 from transform import apply_transform, get_transform
-from cluster import cluster
+from cluster import cluster as get_cluster
 from delaunay import DictDelaunay2d
 
 
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         '--transform_file', type=argparse.FileType('x'),
         help='Center the data at (0, 0), and save the transformation.')
     parser.add_argument(
-        '--cluster_file', type=argparse.FileType('x'),
+        '--clusters_file', type=argparse.FileType('x'),
         help='Write the hierarchically clustered data to this file.')
     parser.add_argument(
         '--cells_file', type=argparse.FileType('x'),
@@ -208,15 +208,15 @@ if __name__ == '__main__':
     if args.cells_file:
         json.dump(metadata, args.cells_file, indent=1)
 
-    if args.cluster_file:
-        clustered = cluster(metadata)
-        cluster_json = json.dumps(clustered)
+    if args.clusters_file:
+        clusters = get_cluster(metadata)
+        clusters_json = json.dumps(clusters)
         # Line-break after every element is too much, but this works:
-        spaced_cluster_json = cluster_json.replace(
+        spaced_clusters_json = clusters_json.replace(
             '],',
             '],\n'
         )
-        print(spaced_cluster_json, file=args.cluster_file)
+        print(spaced_clusters_json, file=args.clusters_file)
 
     if args.genes_file:
         genes = defaultdict(lambda: {'max': 0, 'cells': {}})
