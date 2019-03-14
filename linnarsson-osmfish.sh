@@ -120,33 +120,27 @@ process_images() {
   # NOTE: The name is actually "Linnarsson", with two "S"s, but this is the URL.
   PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
   HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
+  JSON_OUT="$OUTPUT/linnarsson.images.json"
 
-  for CHANNEL_CLIP in 'polyT:200' 'nuclei:20'; do
-    CHANNEL=`echo $CHANNEL_CLIP | cut -d ':' -f 1`
-    CLIP=`echo $CHANNEL_CLIP | cut -d ':' -f 2`
-    JSON_OUT="$OUTPUT/linnarsson.$CHANNEL.json"
-    PNG_OUT="$OUTPUT/linnarsson.$CHANNEL.png"
+  if [ -e "$JSON_OUT" ]
+  then
+    echo "Skipping images -- output already exists: $JSON_OUT"
+    return
+  fi
 
-    if [ -e "$PNG_OUT" ] && [ -e "$JSON_OUT" ]
-    then
-      echo "Skipping $CHANNEL imagery -- output already exists: $PNG_OUT"
-      continue
-    fi
+  echo "Download and process images..."
 
-    [ -e "$HDF5_IN" ] || \
-      wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
+  [ -e "$HDF5_IN" ] || \
+    wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
-    "$BASE/python/img_hdf5_reader.py" \
-      --hdf5 "$HDF5_IN" \
-      --channel "$CHANNEL" \
-      --json_out "$JSON_OUT" \
-      --png_out "$PNG_OUT" \
-      --sample 5 \
-      --clip $CLIP \
-      --s3_target "$S3_TARGET"
-    echo "head $JSON_OUT:"
-    head "$JSON_OUT"
-  done
+  "$BASE/python/img_hdf5_reader.py" \
+    --hdf5 "$HDF5_IN" \
+    --channel_clip_pairs polyT:200 nuclei:20 \
+    --json_file "$JSON_OUT" \
+    --sample 5 \
+    --s3_target "$S3_TARGET"
+  echo "head $JSON_OUT:"
+  head "$JSON_OUT"
 }
 
 ### Main
