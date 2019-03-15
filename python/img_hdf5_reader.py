@@ -92,21 +92,21 @@ class ImgHdf5Reader:
         }
 
     def to_png_json(self, channel_clips, step, json_file, s3_target):
-        descriptions = []
+        descriptions = {}
         for (channel, clip) in channel_clips:
             png_path = '{}.{}.png'.format(
                 json_file.name.replace('.json', ''),
                 channel
             )
             png_basename = basename(png_path)
-            descriptions.append(self.to_png(
+            descriptions[channel] = self.to_png(
                 channel=channel,
                 clip=float(clip),
                 step=step,
                 png_path=png_path,
                 s3_target=s3_target,
                 png_basename=png_basename
-            ))
+            )
         json.dump(descriptions, json_file, indent=2)
 
 
