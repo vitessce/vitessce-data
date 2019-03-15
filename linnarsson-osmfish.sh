@@ -3,6 +3,14 @@ set -o errexit
 
 die() { set +v; echo "$*" 1>&2 ; exit 1; }
 
+if [ "$#" -ne 0 ]; then
+    die 'Collects source data from the Linnarsson Lab, processes it, and pushes to S3.
+No commandline arguments, but looks for two environment variables:
+  "NO_PUSH=true" will fetch and process data, but not push to S3.
+  "CI=true" will use fixtures, rather than fetching, and also will not push to S3.
+'
+fi
+
 main() {
   process_cells
   process_molecules
@@ -53,6 +61,8 @@ OUTPUT="$FILES/output"
 ### Functions
 
 add_arg() {
+  # Helper for process_cells to build argument list.
+
   FILE_TYPE=$1
   FILE="$OUTPUT/linnarsson.$FILE_TYPE.json"
   if [ -e "$FILE" ]
@@ -64,6 +74,11 @@ add_arg() {
 }
 
 process_cells() {
+  # Download and process data which describes cell locations, boundaries,
+  # and gene expression levels. Multiple JSON output files are produced:
+  # The files are redudant, but this reduces the processing that needs
+  # to be done on the client-side.
+
   LOOM_IN="$INPUT/linnarsson.cells.loom"
   PKL_IN="$INPUT/linnarsson.cells.pkl"
 
@@ -89,6 +104,9 @@ process_cells() {
 }
 
 process_molecules() {
+  # Download and process data which describes molecule locations.
+  # In structure, this is the simplest data, but it is also the largest.
+
   HDF5_IN="$INPUT/linnarsson.molecules.hdf5"
   JSON_OUT="$OUTPUT/linnarsson.molecules.json"
   TRANSORM_IN="$OUTPUT/linnarsson.transform.json"
@@ -117,6 +135,10 @@ process_molecules() {
 }
 
 process_images() {
+  # Download and process raster data from HDF5 and produce PNGs.
+  # Down the road we may want HiGlass, or some other solution:
+  # This is a stopgap.
+
   # NOTE: The name is actually "Linnarsson", with two "S"s, but this is the URL.
   PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
   HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
