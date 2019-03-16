@@ -262,7 +262,7 @@ if __name__ == '__main__':
         for cell in metadata.values():
             cell['xy'] = [
                 # Raw data has way too many decimal points!
-                int(z) for z in metadata[cell_id]['xy']
+                int(z) for z in cell['xy']
             ]
 
     if args.cells_file:
