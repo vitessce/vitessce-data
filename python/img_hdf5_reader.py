@@ -84,8 +84,10 @@ class ImgHdf5Reader:
         image.save(png_path)
 
         return {
-            'width': hack.shape[0],
-            'height': hack.shape[1],
+            'x': 0,
+            'y': 0,
+            'width': hack.shape[1] * step,  # This seems backwards,
+            'height': hack.shape[0] * step,  # but it works!
             'href': 'https://s3.amazonaws.com/{}/{}'.format(
                 s3_target, png_basename
             )
