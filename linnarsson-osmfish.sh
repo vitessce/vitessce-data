@@ -82,10 +82,9 @@ process_cells() {
   LOOM_IN="$INPUT/linnarsson.cells.loom"
   PKL_IN="$INPUT/linnarsson.cells.pkl"
 
-  CLI_ARGS=''
+  CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
   add_arg 'cells'
   add_arg 'clusters'
-  add_arg 'transform'
   add_arg 'genes'
   add_arg 'neighborhoods'
   add_arg 'factors'
@@ -98,7 +97,7 @@ process_cells() {
     wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
 
   echo 'Generating cells JSON may take a while...'
-  CMD="$BASE/python/cell_reader.py --loom $LOOM_IN --pkl $PKL_IN $CLI_ARGS"
+  CMD="$BASE/python/cell_reader.py $CLI_ARGS"
   echo "running: $CMD"
   $CMD
 }
@@ -109,8 +108,6 @@ process_molecules() {
 
   HDF5_IN="$INPUT/linnarsson.molecules.hdf5"
   JSON_OUT="$OUTPUT/linnarsson.molecules.json"
-  TRANSORM_IN="$OUTPUT/linnarsson.transform.json"
-  # Stored in the OUTPUT directory by the previous step.
 
   if [ -e "$JSON_OUT" ]
   then
@@ -128,7 +125,6 @@ process_molecules() {
   echo 'Generating molecules JSON may take a while...'
   "$BASE/python/counts_hdf5_reader.py" \
     --hdf5 "$HDF5_IN" \
-    --transform "$TRANSORM_IN" \
     > "$JSON_OUT"
   echo "head $JSON_OUT:"
   head "$JSON_OUT"

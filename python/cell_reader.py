@@ -73,10 +73,10 @@ def mean_coord(coords):
     So... we find the center of our polygon instead.
 
     >>> mean_coord([[1,2], [3,4], [5,6]])
-    [3.0, 4.0]
+    [3, 4]
 
     '''
-    return np.mean(coords, axis=0).tolist()
+    return [int(x) for x in np.mean(coords, axis=0).tolist()]
 
 
 # Taken from http://linnarssonlab.org/osmFISH/clusters/
@@ -222,6 +222,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--factors_file', type=argparse.FileType('x'),
         help='Write the cell factors to this file.')
+    parser.add_argument(
+        '--integers', action='store_true',
+        help='Convert all numbers to integers.')
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
@@ -254,6 +257,13 @@ if __name__ == '__main__':
                 cell['poly'] = [
                     apply_transform(transform, xy) for xy in cell['poly']
                 ]
+
+    if args.integers:
+        for cell in metadata.values():
+            cell['xy'] = [
+                # Raw data has way too many decimal points!
+                int(z) for z in metadata[cell_id]['xy']
+            ]
 
     if args.cells_file:
         json.dump(metadata, args.cells_file, indent=1)
