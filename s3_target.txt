@@ -1,1 +1,1 @@
-vitessce-data/0.0.10/linnarsson-2018
+vitessce-data/0.0.11-fake-cells/linnarsson-2018

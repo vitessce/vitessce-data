@@ -4,6 +4,7 @@ import json
 import argparse
 import pickle
 from collections import defaultdict
+from copy import copy
 
 import numpy as np
 
@@ -225,6 +226,12 @@ if __name__ == '__main__':
     parser.add_argument(
         '--integers', action='store_true',
         help='Convert all numbers to integers.')
+    parser.add_argument(
+        '--drop_genes', action='store_true',
+        help='Do not export gene expression levels in the cell data.')
+    parser.add_argument(
+        '--fake_cells', nargs='+', type=int,
+        help='Create extra fake cells, offset by the given values.')
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
@@ -265,8 +272,26 @@ if __name__ == '__main__':
                 int(z) for z in cell['xy']
             ]
 
-    if args.cells_file:
-        json.dump(metadata, args.cells_file, indent=1)
+    if args.fake_cells:
+        def offset_point(xy, offset):
+            return [z + offset for z in xy]
+        new_metadata = {}
+        for offset in args.fake_cells:
+            for (cell_id, cell) in metadata.items():
+                new_id = '{}[{}]'.format(cell_id, offset)
+                new_metadata[new_id] = copy(cell)
+                if 'poly' in new_metadata[new_id]:
+                    poly = new_metadata[new_id]['poly']
+                    new_metadata[new_id]['poly'] = [
+                        offset_point(xy, offset)
+                        for xy in poly
+                    ]
+                if 'xy' in new_metadata[new_id]:
+                    xy = new_metadata[new_id]['xy']
+                    new_metadata[new_id]['xy'] = (
+                        offset_point(xy, offset)
+                    )
+        metadata.update(new_metadata)
 
     if args.clusters_file:
         clusters = get_clusters(metadata)
@@ -286,6 +311,13 @@ if __name__ == '__main__':
             '},\n'
         )
         print(spaced_genes_json, file=args.genes_file)
+
+    if args.drop_genes:
+        for cell in metadata.values():
+            del cell['genes']
+
+    if args.cells_file:
+        json.dump(metadata, args.cells_file, indent=1)
 
     if args.factors_file:
         factors = get_factors(metadata)

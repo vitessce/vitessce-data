@@ -82,11 +82,11 @@ process_cells() {
   LOOM_IN="$INPUT/linnarsson.cells.loom"
   PKL_IN="$INPUT/linnarsson.cells.pkl"
 
-  CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
+  CLI_ARGS="--integers --drop_genes --fake_cells 1000 1500 2000 2500 3000 3500 4000 4500 5000 5500 6000 6500 7000 7500 8000 8500 9000 9500 --loom $LOOM_IN --pkl $PKL_IN"
   add_arg 'cells'
-  add_arg 'clusters'
+  #add_arg 'clusters'
   add_arg 'genes'
-  add_arg 'neighborhoods'
+  #add_arg 'neighborhoods'
   add_arg 'factors'
 
   echo "Download and process cells..."
