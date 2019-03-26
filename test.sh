@@ -29,5 +29,6 @@ cp fake-files/output{-expected,}/linnarsson.neighborhoods.json
 CI=true ./linnarsson-osmfish.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
+
 diff -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100 | cut -c 1-100
 end endtoend

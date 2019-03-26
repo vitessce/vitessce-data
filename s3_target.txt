@@ -1,1 +1,1 @@
-vitessce-data/0.0.10/linnarsson-2018
+vitessce-data/0.0.12/linnarsson-2018
