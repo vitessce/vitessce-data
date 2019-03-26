@@ -63,7 +63,9 @@ def _to_dataframe(cells):
         clean[k] = v['genes']
     df = pd.DataFrame(clean)
     df_max = df.values.max()
-    return df / df_max
+    # If we don't round, small differences in the floating point representation
+    # cause cluster results on Travis to be slightly different than local.
+    return (df / df_max).round(4)
 
 
 def _row_norm(df):

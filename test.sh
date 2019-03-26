@@ -30,9 +30,5 @@ CI=true ./linnarsson-osmfish.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
 
-# TODO: remove when bug fixed
-diff fake-files/output/linnarsson.clusters.json \
-     fake-files/output-expected/linnarsson.clusters.json | head -n3
-
 diff -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100 | cut -c 1-100
 end endtoend
