@@ -76,12 +76,7 @@ class ImgHdf5Reader:
         # https://github.com/drj11/pypng/issues/91
         # Work-around is to dump and reload.
         hack = np.array(scaled_sample_transposed.tolist()).astype(NP_TYPE)
-
-        image = png.from_array(hack, mode='L')
-        # TODO: Would like "L;4" but get error message.
-        # TODO: Online PNG compression tools reduce size by 50%...
-        #       Check Python PNG encoding options.
-        image.save(png_path)
+        png.from_array(hack, mode='L').save(png_path)
 
         return {
             'x': 0,
