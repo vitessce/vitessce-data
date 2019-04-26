@@ -83,9 +83,13 @@ class ImgHdf5Reader:
             'y': 0,
             'width': hack.shape[1] * step,  # This seems backwards,
             'height': hack.shape[0] * step,  # but it works!
-            'href': 'https://s3.amazonaws.com/{}/{}'.format(
-                s3_target, png_basename
-            )
+            'tileSource': {
+                'type': 'image',
+                'url': 'https://s3.amazonaws.com/{}/{}'.format(
+                    s3_target, png_basename
+                ),
+                'buildPyramid': False,
+            }
         }
 
     def to_png_json(self, channel_clips, step, json_file, s3_target):
