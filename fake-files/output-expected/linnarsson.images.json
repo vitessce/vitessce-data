@@ -4,13 +4,21 @@
     "y": 0,
     "width": 50,
     "height": 50,
-    "href": "https://s3.amazonaws.com/vitessce-data/0.0.12/linnarsson-2018/linnarsson.images.polyT.png"
+    "tileSource": {
+      "type": "image",
+      "url": "https://s3.amazonaws.com/vitessce-data/0.0.14/linnarsson-2018/linnarsson.images.polyT.png",
+      "buildPyramid": false
+    }
   },
   "nuclei": {
     "x": 0,
     "y": 0,
     "width": 50,
     "height": 50,
-    "href": "https://s3.amazonaws.com/vitessce-data/0.0.12/linnarsson-2018/linnarsson.images.nuclei.png"
+    "tileSource": {
+      "type": "image",
+      "url": "https://s3.amazonaws.com/vitessce-data/0.0.14/linnarsson-2018/linnarsson.images.nuclei.png",
+      "buildPyramid": false
+    }
   }
 }
