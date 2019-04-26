@@ -154,11 +154,12 @@ process_images() {
   "$BASE/python/img_hdf5_reader.py" \
     --hdf5 "$HDF5_IN" \
     --channel_clip_pairs polyT:200 nuclei:20 \
-    --json_file "$JSON_OUT" \
-    --sample 5 \
-    --s3_target "$S3_TARGET"
+    --json_file "$JSON_OUT"
   echo "head $JSON_OUT:"
   head "$JSON_OUT"
+
+  iiif_static.py $OUTPUT/*.png --dst=$OUTPUT/tiles
+  rm $OUTPUT/*.png # Remove huge intermediate file.
 }
 
 ### Main

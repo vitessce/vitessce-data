@@ -60,7 +60,7 @@ class ImgHdf5Reader:
         # 255 displays as black... color table issue?
         return sample / clip * (max_allowed - 1)
 
-    def to_png(self, channel, step, png_path, s3_target, clip, png_basename):
+    def to_png(self, channel, step, png_path, clip, png_basename):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
@@ -78,37 +78,25 @@ class ImgHdf5Reader:
         hack = np.array(scaled_sample_transposed.tolist()).astype(NP_TYPE)
         png.from_array(hack, mode='L').save(png_path)
 
-        return {
-            'x': 0,
-            'y': 0,
-            'width': hack.shape[1] * step,  # This seems backwards,
-            'height': hack.shape[0] * step,  # but it works!
-            'tileSource': {
-                'type': 'image',
-                'url': 'https://s3.amazonaws.com/{}/{}'.format(
-                    s3_target, png_basename
-                ),
-                'buildPyramid': False,
-            }
-        }
-
-    def to_png_json(self, channel_clips, step, json_file, s3_target):
-        descriptions = {}
+    def to_pngs(self, channel_clips, step, json_file):
+        channels = []
         for (channel, clip) in channel_clips:
+            channels.append(channel)
             png_path = '{}.{}.png'.format(
                 json_file.name.replace('.json', ''),
                 channel
             )
             png_basename = basename(png_path)
-            descriptions[channel] = self.to_png(
+            self.to_png(
                 channel=channel,
                 clip=float(clip),
                 step=step,
                 png_path=png_path,
-                s3_target=s3_target,
                 png_basename=png_basename
             )
-        json.dump(descriptions, json_file, indent=2)
+        json.dump(channels, json_file, indent=2)
+        # This JSON file is not used right now:
+        # really just a list of the files processed.
 
 
 if __name__ == '__main__':
@@ -124,19 +112,15 @@ if __name__ == '__main__':
         '--json_file', required=True, type=argparse.FileType('x'),
         help='JSON file which will include image dimensions and location')
     parser.add_argument(
-        '--sample', required=True, type=int,
+        '--sample', default=1, type=int,
         help='Sample 1 pixel out of N')
-    parser.add_argument(
-        '--s3_target', required=True,
-        help='S3 bucket and path')
     args = parser.parse_args()
 
     channel_clips = [pair.split(':') for pair in args.channel_clip_pairs]
 
     reader = ImgHdf5Reader(args.hdf5)
-    reader.to_png_json(
+    reader.to_pngs(
         channel_clips=channel_clips,
         step=args.sample,
-        json_file=args.json_file,
-        s3_target=args.s3_target
+        json_file=args.json_file
     )
