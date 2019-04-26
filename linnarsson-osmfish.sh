@@ -33,7 +33,7 @@ main() {
     # Exclude the *HUGE* PNGs in the base directory:
     # The tiles for S3 are in subdirectories;
     # We keep the PNGs around because it takes a long time to generate them.
-    aws s3 cp --recursive "$OUTPUT" --exclude "$OUTPUT"/*.png s3://"$S3_TARGET"
+    aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
   fi
 }
 
