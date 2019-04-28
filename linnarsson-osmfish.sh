@@ -30,7 +30,10 @@ main() {
   then
     echo 'CI: Skip push to AWS'
   else
-    aws s3 cp --recursive "$OUTPUT" s3://"$S3_TARGET"
+    # Exclude the *HUGE* PNGs in the base directory:
+    # The tiles for S3 are in subdirectories;
+    # We keep the PNGs around because it takes a long time to generate them.
+    aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
   fi
 }
 
@@ -96,6 +99,13 @@ process_cells() {
   [ -e "$PKL_IN" ] || \
     wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
 
+  JSON_OUT="$OUTPUT/linnarsson.cells.json"
+  if [ -e "$JSON_OUT" ]
+  then
+    echo "Skipping cells -- output already exists: $JSON_OUT"
+    return
+  fi
+
   echo 'Generating cells JSON may take a while...'
   CMD="$BASE/python/cell_reader.py $CLI_ARGS"
   echo "running: $CMD"
@@ -142,23 +152,29 @@ process_images() {
 
   if [ -e "$JSON_OUT" ]
   then
-    echo "Skipping images -- output already exists: $JSON_OUT"
-    return
+    echo "Skipping big image generation -- output already exists: $JSON_OUT"
+  else
+    echo "Download and generate big images..."
+
+    [ -e "$HDF5_IN" ] || \
+      wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
+
+    "$BASE/python/img_hdf5_reader.py" \
+      --hdf5 "$HDF5_IN" \
+      --channel_clip_pairs polyT:200 nuclei:20 \
+      --sample 8 \
+      --json_file "$JSON_OUT"
+    echo "head $JSON_OUT:"
+    head "$JSON_OUT"
   fi
 
-  echo "Download and process images..."
-
-  [ -e "$HDF5_IN" ] || \
-    wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
-
-  "$BASE/python/img_hdf5_reader.py" \
-    --hdf5 "$HDF5_IN" \
-    --channel_clip_pairs polyT:200 nuclei:20 \
-    --json_file "$JSON_OUT" \
-    --sample 5 \
-    --s3_target "$S3_TARGET"
-  echo "head $JSON_OUT:"
-  head "$JSON_OUT"
+  TILES_DIR="$OUTPUT/linnarsson.tiles"
+  if [ -e "$TILES_DIR" ]
+  then
+    echo "Skipping tiling -- output already exists: $TILES_DIR"
+  else
+    iiif_static.py $OUTPUT/*.png --dst=$TILES_DIR --max-image-pixels=2000000000
+  fi
 }
 
 ### Main
