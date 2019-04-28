@@ -99,6 +99,13 @@ process_cells() {
   [ -e "$PKL_IN" ] || \
     wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
 
+  JSON_OUT="$OUTPUT/linnarsson.cells.json"
+  if [ -e "$JSON_OUT" ]
+  then
+    echo "Skipping cells -- output already exists: $JSON_OUT"
+    return
+  fi
+
   echo 'Generating cells JSON may take a while...'
   CMD="$BASE/python/cell_reader.py $CLI_ARGS"
   echo "running: $CMD"
