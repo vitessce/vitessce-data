@@ -155,16 +155,18 @@ process_images() {
     "$BASE/python/img_hdf5_reader.py" \
       --hdf5 "$HDF5_IN" \
       --channel_clip_pairs polyT:200 nuclei:20 \
+      --sample 8 \
       --json_file "$JSON_OUT"
     echo "head $JSON_OUT:"
     head "$JSON_OUT"
   fi
 
-  if [ -e "$OUTPUT/tiles" ]
+  TILES_DIR="$OUTPUT/linnarsson.tiles"
+  if [ -e "$TILES_DIR" ]
   then
-    echo "Skipping tiling -- output already exists: $OUTPUT/tiles"
+    echo "Skipping tiling -- output already exists: $TILES_DIR"
   else
-    iiif_static.py $OUTPUT/*.png --dst=$OUTPUT/tiles --max-image-pixels=2000000000
+    iiif_static.py $OUTPUT/*.png --dst=$TILES_DIR --max-image-pixels=2000000000
   fi
 }
 
