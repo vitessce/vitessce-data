@@ -1,4 +1,10 @@
-[
-  "polyT",
-  "nuclei"
-]
+{
+  "polyT": {
+    "sample": 8,
+    "tileSource": {}
+  },
+  "nuclei": {
+    "sample": 8,
+    "tileSource": {}
+  }
+}

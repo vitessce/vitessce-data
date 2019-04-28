@@ -27,18 +27,18 @@ class ImgHdf5Reader:
     def __getitem__(self, key):
         return self.data[key]
 
-    def sample(self, channel, step):
+    def sample_image(self, channel, sample):
         '''
         >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
         >>> reader = ImgHdf5Reader(path)
-        >>> sample = reader.sample('polyT', 2)
-        >>> sample.shape
+        >>> sampled = reader.sample_image('polyT', 2)
+        >>> sampled.shape
         (25, 25)
 
         '''
-        return self.data[channel][::step, ::step]
+        return self.data[channel][::sample, ::sample]
 
-    def scale_sample(self, channel, step, max_allowed, clip):
+    def scale_sample(self, channel, sample, max_allowed, clip):
         '''
         Assumes there are no negative values
 
@@ -56,17 +56,17 @@ class ImgHdf5Reader:
         [0.0, 127.0, 254.0, 254.0, 254.0]
 
         '''
-        sample = np.clip(self.sample(channel, step), 0, clip)
+        sampled = np.clip(self.sample_image(channel, sample), 0, clip)
         # 255 displays as black... color table issue?
-        return sample / clip * (max_allowed - 1)
+        return sampled / clip * (max_allowed - 1)
 
-    def to_png(self, channel, step, png_path, clip, png_basename):
+    def to_png(self, channel, sample, png_path, clip, png_basename):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
         scaled_sample = self.scale_sample(
             channel=channel,
-            step=step,
+            sample=sample,
             max_allowed=MAX_ALLOWED,
             clip=clip
         ).astype(NP_TYPE)
@@ -78,10 +78,13 @@ class ImgHdf5Reader:
         hack = np.array(scaled_sample_transposed.tolist()).astype(NP_TYPE)
         png.from_array(hack, mode='L').save(png_path)
 
-    def to_pngs(self, channel_clips, step, json_file):
-        channels = []
+    def to_pngs(self, channel_clips, sample, json_file):
+        channels = {}
         for (channel, clip) in channel_clips:
-            channels.append(channel)
+            channels[channel] = {
+                'sample': sample,
+                'tileSource': {}
+            }
             png_path = '{}.{}.png'.format(
                 json_file.name.replace('.json', ''),
                 channel
@@ -90,7 +93,7 @@ class ImgHdf5Reader:
             self.to_png(
                 channel=channel,
                 clip=float(clip),
-                step=step,
+                sample=sample,
                 png_path=png_path,
                 png_basename=png_basename
             )
@@ -121,6 +124,6 @@ if __name__ == '__main__':
     reader = ImgHdf5Reader(args.hdf5)
     reader.to_pngs(
         channel_clips=channel_clips,
-        step=args.sample,
+        sample=args.sample,
         json_file=args.json_file
     )
