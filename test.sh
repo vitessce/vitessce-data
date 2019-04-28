@@ -19,7 +19,7 @@ python -m doctest python/*.py -o ELLIPSIS
 end doctest
 
 start endtoend
-rm fake-files/output/* || echo 'Nothing to delete'
+rm -rf fake-files/output || echo 'Nothing to delete'
 mkdir fake-files/output || echo 'Did not mkdir'
 
 cp fake-files/output{-expected,}/linnarsson.neighborhoods.json
