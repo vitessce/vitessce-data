@@ -80,10 +80,16 @@ class ImgHdf5Reader:
 
     def to_pngs(self, channel_clips, sample, json_file):
         channels = {}
+        s3_target = open('s3_target.txt').read().strip()
         for (channel, clip) in channel_clips:
             channels[channel] = {
                 'sample': sample,
-                'tileSource': {}
+                # TODO: Pass in portions of this path as parameters
+                'tileSource':
+                    'https://s3.amazonaws.com/'
+                + '{}/linnarsson.tiles/linnarsson.images.{}/'.format(
+                    s3_target, channel)
+                + 'info.json'
             }
             png_path = '{}.{}.png'.format(
                 json_file.name.replace('.json', ''),
