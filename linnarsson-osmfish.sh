@@ -168,12 +168,14 @@ process_images() {
     head "$JSON_OUT"
   fi
 
-  TILES_DIR="$OUTPUT/linnarsson.tiles"
-  if [ -e "$TILES_DIR" ]
+  TILES_BASE='linnarsson.tiles'
+  TILES_PATH="$OUTPUT/$TILES_BASE"
+  if [ -e "$TILES_PATH" ]
   then
-    echo "Skipping tiling -- output already exists: $TILES_DIR"
+    echo "Skipping tiling -- output already exists: $TILES_PATH"
   else
-    iiif_static.py $OUTPUT/*.png --dst=$TILES_DIR --max-image-pixels=2000000000
+    URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/$TILES_BASE"
+    iiif_static.py $OUTPUT/*.png --prefix=$URL_PREFIX --dst=$TILES_PATH --max-image-pixels=2000000000
   fi
 }
 
