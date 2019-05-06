@@ -5,8 +5,6 @@ import json
 
 from h5py import File
 
-from transform import apply_transform
-
 
 class CountsHdf5Reader:
     def __init__(self, filename):
@@ -44,24 +42,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--hdf5', required=True,
         help='HDF5 file with molecule locations')
-    parser.add_argument(
-        '--transform',
-        help='Transform the coordinates')
     args = parser.parse_args()
-
-    transform = {
-
-    }
-    if args.transform:
-        with open(args.transform) as f:
-            transform = json.loads(f.read())
-    else:
-        transform = {
-            'x_shift': 0,
-            'y_shift': 0,
-            'x_scale': 1,
-            'y_scale': 1
-        }
 
     reader = CountsHdf5Reader(args.hdf5)
     # Doing the serialization by hand so we get immediate output,
@@ -80,7 +61,6 @@ if __name__ == '__main__':
                 first_pair = False
             else:
                 print(',')
-            transformed = apply_transform(transform, pair)
-            print(json.dumps(transformed), end='')
+            print(json.dumps(pair), end='')
         print(']', end='')
     print('}', end='')
