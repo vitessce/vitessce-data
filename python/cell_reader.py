@@ -6,10 +6,12 @@ import pickle
 from collections import defaultdict
 
 import numpy as np
+import pandas
 
 from loom_reader import LoomReader
 from cluster import cluster as get_clusters
 from delaunay import DictDelaunay2d
+from sklearn import decomposition
 
 
 def octagon(poly):
@@ -193,19 +195,57 @@ def get_factors(metadata):
     return factors
 
 
+def genes_to_samples_by_features(metadata):
+    '''
+    >>> metadata = {
+    ...   '0': {
+    ...     'genes': {'A': 0, 'B': 0, 'A2': 0, 'B2': 0}
+    ...   },
+    ...   '1': {
+    ...     'genes': {'A': 0, 'B': 1, 'A2': 0, 'B2': 1}
+    ...   },
+    ...   '2': {
+    ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
+    ...   }
+    ... }
+    >>> s_by_f = genes_to_samples_by_features(metadata)
+    >>> s_by_f.shape
+    (3, 4)
+    '''
+    records = dict([(k, v['genes']) for k, v in metadata.items()])
+    return pandas.DataFrame.from_dict(records, orient='index')
+
+
 def add_pca(metadata):
     '''
     >>> metadata = {
-    ...   'some-id': {
-    ...     'mappings': {}
+    ...   '0': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 0, 'B': 0, 'A2': 0, 'B2': 0}
+    ...   },
+    ...   '1': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 0, 'B': 1, 'A2': 0, 'B2': 1}
+    ...   },
+    ...   '2': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
     ...   }
     ... }
     >>> add_pca(metadata)
-    >>> metadata
-    {'some-id': {'mappings': {'pca': ['to', 'do']}}}
+    >>> [int(pc) for pc in metadata['0']['mappings']['pca']]
+    [-2, 0]
+    >>> [int(pc) for pc in metadata['1']['mappings']['pca']]
+    [0, 0]
+    >>> [int(pc) for pc in metadata['2']['mappings']['pca']]
+    [3, 0]
     '''
-    for v in metadata.values():
-        v['mappings']['pca'] = ['to', 'do']
+    pca = decomposition.PCA(n_components=2)
+    principle_components = pca.fit_transform(
+        genes_to_samples_by_features(metadata)
+    ).tolist()
+    for (k, pc) in zip(metadata.keys(), principle_components):
+        metadata[k]['mappings']['pca'] = pc
 
 
 if __name__ == '__main__':
