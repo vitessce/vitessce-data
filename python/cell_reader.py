@@ -8,7 +8,6 @@ from collections import defaultdict
 import numpy as np
 
 from loom_reader import LoomReader
-from transform import apply_transform, get_transform
 from cluster import cluster as get_clusters
 from delaunay import DictDelaunay2d
 
@@ -205,9 +204,6 @@ if __name__ == '__main__':
         '--pkl', type=argparse.FileType('rb'),
         help='Pickle file with cell segmentation data')
     parser.add_argument(
-        '--transform_file', type=argparse.FileType('x'),
-        help='Center the data at (0, 0), and save the transformation.')
-    parser.add_argument(
         '--clusters_file', type=argparse.FileType('x'),
         help='Write the hierarchically clustered data to this file.')
     parser.add_argument(
@@ -246,17 +242,6 @@ if __name__ == '__main__':
                 xy = mean_coord(simple_poly)
                 metadata[cell_id]['poly'] = simple_poly
                 metadata[cell_id]['xy'] = xy
-
-    if args.transform_file:
-        transform = get_transform(metadata)
-        json.dump(transform, args.transform_file, indent=1)
-        for cell in metadata.values():
-            if 'xy' in cell:
-                cell['xy'] = apply_transform(transform, cell['xy'])
-            if 'poly' in cell:
-                cell['poly'] = [
-                    apply_transform(transform, xy) for xy in cell['poly']
-                ]
 
     if args.integers:
         for cell in metadata.values():
