@@ -28,7 +28,9 @@ class LoomReader:
              cluster_id, cluster_name, x, y) in data_zip:
             if valid:
                 cells[cell_id] = {
-                    'tsne': [tsne1, tsne2],
+                    'mappings': {
+                        'tsne': [tsne1, tsne2]
+                    },
                     'cluster': cluster_name,
                     'genes': self.by_cell(cell_id),
                     'xy': [x, y]
