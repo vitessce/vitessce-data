@@ -193,6 +193,11 @@ def get_factors(metadata):
     return factors
 
 
+def add_pca(metadata):
+    for v in metadata.values():
+        v['mappings']['pca'] = ['to', 'do']
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -224,6 +229,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
+    add_pca(metadata)
 
     for cell in metadata.values():
         # "Clusters" in the raw data are called "subclusters"
