@@ -194,6 +194,16 @@ def get_factors(metadata):
 
 
 def add_pca(metadata):
+    '''
+    >>> metadata = {
+    ...   'some-id': {
+    ...     'mappings': {}
+    ...   }
+    ... }
+    >>> add_pca(metadata)
+    >>> metadata
+    {'some-id': {'mappings': {'pca': ['to', 'do']}}}
+    '''
     for v in metadata.values():
         v['mappings']['pca'] = ['to', 'do']
 
