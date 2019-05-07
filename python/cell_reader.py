@@ -245,7 +245,9 @@ def add_pca(metadata):
         genes_to_samples_by_features(metadata)
     ).tolist()
     for (k, pc) in zip(metadata.keys(), principle_components):
-        metadata[k]['mappings']['pca'] = pc
+        metadata[k]['mappings']['pca'] = [
+            round(component, 4) for component in pc
+        ]
 
 
 if __name__ == '__main__':
