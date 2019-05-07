@@ -221,11 +221,11 @@ def add_pca(metadata):
     >>> metadata = {
     ...   '0': {
     ...     'mappings': {},
-    ...     'genes': {'A': 0, 'B': 0, 'A2': 0, 'B2': 0}
+    ...     'genes': {'A': 0, 'B': 0, 'A2': 1, 'B2': 0}
     ...   },
     ...   '1': {
     ...     'mappings': {},
-    ...     'genes': {'A': 0, 'B': 1, 'A2': 0, 'B2': 1}
+    ...     'genes': {'A': 1, 'B': 1, 'A2': 0, 'B2': 1}
     ...   },
     ...   '2': {
     ...     'mappings': {},
@@ -233,12 +233,12 @@ def add_pca(metadata):
     ...   }
     ... }
     >>> add_pca(metadata)
-    >>> [int(pc) for pc in metadata['0']['mappings']['pca']]
-    [-2, 0]
-    >>> [int(pc) for pc in metadata['1']['mappings']['pca']]
-    [0, 0]
-    >>> [int(pc) for pc in metadata['2']['mappings']['pca']]
-    [3, 0]
+    >>> metadata['0']['mappings']['pca']
+    [-2.41, -0.57]
+    >>> metadata['1']['mappings']['pca']
+    [-0.92, 0.77]
+    >>> metadata['2']['mappings']['pca']
+    [3.33, -0.2]
     '''
     pca = decomposition.PCA(n_components=2)
     principle_components = pca.fit_transform(
@@ -246,7 +246,7 @@ def add_pca(metadata):
     ).tolist()
     for (k, pc) in zip(metadata.keys(), principle_components):
         metadata[k]['mappings']['pca'] = [
-            round(component, 4) for component in pc
+            round(component, 2) for component in pc
         ]
 
 
