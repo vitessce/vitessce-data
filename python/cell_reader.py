@@ -6,11 +6,12 @@ import pickle
 from collections import defaultdict
 
 import numpy as np
+import pandas
 
 from loom_reader import LoomReader
-from transform import apply_transform, get_transform
 from cluster import cluster as get_clusters
 from delaunay import DictDelaunay2d
+from sklearn import decomposition
 
 
 def octagon(poly):
@@ -194,6 +195,61 @@ def get_factors(metadata):
     return factors
 
 
+def genes_to_samples_by_features(metadata):
+    '''
+    >>> metadata = {
+    ...   '0': {
+    ...     'genes': {'A': 0, 'B': 0, 'A2': 0, 'B2': 0}
+    ...   },
+    ...   '1': {
+    ...     'genes': {'A': 0, 'B': 1, 'A2': 0, 'B2': 1}
+    ...   },
+    ...   '2': {
+    ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
+    ...   }
+    ... }
+    >>> s_by_f = genes_to_samples_by_features(metadata)
+    >>> s_by_f.shape
+    (3, 4)
+    '''
+    records = dict([(k, v['genes']) for k, v in metadata.items()])
+    return pandas.DataFrame.from_dict(records, orient='index')
+
+
+def add_pca(metadata):
+    '''
+    >>> metadata = {
+    ...   '0': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 0, 'B': 0, 'A2': 1, 'B2': 0}
+    ...   },
+    ...   '1': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 1, 'B': 1, 'A2': 0, 'B2': 1}
+    ...   },
+    ...   '2': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
+    ...   }
+    ... }
+    >>> add_pca(metadata)
+    >>> metadata['0']['mappings']['pca']
+    [-2.41, -0.57]
+    >>> metadata['1']['mappings']['pca']
+    [-0.92, 0.77]
+    >>> metadata['2']['mappings']['pca']
+    [3.33, -0.2]
+    '''
+    pca = decomposition.PCA(n_components=2)
+    principle_components = pca.fit_transform(
+        genes_to_samples_by_features(metadata)
+    ).tolist()
+    for (k, pc) in zip(metadata.keys(), principle_components):
+        metadata[k]['mappings']['pca'] = [
+            round(component, 2) for component in pc
+        ]
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -204,9 +260,6 @@ if __name__ == '__main__':
     parser.add_argument(
         '--pkl', type=argparse.FileType('rb'),
         help='Pickle file with cell segmentation data')
-    parser.add_argument(
-        '--transform_file', type=argparse.FileType('x'),
-        help='Center the data at (0, 0), and save the transformation.')
     parser.add_argument(
         '--clusters_file', type=argparse.FileType('x'),
         help='Write the hierarchically clustered data to this file.')
@@ -228,6 +281,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     metadata = LoomReader(args.loom).data()
+    add_pca(metadata)
 
     for cell in metadata.values():
         # "Clusters" in the raw data are called "subclusters"
@@ -246,17 +300,6 @@ if __name__ == '__main__':
                 xy = mean_coord(simple_poly)
                 metadata[cell_id]['poly'] = simple_poly
                 metadata[cell_id]['xy'] = xy
-
-    if args.transform_file:
-        transform = get_transform(metadata)
-        json.dump(transform, args.transform_file, indent=1)
-        for cell in metadata.values():
-            if 'xy' in cell:
-                cell['xy'] = apply_transform(transform, cell['xy'])
-            if 'poly' in cell:
-                cell['poly'] = [
-                    apply_transform(transform, xy) for xy in cell['poly']
-                ]
 
     if args.integers:
         for cell in metadata.values():
