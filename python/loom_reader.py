@@ -29,7 +29,7 @@ class LoomReader:
             if valid:
                 cells[cell_id] = {
                     'mappings': {
-                        'tsne': [tsne1, tsne2]
+                        't-SNE': [tsne1, tsne2]
                     },
                     'cluster': cluster_name,
                     'genes': self.by_cell(cell_id),
