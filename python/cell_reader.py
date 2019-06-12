@@ -245,10 +245,42 @@ def add_pca(metadata):
         genes_to_samples_by_features(metadata)
     ).tolist()
     for (k, pc) in zip(metadata.keys(), principle_components):
-        metadata[k]['mappings']['pca'] = [
+        metadata[k]['mappings']['PCA'] = [
             round(component, 2) for component in pc
         ]
 
+def add_log_pca(metadata):
+    '''
+    >>> metadata = {
+    ...   '0': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 0, 'B': 0, 'A2': 1, 'B2': 0}
+    ...   },
+    ...   '1': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 1, 'B': 1, 'A2': 0, 'B2': 1}
+    ...   },
+    ...   '2': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
+    ...   }
+    ... }
+    >>> add_log_pca(metadata)
+    >>> metadata['0']['mappings']['pca']
+    [25.39, -1.37]
+    >>> metadata['1']['mappings']['pca']
+    [-15.28, -9.4]
+    >>> metadata['2']['mappings']['pca']
+    [-10.11, 10.77]
+    '''
+    pca = decomposition.PCA(n_components=2)
+    principle_components = pca.fit_transform(
+        genes_to_samples_by_features(metadata).replace(0, 0.000000001).apply(lambda x: np.log(x))
+    ).tolist()
+    for (k, pc) in zip(metadata.keys(), principle_components):
+        metadata[k]['mappings']['log PCA'] = [
+            round(component, 2) for component in pc
+        ]
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -282,6 +314,7 @@ if __name__ == '__main__':
 
     metadata = LoomReader(args.loom).data()
     add_pca(metadata)
+    add_log_pca(metadata)
 
     for cell in metadata.values():
         # "Clusters" in the raw data are called "subclusters"
