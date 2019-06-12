@@ -1,10 +1,10 @@
 {
   "polyT": {
     "sample": 8,
-    "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.15/linnarsson-2018/linnarsson.tiles/linnarsson.images.polyT/info.json"
+    "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.16/toslchan/linnarsson.tiles/linnarsson.images.polyT/info.json"
   },
   "nuclei": {
     "sample": 8,
-    "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.15/linnarsson-2018/linnarsson.tiles/linnarsson.images.nuclei/info.json"
+    "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.16/toslchan/linnarsson.tiles/linnarsson.images.nuclei/info.json"
   }
 }
