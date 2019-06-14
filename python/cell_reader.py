@@ -316,7 +316,7 @@ if __name__ == '__main__':
 
     metadata = LoomReader(args.loom).data()
     add_pca(metadata)
-    # add_log_pca(metadata)
+    add_log_pca(metadata)
 
     for cell in metadata.values():
         # "Clusters" in the raw data are called "subclusters"
