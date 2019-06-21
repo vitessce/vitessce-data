@@ -30,5 +30,11 @@ CI=true ./linnarsson-osmfish.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
 
+perl -pne 's/uuid:.{36}/uuid:00000000-0000-0000-0000-000000000000/;
+	s/<AcquisitionDate>.{26}/<AcquisitionDate>0000-00-00T00:00:00.000000/;
+	s/tifffile.py.{20}/tifffile.py.0000:00:00 00:00:00/' fake-files/output/linnarsson.images.ome.tif > fake-files/output/result
+
+mv -f fake-files/output/result fake-files/output/linnarsson.images.ome.tif
+
 diff -w -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100 | cut -c 1-100
 end endtoend

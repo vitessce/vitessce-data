@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 from h5py import File
-from aicsimageio import omeTifReader, omeTifWriter
+from aicsimageio import omeTifWriter
 import numpy as np
 import png
 import argparse
 import json
-from os.path import basename
 
 
 class ImgHdf5Reader:
@@ -61,7 +60,7 @@ class ImgHdf5Reader:
         # 255 displays as black... color table issue?
         return sampled / clip * (max_allowed - 1)
 
-    def to_png(self, channel, sample, png_path, clip, png_basename):
+    def to_png(self, channel, sample, png_path, clip):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
@@ -96,69 +95,41 @@ class ImgHdf5Reader:
                 json_file.name.replace('.json', ''),
                 channel
             )
-            png_basename = basename(png_path)
             self.to_png(
                 channel=channel,
                 clip=float(clip),
                 sample=sample,
                 png_path=png_path,
-                png_basename=png_basename
             )
         json.dump(channels, json_file, indent=2)
         # This JSON file is not used right now:
         # really just a list of the files processed.
 
-    def to_ometiff(self, channel, sample, ometif_path, clip, ometif_basename):
-        MAX_ALLOWED = 256
-        NP_TYPE = np.int8
-
-        scaled_sample = self.scale_sample(
-            channel=channel,
-            sample=sample,
-            max_allowed=MAX_ALLOWED,
-            clip=clip
-        ).astype(NP_TYPE)
-        return scaled_sample
-
-    def to_ometiffs(self, channel_clips, sample, json_file):
-        channels = {}
-        s3_target = open('s3_target.txt').read().strip()
+    def to_ometiff(self, channel_clips, sample, json_file):
+        channels = []
         images = []
+        ometif_path = '{}.ome.tif'.format(
+            json_file.name.replace('.json', '')
+        )
         for (channel, clip) in channel_clips:
-            channels[channel] = {
-                'sample': sample,
-                # TODO: Pass in portions of this path as parameters
-                'tileSource':
-                    'https://s3.amazonaws.com/'
-                + '{}/linnarsson.tiles/linnarsson.images.{}/'.format(
-                    s3_target, channel)
-                + 'info.json'
-            }
-            ometif_path = '{}.{}.ome.tif'.format(
-                json_file.name.replace('.json', ''),
-                channel
-            )
-            ometif_basename = basename(ometif_path)
-            array = self.to_ometiff(
+            channels.append(channel)
+            array = self.scale_sample(
                 channel=channel,
-                clip=float(clip),
                 sample=sample,
-                ometif_path=ometif_path,
-                ometif_basename=ometif_basename
-            )
+                max_allowed=256,
+                clip=float(clip)
+            ).astype(np.int8)
+
             images.append(array)
 
         image = np.transpose(np.dstack(tuple(images)))
         image = np.expand_dims(image, axis=0)
+
         writer = omeTifWriter.OmeTifWriter(
             file_path=ometif_path,
-            overwrite_file=True
+            overwrite_file=False
         )
-        writer.save(image, channel_names=list(channels.keys()))
-
-    def read_ometiff(self, ometif_path):
-        reader = omeTifReader.OmeTifReader(ometif_path)
-        print(reader.get_metadata())
+        writer.save(image, channel_names=channels)
 
 
 if __name__ == '__main__':
@@ -188,7 +159,7 @@ if __name__ == '__main__':
         json_file=args.json_file
     )
 
-    reader.to_ometiffs(
+    reader.to_ometiff(
         channel_clips=channel_clips,
         sample=args.sample,
         json_file=args.json_file
