@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 from h5py import File
+from aicsimageio import omeTifWriter
 import numpy as np
 import png
 import argparse
 import json
-from os.path import basename
 
 
 class ImgHdf5Reader:
@@ -60,7 +60,7 @@ class ImgHdf5Reader:
         # 255 displays as black... color table issue?
         return sampled / clip * (max_allowed - 1)
 
-    def to_png(self, channel, sample, png_path, clip, png_basename):
+    def to_png(self, channel, sample, png_path, clip):
         MAX_ALLOWED = 256
         NP_TYPE = np.int8
 
@@ -95,17 +95,41 @@ class ImgHdf5Reader:
                 json_file.name.replace('.json', ''),
                 channel
             )
-            png_basename = basename(png_path)
             self.to_png(
                 channel=channel,
                 clip=float(clip),
                 sample=sample,
                 png_path=png_path,
-                png_basename=png_basename
             )
         json.dump(channels, json_file, indent=2)
         # This JSON file is not used right now:
         # really just a list of the files processed.
+
+    def to_ometiff(self, channel_clips, sample, json_file):
+        channels = []
+        images = []
+        ometif_path = '{}.ome.tif'.format(
+            json_file.name.replace('.json', '')
+        )
+        for (channel, clip) in channel_clips:
+            channels.append(channel)
+            array = self.scale_sample(
+                channel=channel,
+                sample=sample,
+                max_allowed=256,
+                clip=float(clip)
+            ).astype(np.int8)
+
+            images.append(array)
+
+        image = np.transpose(np.dstack(tuple(images)))
+        image = np.expand_dims(image, axis=0)
+
+        writer = omeTifWriter.OmeTifWriter(
+            file_path=ometif_path,
+            overwrite_file=False
+        )
+        writer.save(image, channel_names=channels)
 
 
 if __name__ == '__main__':
@@ -128,7 +152,14 @@ if __name__ == '__main__':
     channel_clips = [pair.split(':') for pair in args.channel_clip_pairs]
 
     reader = ImgHdf5Reader(args.hdf5)
+
     reader.to_pngs(
+        channel_clips=channel_clips,
+        sample=args.sample,
+        json_file=args.json_file
+    )
+
+    reader.to_ometiff(
         channel_clips=channel_clips,
         sample=args.sample,
         json_file=args.json_file
