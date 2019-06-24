@@ -24,12 +24,3 @@ pip install -r requirements-dev.txt
 `linnarsson-osmfish.sh` runs all the other scripts: It will fetch files,
 if they are not already cached, and process them, if the output is not
 already in `big-files/`, and push the results to S3.
-
-## Installation
-
-This software requires Python3. In order to run the program, type the following commands:
-
-```
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-```
