@@ -1,0 +1,24 @@
+{
+  "cell_1": {
+    "locations": [1632.02, -1305.7],
+    "factors": {
+      "pleiden_clus": [3],
+      "kmeans": [8]
+    },
+    "mappings": {
+      "tsne": [-11.0776, 6.0311],
+      "umap": [-6.858, 15.7691]
+    }
+  },
+  "cell_2": {
+    "locations": [1589.47, -669.51],
+    "factors": {
+      "pleiden_clus": [3],
+      "kmeans": [8]
+    },
+    "mappings": {
+      "tsne": [-10.7971, 4.0234],
+      "umap": [-8.0222, 16.2033]
+    }
+  }
+}
