@@ -57,14 +57,12 @@ def cells_json(data):
             'kmeans': "Cluster " + str(data[cell]['factors']['kmeans'][0])
             }
 
-        poly_dict = {}
-
         cell_dict[cell] = {
             'mappings': mappings_dict,
             'genes': genes_dict,
             'xy': data[cell]['locations'],
             'factors': factors_dict,
-            'poly': poly_dict
+            'poly': []
         }
 
     return cell_dict
