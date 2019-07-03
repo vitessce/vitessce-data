@@ -45,6 +45,7 @@ S3_TARGET=`cat s3_target.txt`
 
 BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
+GIOTTO_URL='https://vitessce-data.s3.amazonaws.com/source-data/giotto/'
 
 if [[ "$CI" = 'true' ]]
 then
@@ -206,6 +207,9 @@ process_giotto() {
   add_giotto_arg 'factors'
 
   echo "Download and process cells..."
+
+  [ -e "$JSON_IN" ] || \
+    wget "$GIOTTO_URL/giotto.cells.json" -O "$JSON_IN"
 
   JSON_OUT="$OUTPUT/giotto.cells.json"
   if [ -e "$JSON_OUT" ]

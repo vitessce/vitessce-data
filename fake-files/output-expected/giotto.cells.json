@@ -19,7 +19,7 @@
    "pleiden_clus": "Cluster 3",
    "kmeans": "Cluster 8"
   },
-  "poly": {}
+  "poly": []
  },
  "cell_2": {
   "mappings": {
@@ -41,6 +41,6 @@
    "pleiden_clus": "Cluster 3",
    "kmeans": "Cluster 8"
   },
-  "poly": {}
+  "poly": []
  }
 }
