@@ -28,24 +28,19 @@ def cells_json(data):
     '''
     cell_dict = {}
     for cell in data.keys():
+        factors = data[cell]['factors']
 
         mappings_dict = {
             't-SNE': data[cell]['mappings']['tsne'],
             'UMAP': data[cell]['mappings']['umap']
-            }
-
-        genes_dict = {}
-
+        }
         factors_dict = {
-            'pleiden_clus': 'Cluster {}'.format(
-                data[cell]['factors']['pleiden_clus'][0]
-            ),
-            'kmeans': 'Cluster {}'.format(data[cell]['factors']['kmeans'][0])
-            }
-
+            'pleiden_clus': 'Cluster {}'.format(factors['pleiden_clus'][0]),
+            'kmeans': 'Cluster {}'.format(factors['kmeans'][0])
+        }
         cell_dict[cell] = {
             'mappings': mappings_dict,
-            'genes': genes_dict,
+            'genes': {},
             'xy': data[cell]['locations'],
             'factors': factors_dict,
             'poly': []
@@ -76,39 +71,44 @@ def factors_json(data):
     dict_keys(['map', 'cells'])
 
     '''
-    pleiden_clusters = set()
-    kmeans_clusters = set()
-    for cell in data:
-        factors = data[cell]['factors']
-        pleiden_clusters.add(factors['pleiden_clus'][0])
-        kmeans_clusters.add(factors['kmeans'][0])
+    pleiden_clusters_set = {
+        get_factor(cell, 'pleiden_clus') for cell in data.values()
+    }
+    kmeans_clusters_set = {
+        get_factor(cell, 'kmean_clus') for cell in data.values()
+    }
 
-    pleiden_clusters = list(pleiden_clusters)
-    kmeans_clusters = list(kmeans_clusters)
+    pleiden_clusters_list = list(pleiden_clusters_set)
+    kmeans_clusters_list = list(kmeans_clusters_set)
 
     pleiden_cells = {}
     kmeans_cells = {}
 
     for cell_id in data:
         factors = data[cell_id]['factors']
-        pleiden_cells[cell_id] = pleiden_clusters.index(
+        pleiden_cells[cell_id] = pleiden_clusters_list.index(
             factors['pleiden_clus'][0]
-            )
-
-        kmeans_cells[cell_id] = kmeans_clusters.index(factors['kmeans'][0])
+        )
+        kmeans_cells[cell_id] = kmeans_clusters_list.index(
+            factors['kmeans'][0]
+        )
 
     factors_dict = {
         'pleiden_clus': {
-            'map': ['Cluster {}'.format(c) for c in pleiden_clusters],
+            'map': ['Cluster {}'.format(c) for c in pleiden_clusters_list],
             'cells': pleiden_cells
         },
         'kmeans': {
-            'map': ['Cluster {}'.format(c) for c in kmeans_clusters],
+            'map': ['Cluster {}'.format(c) for c in kmeans_clusters_list],
             'cells': kmeans_cells
         }
     }
 
     return factors_dict
+
+
+def get_factor(cell, factor_name):
+    return cell['factors'][factor_name][0]
 
 
 if __name__ == '__main__':
