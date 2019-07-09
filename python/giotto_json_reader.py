@@ -38,7 +38,7 @@ def cells_json(data):
             'pleiden_clus': 'Cluster {}'.format(factors['pleiden_clus'][0]),
             'kmeans': 'Cluster {}'.format(factors['kmeans'][0])
         }
-        cell_dict[cell] = {
+        cell_dict[cell_id] = {
             'mappings': mappings_dict,
             'genes': {},
             'xy': data[cell_id]['locations'],
@@ -71,11 +71,13 @@ def factors_json(data):
     dict_keys(['map', 'cells'])
 
     '''
+    def get_factor(cell, factor_name):
+        return cell['factors'][factor_name][0]
     pleiden_clusters_set = {
         get_factor(cell, 'pleiden_clus') for cell in data.values()
     }
     kmeans_clusters_set = {
-        get_factor(cell, 'kmean_clus') for cell in data.values()
+        get_factor(cell, 'kmeans') for cell in data.values()
     }
 
     pleiden_clusters_list = list(pleiden_clusters_set)
@@ -105,10 +107,6 @@ def factors_json(data):
     }
 
     return factors_dict
-
-
-def get_factor(cell, factor_name):
-    return cell['factors'][factor_name][0]
 
 
 if __name__ == '__main__':
