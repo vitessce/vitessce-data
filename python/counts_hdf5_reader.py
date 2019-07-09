@@ -54,7 +54,8 @@ if __name__ == '__main__':
             first_key = False
         else:
             print(',')
-        print(json.dumps(key) + ':[')
+        print(json.dumps(key) + ':{')
+        print('"coords":[')
         first_pair = True
         for pair in reader[key]:
             if first_pair:
@@ -63,4 +64,5 @@ if __name__ == '__main__':
                 print(',')
             print(json.dumps(pair), end='')
         print(']', end='')
+        print('}', end='')
     print('}', end='')
