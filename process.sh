@@ -4,7 +4,7 @@ set -o errexit
 die() { set +v; echo "$*" 1>&2 ; exit 1; }
 
 if [ "$#" -ne 0 ]; then
-    die 'Collects source data from the Linnarsson Lab, processes it, and pushes to S3.
+    die 'Collects source data, processes it, and pushes to S3.
 No commandline arguments, but looks for two environment variables:
   "NO_PUSH=true" will fetch and process data, but not push to S3.
   "CI=true" will use fixtures, rather than fetching, and also will not push to S3.
@@ -12,10 +12,11 @@ No commandline arguments, but looks for two environment variables:
 fi
 
 main() {
-  process_cells
-  process_molecules
-  process_images
+  process_linnarson_cells
+  process_linnarson_molecules
+  process_linnarson_images
   process_giotto
+  process_mermaid
 
   echo
   echo 'input:'
@@ -46,6 +47,7 @@ S3_TARGET=`cat s3_target.txt`
 BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
 GIOTTO_URL='https://vitessce-data.s3.amazonaws.com/source-data/giotto/'
+MERMAID_URL='https://jef.works/MERmaid/'
 
 if [[ "$CI" = 'true' ]]
 then
@@ -69,29 +71,19 @@ add_arg() {
   # Helper for process_cells to build argument list.
 
   FILE_TYPE=$1
-  FILE="$OUTPUT/linnarsson.$FILE_TYPE.json"
+  DATA_TITLE=$2
+
+  FILE="$OUTPUT/$DATA_TITLE.$FILE_TYPE.json"
   if [ -e "$FILE" ]
   then
     echo "$FILE_TYPE output already exists: $FILE"
   else
     CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
   fi
+
 }
 
-add_giotto_arg() {
-  # Helper for process_cells to build argument list.
-
-  FILE_TYPE=$1
-  FILE="$OUTPUT/giotto.$FILE_TYPE.json"
-  if [ -e "$FILE" ]
-  then
-    echo "$FILE_TYPE output already exists: $FILE"
-  else
-    CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
-  fi
-}
-
-process_cells() {
+process_linnarson_cells() {
   # Download and process data which describes cell locations, boundaries,
   # and gene expression levels. Multiple JSON output files are produced:
   # The files are redudant, but this reduces the processing that needs
@@ -101,11 +93,11 @@ process_cells() {
   PKL_IN="$INPUT/linnarsson.cells.pkl"
 
   CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
-  add_arg 'cells'
-  add_arg 'clusters'
-  add_arg 'genes'
-  add_arg 'neighborhoods'
-  add_arg 'factors'
+  add_arg 'cells' 'linnarsson'
+  add_arg 'clusters' 'linnarsson'
+  add_arg 'genes' 'linnarsson'
+  add_arg 'neighborhoods' 'linnarsson'
+  add_arg 'factors' 'linnarsson'
 
   echo "Download and process cells..."
 
@@ -127,7 +119,7 @@ process_cells() {
   $CMD
 }
 
-process_molecules() {
+process_linnarson_molecules() {
   # Download and process data which describes molecule locations.
   # In structure, this is the simplest data, but it is also the largest.
 
@@ -155,7 +147,7 @@ process_molecules() {
   head "$JSON_OUT"
 }
 
-process_images() {
+process_linnarson_images() {
   # Download and process raster data from HDF5 and produce PNGs.
   # Down the road we may want HiGlass, or some other solution:
   # This is a stopgap.
@@ -203,8 +195,10 @@ process_giotto() {
   JSON_IN="$INPUT/giotto.cells.json"
 
   CLI_ARGS="--json_file $JSON_IN"
-  add_giotto_arg 'cells'
-  add_giotto_arg 'factors'
+  add_arg 'cells' 'giotto'
+  add_arg 'factors' 'giotto'
+
+  echo "$CLI_ARGS"
 
   echo "Download and process cells..."
 
@@ -220,6 +214,40 @@ process_giotto() {
 
   echo 'Generating cells JSON may take a while...'
   CMD="$BASE/python/giotto_json_reader.py $CLI_ARGS"
+  echo "running: $CMD"
+  $CMD
+}
+
+process_mermaid() {
+  # Download and process data which describes cell locations, boundaries,
+  # and gene expression levels. Multiple JSON output files are produced:
+  # The files are redudant, but this reduces the processing that needs
+  # to be done on the client-side.
+
+  CSV_IN="$INPUT/data.csv"
+  PNG_IN="$INPUT/bg.png"
+
+  CLI_ARGS="--csv_file $CSV_IN"
+  add_arg 'cells' 'mermaid'
+  add_arg 'molecules' 'mermaid'
+
+  echo "Download and process cells..."
+
+  [ -e "$CSV_IN" ] || \
+    curl "$MERMAID_URL/data.csv.gz" | gunzip -d > "$CSV_IN"
+
+  [ -e "$CSV_IN" ] || \
+    wget "$MERMAID_URL/bg.png" -O "$PNG_IN"
+
+  JSON_OUT="$OUTPUT/memrmaid.cells.json"
+  if [ -e "$JSON_OUT" ]
+  then
+    echo "Skipping cells -- output already exists: $JSON_OUT"
+    return
+  fi
+
+  echo 'Generating cells JSON may take a while...'
+  CMD="$BASE/python/mermaid_csv_reader.py $CLI_ARGS"
   echo "running: $CMD"
   $CMD
 }
