@@ -27,12 +27,12 @@ def cells_json(data):
 
     '''
     cell_dict = {}
-    for cell in data.keys():
-        factors = data[cell]['factors']
+    for cell_id in data.keys():
+        factors = data[cell_id]['factors']
 
         mappings_dict = {
-            't-SNE': data[cell]['mappings']['tsne'],
-            'UMAP': data[cell]['mappings']['umap']
+            't-SNE': data[cell_id]['mappings']['tsne'],
+            'UMAP': data[cell_id]['mappings']['umap']
         }
         factors_dict = {
             'pleiden_clus': 'Cluster {}'.format(factors['pleiden_clus'][0]),
@@ -41,7 +41,7 @@ def cells_json(data):
         cell_dict[cell] = {
             'mappings': mappings_dict,
             'genes': {},
-            'xy': data[cell]['locations'],
+            'xy': data[cell_id]['locations'],
             'factors': factors_dict,
             'poly': []
         }
