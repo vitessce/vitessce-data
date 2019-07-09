@@ -26,7 +26,7 @@ cp fake-files/output{-expected,}/linnarsson.neighborhoods.json
 # Calculating neightborhoods is slow, and not a requirement right now,
 # so copy over the expected output, and it will not be regenerated.
 
-CI=true ./linnarsson-osmfish.sh
+CI=true ./process.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
 
