@@ -24,6 +24,6 @@ pip install -r requirements-dev.txt
 
 ## Run
 
-`linnarsson-osmfish.sh` runs all the other scripts: It will fetch files,
+`process.sh` runs all the other scripts: It will fetch files,
 if they are not already cached, and process them, if the output is not
 already in `big-files/`, and push the results to S3.
