@@ -27,26 +27,20 @@ def cells_json(data):
 
     '''
     cell_dict = {}
-    for cell in data.keys():
-
+    for cell_id in data.keys():
         mappings_dict = {
-            't-SNE': data[cell]['mappings']['tsne'],
-            'UMAP': data[cell]['mappings']['umap']
-            }
-
-        genes_dict = {}
-
+            't-SNE': data[cell_id]['mappings']['tsne'],
+            'UMAP': data[cell_id]['mappings']['umap']
+        }
+        factors = data[cell_id]['factors']
         factors_dict = {
-            'pleiden_clus': 'Cluster {}'.format(
-                data[cell]['factors']['pleiden_clus'][0]
-            ),
-            'kmeans': 'Cluster {}'.format(data[cell]['factors']['kmeans'][0])
-            }
-
-        cell_dict[cell] = {
+            'pleiden_clus': 'Cluster {}'.format(factors['pleiden_clus'][0]),
+            'kmeans': 'Cluster {}'.format(factors['kmeans'][0])
+        }
+        cell_dict[cell_id] = {
             'mappings': mappings_dict,
-            'genes': genes_dict,
-            'xy': data[cell]['locations'],
+            'genes': {},
+            'xy': data[cell_id]['locations'],
             'factors': factors_dict,
             'poly': []
         }
@@ -76,34 +70,34 @@ def factors_json(data):
     dict_keys(['map', 'cells'])
 
     '''
-    pleiden_clusters = set()
-    kmeans_clusters = set()
-    for cell in data:
-        factors = data[cell]['factors']
-        pleiden_clusters.add(factors['pleiden_clus'][0])
-        kmeans_clusters.add(factors['kmeans'][0])
-
-    pleiden_clusters = list(pleiden_clusters)
-    kmeans_clusters = list(kmeans_clusters)
+    def get_factor(cell, factor_name):
+        return cell['factors'][factor_name][0]
+    pleiden_clusters_list = list({
+        get_factor(cell, 'pleiden_clus') for cell in data.values()
+    })
+    kmeans_clusters_list = list({
+        get_factor(cell, 'kmeans') for cell in data.values()
+    })
 
     pleiden_cells = {}
     kmeans_cells = {}
 
     for cell_id in data:
         factors = data[cell_id]['factors']
-        pleiden_cells[cell_id] = pleiden_clusters.index(
+        pleiden_cells[cell_id] = pleiden_clusters_list.index(
             factors['pleiden_clus'][0]
-            )
-
-        kmeans_cells[cell_id] = kmeans_clusters.index(factors['kmeans'][0])
+        )
+        kmeans_cells[cell_id] = kmeans_clusters_list.index(
+            factors['kmeans'][0]
+        )
 
     factors_dict = {
         'pleiden_clus': {
-            'map': ['Cluster {}'.format(c) for c in pleiden_clusters],
+            'map': ['Cluster {}'.format(c) for c in pleiden_clusters_list],
             'cells': pleiden_cells
         },
         'kmeans': {
-            'map': ['Cluster {}'.format(c) for c in kmeans_clusters],
+            'map': ['Cluster {}'.format(c) for c in kmeans_clusters_list],
             'cells': kmeans_cells
         }
     }
@@ -119,18 +113,15 @@ if __name__ == '__main__':
         '--json_file', required=True,
         help='JSON file produced by Giotto object.')
     parser.add_argument(
-        '--cells_file', type=argparse.FileType('x'),
+        '--cells_file', required=True, type=argparse.FileType('x'),
         help='Write the cell data to this file.')
     parser.add_argument(
-        '--factors_file', type=argparse.FileType('x'),
+        '--factors_file', required=True, type=argparse.FileType('x'),
         help='Write the cell factors to this file.')
     args = parser.parse_args()
 
     with open(args.json_file) as json_file:
         data = json.load(json_file)
 
-    if args.cells_file:
-        json.dump(cells_json(data), args.cells_file, indent=1)
-
-    if args.factors_file:
-        json.dump(factors_json(data), args.factors_file, indent=1)
+    json.dump(cells_json(data), args.cells_file, indent=1)
+    json.dump(factors_json(data), args.factors_file, indent=1)
