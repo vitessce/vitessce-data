@@ -51,15 +51,15 @@ if __name__ == '__main__':
     # Doing the serialization by hand so we get immediate output,
     # and don't need an extra intermediate object
     print('{')
+    print('"radius":{},'.format(args.radius))
+    print('"molecules":{')
     first_key = True
     for key in reader.keys():
         if first_key:
             first_key = False
         else:
             print(',')
-        print(json.dumps(key) + ':{')
-        print('"radius":{},'.format(args.radius))
-        print('"coords":[')
+        print(json.dumps(key) + ':[')
         first_pair = True
         for pair in reader[key]:
             if first_pair:
@@ -68,5 +68,5 @@ if __name__ == '__main__':
                 print(',')
             print(json.dumps(pair), end='')
         print(']', end='')
-        print('}', end='')
+    print('}', end='')
     print('}', end='')
