@@ -125,5 +125,5 @@ if __name__ == '__main__':
 
     if args.cells_file:
         json.dump(cells_json(data), args.cells_file, indent=1)
-    if args.factors_file
+    if args.factors_file:
         json.dump(factors_json(data), args.factors_file, indent=1)
