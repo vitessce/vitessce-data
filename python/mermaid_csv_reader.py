@@ -6,6 +6,7 @@ import pandas as pd
 from collections import defaultdict
 import argparse
 
+
 def cells_json(df):
     cells_dict = {}
     xy_dict = defaultdict(list)
@@ -33,6 +34,7 @@ def molecules_json(df):
 
     return molecules_dict
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata from erMAID CSV.')
@@ -49,7 +51,7 @@ if __name__ == '__main__':
 
     with open(args.csv_file) as csv_file:
         df = pd.read_csv(csv_file)
-   
+
     if args.cells_file:
         json.dump(cells_json(df), args.cells_file, indent=1)
 
