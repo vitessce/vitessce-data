@@ -65,32 +65,6 @@ OUTPUT="$FILES/output"
 
 ### Functions
 
-add_arg() {
-  # Helper for process_cells to build argument list.
-
-  FILE_TYPE=$1
-  FILE="$OUTPUT/linnarsson.$FILE_TYPE.json"
-  if [ -e "$FILE" ]
-  then
-    echo "$FILE_TYPE output already exists: $FILE"
-  else
-    CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
-  fi
-}
-
-add_giotto_arg() {
-  # Helper for process_cells to build argument list.
-
-  FILE_TYPE=$1
-  FILE="$OUTPUT/giotto.$FILE_TYPE.json"
-  if [ -e "$FILE" ]
-  then
-    echo "$FILE_TYPE output already exists: $FILE"
-  else
-    CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
-  fi
-}
-
 process_linnarsson_cells() {
   # Download and process data which describes cell locations, boundaries,
   # and gene expression levels. Multiple JSON output files are produced:
@@ -101,6 +75,16 @@ process_linnarsson_cells() {
   PKL_IN="$INPUT/linnarsson.cells.pkl"
 
   CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
+  add_arg() {
+    FILE_TYPE=$1
+    FILE="$OUTPUT/linnarsson.$FILE_TYPE.json"
+    if [ -e "$FILE" ]
+    then
+      echo "$FILE_TYPE output already exists: $FILE"
+    else
+      CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
+    fi
+  }
   add_arg 'cells'
   add_arg 'clusters'
   add_arg 'genes'
@@ -203,8 +187,18 @@ process_giotto() {
   JSON_IN="$INPUT/giotto.cells.json"
 
   CLI_ARGS="--json_file $JSON_IN"
-  add_giotto_arg 'cells'
-  add_giotto_arg 'factors'
+  add_arg() {
+    FILE_TYPE=$1
+    FILE="$OUTPUT/giotto.$FILE_TYPE.json"
+    if [ -e "$FILE" ]
+    then
+      echo "$FILE_TYPE output already exists: $FILE"
+    else
+      CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
+    fi
+  }
+  add_arg 'cells'
+  add_arg 'factors'
 
   echo "Download and process cells..."
 
