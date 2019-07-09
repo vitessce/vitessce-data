@@ -4,7 +4,7 @@ set -o errexit
 die() { set +v; echo "$*" 1>&2 ; exit 1; }
 
 if [ "$#" -ne 0 ]; then
-    die 'Collects source data from the Linnarsson Lab, processes it, and pushes to S3.
+    die 'Collects source data, processes it, and pushes to S3.
 No commandline arguments, but looks for two environment variables:
   "NO_PUSH=true" will fetch and process data, but not push to S3.
   "CI=true" will use fixtures, rather than fetching, and also will not push to S3.
@@ -12,9 +12,9 @@ No commandline arguments, but looks for two environment variables:
 fi
 
 main() {
-  process_cells
-  process_molecules
-  process_images
+  process_linnarson_cells
+  process_linnarson_molecules
+  process_linnarson_images
   process_giotto
   process_mermaid
 
@@ -28,15 +28,15 @@ main() {
 
   echo
   echo 'AWS:'
-  # if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
-  # then
-  #   echo 'CI: Skip push to AWS'
-  # else
-  #   # Exclude the *HUGE* PNGs in the base directory:
-  #   # The tiles for S3 are in subdirectories;
-  #   # We keep the PNGs around because it takes a long time to generate them.
-  #   aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
-  # fi
+  if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
+  then
+    echo 'CI: Skip push to AWS'
+  else
+    # Exclude the *HUGE* PNGs in the base directory:
+    # The tiles for S3 are in subdirectories;
+    # We keep the PNGs around because it takes a long time to generate them.
+    aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
+  fi
 }
 
 ### Globals
@@ -83,7 +83,7 @@ add_arg() {
 
 }
 
-process_cells() {
+process_linnarson_cells() {
   # Download and process data which describes cell locations, boundaries,
   # and gene expression levels. Multiple JSON output files are produced:
   # The files are redudant, but this reduces the processing that needs
@@ -119,7 +119,7 @@ process_cells() {
   $CMD
 }
 
-process_molecules() {
+process_linnarson_molecules() {
   # Download and process data which describes molecule locations.
   # In structure, this is the simplest data, but it is also the largest.
 
@@ -147,7 +147,7 @@ process_molecules() {
   head "$JSON_OUT"
 }
 
-process_images() {
+process_linnarson_images() {
   # Download and process raster data from HDF5 and produce PNGs.
   # Down the road we may want HiGlass, or some other solution:
   # This is a stopgap.
