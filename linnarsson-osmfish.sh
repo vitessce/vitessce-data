@@ -16,6 +16,7 @@ main() {
   process_molecules
   process_images
   process_giotto
+  process_mermaid
 
   echo
   echo 'input:'
@@ -27,15 +28,15 @@ main() {
 
   echo
   echo 'AWS:'
-  if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
-  then
-    echo 'CI: Skip push to AWS'
-  else
-    # Exclude the *HUGE* PNGs in the base directory:
-    # The tiles for S3 are in subdirectories;
-    # We keep the PNGs around because it takes a long time to generate them.
-    aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
-  fi
+  # if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
+  # then
+  #   echo 'CI: Skip push to AWS'
+  # else
+  #   # Exclude the *HUGE* PNGs in the base directory:
+  #   # The tiles for S3 are in subdirectories;
+  #   # We keep the PNGs around because it takes a long time to generate them.
+  #   aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
+  # fi
 }
 
 ### Globals
@@ -46,6 +47,7 @@ S3_TARGET=`cat s3_target.txt`
 BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
 GIOTTO_URL='https://vitessce-data.s3.amazonaws.com/source-data/giotto/'
+MERMAID_URL='https://jef.works/MERmaid/'
 
 if [[ "$CI" = 'true' ]]
 then
@@ -69,26 +71,16 @@ add_arg() {
   # Helper for process_cells to build argument list.
 
   FILE_TYPE=$1
-  FILE="$OUTPUT/linnarsson.$FILE_TYPE.json"
+  DATA_TITLE=$2
+
+  FILE="$OUTPUT/$DATA_TITLE.$FILE_TYPE.json"
   if [ -e "$FILE" ]
   then
     echo "$FILE_TYPE output already exists: $FILE"
   else
     CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
   fi
-}
 
-add_giotto_arg() {
-  # Helper for process_cells to build argument list.
-
-  FILE_TYPE=$1
-  FILE="$OUTPUT/giotto.$FILE_TYPE.json"
-  if [ -e "$FILE" ]
-  then
-    echo "$FILE_TYPE output already exists: $FILE"
-  else
-    CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
-  fi
 }
 
 process_cells() {
@@ -101,11 +93,11 @@ process_cells() {
   PKL_IN="$INPUT/linnarsson.cells.pkl"
 
   CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
-  add_arg 'cells'
-  add_arg 'clusters'
-  add_arg 'genes'
-  add_arg 'neighborhoods'
-  add_arg 'factors'
+  add_arg 'cells' 'linnarsson'
+  add_arg 'clusters' 'linnarsson'
+  add_arg 'genes' 'linnarsson'
+  add_arg 'neighborhoods' 'linnarsson'
+  add_arg 'factors' 'linnarsson'
 
   echo "Download and process cells..."
 
@@ -203,8 +195,10 @@ process_giotto() {
   JSON_IN="$INPUT/giotto.cells.json"
 
   CLI_ARGS="--json_file $JSON_IN"
-  add_giotto_arg 'cells'
-  add_giotto_arg 'factors'
+  add_arg 'cells' 'giotto'
+  add_arg 'factors' 'giotto'
+
+  echo "$CLI_ARGS"
 
   echo "Download and process cells..."
 
@@ -220,6 +214,40 @@ process_giotto() {
 
   echo 'Generating cells JSON may take a while...'
   CMD="$BASE/python/giotto_json_reader.py $CLI_ARGS"
+  echo "running: $CMD"
+  $CMD
+}
+
+process_mermaid() {
+  # Download and process data which describes cell locations, boundaries,
+  # and gene expression levels. Multiple JSON output files are produced:
+  # The files are redudant, but this reduces the processing that needs
+  # to be done on the client-side.
+
+  CSV_IN="$INPUT/data.csv"
+  PNG_IN="$INPUT/bg.png"
+
+  CLI_ARGS="--csv_file $CSV_IN"
+  add_arg 'cells' 'mermaid'
+  add_arg 'molecules' 'mermaid'
+
+  echo "Download and process cells..."
+
+  [ -e "$CSV_IN" ] || \
+    curl "$MERMAID_URL/data.csv.gz" | gunzip -d > "$CSV_IN"
+
+  [ -e "$CSV_IN" ] || \
+    wget "$MERMAID_URL/bg.png" -O "$PNG_IN"
+
+  JSON_OUT="$OUTPUT/memrmaid.cells.json"
+  if [ -e "$JSON_OUT" ]
+  then
+    echo "Skipping cells -- output already exists: $JSON_OUT"
+    return
+  fi
+
+  echo 'Generating cells JSON may take a while...'
+  CMD="$BASE/python/mermaid_csv_reader.py $CLI_ARGS"
   echo "running: $CMD"
   $CMD
 }

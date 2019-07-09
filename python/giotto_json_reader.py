@@ -119,16 +119,18 @@ if __name__ == '__main__':
         '--json_file', required=True,
         help='JSON file produced by Giotto object.')
     parser.add_argument(
-        '--cells_file', required=True, type=argparse.FileType('x'),
+        '--cells_file', type=argparse.FileType('x'),
         help='Write the cell data to this file.')
     parser.add_argument(
-        '--factors_file', required=True, type=argparse.FileType('x'),
+        '--factors_file', type=argparse.FileType('x'),
         help='Write the cell factors to this file.')
     args = parser.parse_args()
 
     with open(args.json_file) as json_file:
         data = json.load(json_file)
 
-    json.dump(cells_json(data), args.cells_file, indent=1)
+    if args.cells_file:
+        json.dump(cells_json(data), args.cells_file, indent=1)
 
-    json.dump(factors_json(data), args.factors_file, indent=1)
+    if args.factors_file:
+        json.dump(factors_json(data), args.factors_file, indent=1)
