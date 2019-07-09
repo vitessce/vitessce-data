@@ -15,6 +15,7 @@ main() {
   process_cells
   process_molecules
   process_images
+  process_giotto
 
   echo
   echo 'input:'
@@ -44,6 +45,7 @@ S3_TARGET=`cat s3_target.txt`
 
 BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
+GIOTTO_URL='https://vitessce-data.s3.amazonaws.com/source-data/giotto/'
 
 if [[ "$CI" = 'true' ]]
 then
@@ -68,6 +70,19 @@ add_arg() {
 
   FILE_TYPE=$1
   FILE="$OUTPUT/linnarsson.$FILE_TYPE.json"
+  if [ -e "$FILE" ]
+  then
+    echo "$FILE_TYPE output already exists: $FILE"
+  else
+    CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
+  fi
+}
+
+add_giotto_arg() {
+  # Helper for process_cells to build argument list.
+
+  FILE_TYPE=$1
+  FILE="$OUTPUT/giotto.$FILE_TYPE.json"
   if [ -e "$FILE" ]
   then
     echo "$FILE_TYPE output already exists: $FILE"
@@ -177,6 +192,36 @@ process_images() {
     URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/$TILES_BASE"
     iiif_static.py $OUTPUT/*.png --prefix=$URL_PREFIX --dst=$TILES_PATH --max-image-pixels=2000000000
   fi
+}
+
+process_giotto() {
+  # Download and process data which describes cell locations, boundaries,
+  # and gene expression levels. Multiple JSON output files are produced:
+  # The files are redudant, but this reduces the processing that needs
+  # to be done on the client-side.
+
+  JSON_IN="$INPUT/giotto.cells.json"
+
+  CLI_ARGS="--json_file $JSON_IN"
+  add_giotto_arg 'cells'
+  add_giotto_arg 'factors'
+
+  echo "Download and process cells..."
+
+  [ -e "$JSON_IN" ] || \
+    wget "$GIOTTO_URL/giotto.cells.json" -O "$JSON_IN"
+
+  JSON_OUT="$OUTPUT/giotto.cells.json"
+  if [ -e "$JSON_OUT" ]
+  then
+    echo "Skipping cells -- output already exists: $JSON_OUT"
+    return
+  fi
+
+  echo 'Generating cells JSON may take a while...'
+  CMD="$BASE/python/giotto_json_reader.py $CLI_ARGS"
+  echo "running: $CMD"
+  $CMD
 }
 
 ### Main

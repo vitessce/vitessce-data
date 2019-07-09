@@ -1,0 +1,20 @@
+{
+ "pleiden_clus": {
+  "map": [
+   "Cluster 3"
+  ],
+  "cells": {
+   "cell_1": 0,
+   "cell_2": 0
+  }
+ },
+ "kmeans": {
+  "map": [
+   "Cluster 8"
+  ],
+  "cells": {
+   "cell_1": 0,
+   "cell_2": 0
+  }
+ }
+}
