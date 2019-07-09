@@ -72,10 +72,10 @@ def factors_json(data):
     '''
     def get_factor(cell, factor_name):
         return cell['factors'][factor_name][0]
-    pleiden_clusters_list = list({
+    pleiden_clusters = list({
         get_factor(cell, 'pleiden_clus') for cell in data.values()
     })
-    kmeans_clusters_list = list({
+    kmeans_clusters = list({
         get_factor(cell, 'kmeans') for cell in data.values()
     })
 
@@ -84,20 +84,20 @@ def factors_json(data):
 
     for cell_id in data:
         factors = data[cell_id]['factors']
-        pleiden_cells[cell_id] = pleiden_clusters_list.index(
+        pleiden_cells[cell_id] = pleiden_clusters.index(
             factors['pleiden_clus'][0]
         )
-        kmeans_cells[cell_id] = kmeans_clusters_list.index(
+        kmeans_cells[cell_id] = kmeans_clusters.index(
             factors['kmeans'][0]
         )
 
     factors_dict = {
         'pleiden_clus': {
-            'map': ['Cluster {}'.format(c) for c in pleiden_clusters_list],
+            'map': ['Cluster {}'.format(c) for c in pleiden_clusters],
             'cells': pleiden_cells
         },
         'kmeans': {
-            'map': ['Cluster {}'.format(c) for c in kmeans_clusters_list],
+            'map': ['Cluster {}'.format(c) for c in kmeans_clusters],
             'cells': kmeans_cells
         }
     }
