@@ -149,7 +149,7 @@ process_molecules() {
 
   echo 'Generating molecules JSON may take a while...'
   "$BASE/python/counts_hdf5_reader.py" \
-    --hdf5 "$HDF5_IN" \
+    --hdf5 "$HDF5_IN" --radius 10 \
     > "$JSON_OUT"
   echo "head $JSON_OUT:"
   head "$JSON_OUT"

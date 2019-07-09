@@ -42,6 +42,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--hdf5', required=True,
         help='HDF5 file with molecule locations')
+    parser.add_argument(
+        '--radius', required=True, type=int,
+        help='Integer radius, using same units as location coordinates')
     args = parser.parse_args()
 
     reader = CountsHdf5Reader(args.hdf5)
@@ -55,6 +58,7 @@ if __name__ == '__main__':
         else:
             print(',')
         print(json.dumps(key) + ':{')
+        print('"radius":{},'.format(args.radius))
         print('"coords":[')
         first_pair = True
         for pair in reader[key]:
