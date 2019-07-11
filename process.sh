@@ -225,26 +225,36 @@ process_mermaid() {
   # to be done on the client-side.
 
   CSV_IN="$INPUT/data.csv"
-  PNG_IN="$INPUT/bg.png"
 
   CLI_ARGS="--csv_file $CSV_IN"
   add_arg 'cells' 'mermaid'
   add_arg 'molecules' 'mermaid'
+  add_arg 'images' 'mermaid'
 
   echo "Download and process cells..."
 
   [ -e "$CSV_IN" ] || \
     curl "$MERMAID_URL/data.csv.gz" | gunzip -d > "$CSV_IN"
 
-  [ -e "$CSV_IN" ] || \
-    wget "$MERMAID_URL/bg.png" -O "$PNG_IN"
-
-  JSON_OUT="$OUTPUT/memrmaid.cells.json"
-  if [ -e "$JSON_OUT" ]
+  PNG_OUT="$OUTPUT/mermaid.png"
+  if [ -e "$PNG_OUT" ]
   then
-    echo "Skipping cells -- output already exists: $JSON_OUT"
+    echo "Skip images -- output already exists: $PNG_OUT"
+  else
+    curl "$MERMAID_URL/bg.png" > "$OUTPUT/mermaid.png"
+  fi
+
+  CELLS_OUT="$OUTPUT/memrmaid.cells.json"
+  if [ -e "$CELLS_OUT" ]
+  then
+    echo "Skipping cells -- output already exists: $CELLS_OUT"
     return
   fi
+
+  URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET"
+  mkdir -p "$OUTPUT/mermaid.images/"
+  JSON_STRING='{"type":"image","url":"'"$URL_PREFIX/mermaid.png"'"}'
+  echo $JSON_STRING > "$OUTPUT/mermaid.images/info.json"
 
   echo 'Generating cells JSON may take a while...'
   CMD="$BASE/python/mermaid_csv_reader.py $CLI_ARGS"

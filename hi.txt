@@ -1,0 +1,4 @@
+{
+  "sample": 1,
+  "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.17/mermaid/mermaid.image/info.json"
+}
