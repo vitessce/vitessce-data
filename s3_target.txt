@@ -1,1 +1,1 @@
-vitessce-data/0.0.16/toslchan
+vitessce-data/0.0.17/mermaid

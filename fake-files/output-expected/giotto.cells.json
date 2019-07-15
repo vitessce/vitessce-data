@@ -1,0 +1,46 @@
+{
+ "cell_1": {
+  "mappings": {
+   "t-SNE": [
+    -11.0776,
+    6.0311
+   ],
+   "UMAP": [
+    -6.858,
+    15.7691
+   ]
+  },
+  "genes": {},
+  "xy": [
+   1632.02,
+   -1305.7
+  ],
+  "factors": {
+   "pleiden_clus": "Cluster 3",
+   "kmeans": "Cluster 8"
+  },
+  "poly": []
+ },
+ "cell_2": {
+  "mappings": {
+   "t-SNE": [
+    -10.7971,
+    4.0234
+   ],
+   "UMAP": [
+    -8.0222,
+    16.2033
+   ]
+  },
+  "genes": {},
+  "xy": [
+   1589.47,
+   -669.51
+  ],
+  "factors": {
+   "pleiden_clus": "Cluster 3",
+   "kmeans": "Cluster 8"
+  },
+  "poly": []
+ }
+}
