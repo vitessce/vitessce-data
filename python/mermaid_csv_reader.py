@@ -38,13 +38,13 @@ def molecules_json(df):
 
 def image_json():
     s3_target = open('s3_target.txt').read().strip()
+    url = 'https://s3.amazonaws.com/{}/mermaid.images/info.json'.format(
+        s3_target
+    )
     image_dict = {
         'MERrfish': {
             'sample': 1,
-            'tileSource':
-                'https://s3.amazonaws.com/'
-            + '{}/mermaid.images/'.format(s3_target)
-            + 'info.json'
+            'tileSource': url
         }
     }
 
@@ -65,7 +65,7 @@ if __name__ == '__main__':
         help='Create JSON with molecule locations')
     parser.add_argument(
         '--images_file', type=argparse.FileType('x'),
-        help='JSON file which will include image dimensions and location')
+        help='JSON file which will include image location')
     args = parser.parse_args()
 
     with open(args.csv_file) as csv_file:
