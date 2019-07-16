@@ -10,6 +10,15 @@ if [ "$#" -ne 0 ]; then
     die 'No arguments: Lints the python files, and runs unit and end-to-end tests.'
 fi
 
+start target
+TARGET=`sed -e 's/vitessce-data\///' s3_target.txt`
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+[[ "$BRANCH" == 'master' ]] \
+  || [[ "$BRANCH" == "$TARGET" ]] \
+  || die "branch ($BRANCH) != target ($TARGET); Update target:
+          echo 'vitessce-data/$BRANCH' > s3_target.txt"
+end target
+
 start flake8
 flake8
 end flake8
