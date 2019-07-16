@@ -13,7 +13,7 @@ fi
 start target
 TARGET=`sed -e 's/vitessce-data\///' s3_target.txt`
 BRANCH=`git rev-parse --abbrev-ref HEAD`
-[[ "$BRANCH" == 'master' ]] \
+[[ "$BRANCH" == 'HEAD' ]] \
   || [[ "$BRANCH" == "$TARGET" ]] \
   || die "branch ($BRANCH) != target ($TARGET); Update target:
           echo 'vitessce-data/$BRANCH' > s3_target.txt"
