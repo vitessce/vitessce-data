@@ -1,6 +1,6 @@
 {
   "@context": "http://iiif.io/api/image/2/context.json",
-  "@id": "https://s3.amazonaws.com/vitessce-data/0.0.17/mermaid/linnarsson.tiles/linnarsson.images.nuclei",
+  "@id": "https://s3.amazonaws.com/vitessce-data/mccalluc/update-target-with-branch/linnarsson.tiles/linnarsson.images.nuclei",
   "height": 7,
   "profile": [
     "http://iiif.io/api/image/2/level0.json",
