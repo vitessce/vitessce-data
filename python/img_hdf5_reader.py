@@ -107,22 +107,23 @@ class ImgHdf5Reader:
         # This JSON file is not used right now:
         # really just a list of the files processed.
 
-    def get_omexml(self, image, channels, name, pixel_type):
+    def get_omexml(self, pixel_array, channels, name, pixel_type):
         omexml = omexmlClass.OMEXML()
-        omexml.image().Name = name
-        omexml.image().AcquisitionDate = datetime.datetime.now().isoformat()
+        image = omexml.image()
+        image.Name = name
+        image.AcquisitionDate = datetime.datetime.now().isoformat()
 
-        pixels = omexml.image().Pixels
-        pixels.SizeX = image.shape[4]
-        pixels.SizeY = image.shape[3]
-        pixels.SizeC = image.shape[2]
-        pixels.SizeZ = image.shape[1]
-        pixels.SizeT = image.shape[0]
+        pixels = image.Pixels
+        pixels.SizeX = pixel_array.shape[4]
+        pixels.SizeY = pixel_array.shape[3]
+        pixels.SizeC = pixel_array.shape[2]
+        pixels.SizeZ = pixel_array.shape[1]
+        pixels.SizeT = pixel_array.shape[0]
         pixels.PixelType = pixel_type
 
         channel_count = len(channels)
         pixels.channel_count = channel_count
-        for i in range(0, channel_count):
+        for i in range(channel_count):
             pixels.Channel(i).ID = "Channel:0:{}".format(i)
             pixels.Channel(i).Name = channels[i]
 
@@ -131,7 +132,7 @@ class ImgHdf5Reader:
         pixels_elem = root.find("{}Image/{}Pixels".format(ome, ome))
 
         # Repeat for-loop because XML parsing must have channel adjustments
-        for i in range(0, channel_count):
+        for i in range(channel_count):
             et.SubElement(
                 pixels_elem,
                 '{}TiffData'.format(ome),
@@ -166,7 +167,12 @@ class ImgHdf5Reader:
         image = np.expand_dims(image, axis=0)
 
         channels = [tup[0] for tup in channel_clips]
-        omexml = self.get_omexml(image, channels, 'linnarsson', 'uint8')
+        omexml = self.get_omexml(
+            pixel_array=image,
+            channels=channels,
+            name='linnarsson',
+            pixel_type='uint8'
+        )
 
         io.write_ometiff(ometif_path, image, str(omexml))
 
