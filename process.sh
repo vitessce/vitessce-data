@@ -224,7 +224,7 @@ process_mermaid() {
   # The files are redudant, but this reduces the processing that needs
   # to be done on the client-side.
 
-  CSV_IN="$INPUT/data.csv"
+  CSV_IN="$INPUT/mermaid.csv"
 
   CLI_ARGS="--csv_file $CSV_IN"
   add_arg 'cells' 'mermaid'
@@ -239,6 +239,7 @@ process_mermaid() {
   else
     wget "$MERMAID_URL/data.csv.gz" -O "$CSV_IN.gz"
     gunzip -df "$CSV_IN"
+    mv
   fi
 
   PNG_IN="$INPUT/mermaid.png"
