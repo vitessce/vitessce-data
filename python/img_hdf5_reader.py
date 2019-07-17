@@ -2,6 +2,7 @@
 
 from h5py import File
 from apeer_ometiff_library import io, omexmlClass
+import xml.etree.ElementTree as et
 import datetime
 import uuid
 import numpy as np
@@ -108,21 +109,42 @@ class ImgHdf5Reader:
         # really just a list of the files processed.
 
     def get_omexml(self, image, channels, name, pixel_type):
-        print(image.shape)
         omexml = omexmlClass.OMEXML()
-        omexml.image().ID = str(uuid.uuid4())
         omexml.image().Name = name
         omexml.image().AcquisitionDate = datetime.datetime.now().isoformat()
-        omexml.image().Pixels.SizeX = image.shape[3]
-        omexml.image().Pixels.SizeY = image.shape[2]
-        omexml.image().Pixels.SizeC = image.shape[1]
-        omexml.image().Pixels.PixelType = pixel_type
-        channel_count = len(channels)
-        omexml.image().Pixels.channel_count = channel_count
-        for i in range(0, channel_count):
-            omexml.image().Pixels.Channel(i).Name = channels[i]
 
-        return omexml
+        pixels = omexml.image().Pixels
+        pixels.SizeX = image.shape[4]
+        pixels.SizeY = image.shape[3]
+        pixels.SizeC = image.shape[2]
+        pixels.SizeZ = image.shape[1]
+        pixels.SizeT = image.shape[0]
+        pixels.PixelType = pixel_type
+
+
+        channel_count = len(channels)
+        pixels.channel_count = channel_count
+        for i in range(0, channel_count):
+            pixels.Channel(i).ID = "Channel:0:{}".format(i)
+            pixels.Channel(i).Name = channels[i]
+
+        root = et.XML(str(omexml))
+        ome = "{http://www.openmicroscopy.org/Schemas/OME/2016-06}"
+        pixels_elem = root.find("{}Image/{}Pixels".format(ome, ome))
+
+        # Repeat for-loop because XML parsing must have channel adjustments
+        for i in range(0, channel_count):
+            et.SubElement(
+                pixels_elem,
+                '{}TiffData'.format(ome),
+                FirstC=str(i),
+                FirstT="0",
+                FirstZ="0",
+                IFD="0",
+                PlaneCount="1"
+            )
+
+        return omexmlClass.OMEXML(et.tostring(root))
 
     def to_ometiff(self, channel_clips, sample, json_file):
         channels = []
@@ -134,7 +156,7 @@ class ImgHdf5Reader:
             channels.append(channel)
             array = self.scale_sample(
                 channel=channel,
-                sample=1,
+                sample=sample,
                 max_allowed=256,
                 clip=float(clip)
             ).astype(np.uint8)
@@ -143,11 +165,10 @@ class ImgHdf5Reader:
 
         image = np.transpose(np.dstack(tuple(images)))
         image = np.expand_dims(image, axis=0)
+        image = np.expand_dims(image, axis=0)
 
         channels = [tup[0] for tup in channel_clips]
-        omexml = str(self.get_omexml(image, channels, 'linnarsson', 'uint8'))
-
-        print(omexml)
+        omexml = self.get_omexml(image, channels, 'linnarsson', 'uint8')
 
         io.write_ometiff(ometif_path, image, str(omexml))
 
