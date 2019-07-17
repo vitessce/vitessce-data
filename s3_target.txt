@@ -1,1 +1,1 @@
-vitessce-data/mccalluc/update-target-with-branch
+vitessce-data/0.0.17/ometiff-conversion

@@ -46,8 +46,8 @@ S3_TARGET=`cat s3_target.txt`
 
 BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
-GIOTTO_URL='https://vitessce-data.s3.amazonaws.com/source-data/giotto/'
-MERMAID_URL='https://jef.works/MERmaid/'
+GIOTTO_URL='https://vitessce-data.s3.amazonaws.com/source-data/giotto'
+MERMAID_URL='https://jef.works/MERmaid'
 
 if [[ "$CI" = 'true' ]]
 then
@@ -224,27 +224,44 @@ process_mermaid() {
   # The files are redudant, but this reduces the processing that needs
   # to be done on the client-side.
 
-  CSV_IN="$INPUT/data.csv"
-  PNG_IN="$INPUT/bg.png"
+  CSV_IN="$INPUT/mermaid.csv"
 
   CLI_ARGS="--csv_file $CSV_IN"
   add_arg 'cells' 'mermaid'
   add_arg 'molecules' 'mermaid'
+  add_arg 'images' 'mermaid'
 
   echo "Download and process cells..."
 
-  [ -e "$CSV_IN" ] || \
-    curl "$MERMAID_URL/data.csv.gz" | gunzip -d > "$CSV_IN"
-
-  [ -e "$CSV_IN" ] || \
-    wget "$MERMAID_URL/bg.png" -O "$PNG_IN"
-
-  JSON_OUT="$OUTPUT/memrmaid.cells.json"
-  if [ -e "$JSON_OUT" ]
+  if [ -e "$CSV_IN" ]
   then
-    echo "Skipping cells -- output already exists: $JSON_OUT"
+    echo "Skipping csv -- output already exists: $CSV_IN"
+  else
+    wget "$MERMAID_URL/data.csv.gz" -O "$CSV_IN.gz"
+    gunzip -df "$CSV_IN"
+  fi
+
+  PNG_IN="$INPUT/mermaid.png"
+  if [ -e "$PNG_IN" ]
+  then
+    echo "Skipping image -- output already exists: $PNG_IN"
+  else
+    wget "$MERMAID_URL/bg.png" -O "$PNG_IN"
+  fi
+
+  CELLS_OUT="$OUTPUT/memrmaid.cells.json"
+  if [ -e "$CELLS_OUT" ]
+  then
+    echo "Skipping cells -- output already exists: $CELLS_OUT"
     return
   fi
+
+  cp $INPUT/mermaid.png $OUTPUT/mermaid.png
+
+  URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET"
+  mkdir -p "$OUTPUT/mermaid.images/"
+  JSON_STRING='{ "type": "image", "url": "'$URL_PREFIX'/mermaid.png" }'
+  echo $JSON_STRING > "$OUTPUT/mermaid.images/info.json"
 
   echo 'Generating cells JSON may take a while...'
   CMD="$BASE/python/mermaid_csv_reader.py $CLI_ARGS"

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 from h5py import File
-from aicsimageio import omeTifWriter
+from apeer_ometiff_library import io, omexmlClass
+import xml.etree.ElementTree as et
+import datetime
 import numpy as np
 import png
 import argparse
@@ -105,6 +107,44 @@ class ImgHdf5Reader:
         # This JSON file is not used right now:
         # really just a list of the files processed.
 
+    def get_omexml(self, pixel_array, channels, name, pixel_type):
+        omexml = omexmlClass.OMEXML()
+        image = omexml.image()
+        image.Name = name
+        image.AcquisitionDate = datetime.datetime.now().isoformat()
+
+        pixels = image.Pixels
+        pixels.SizeX = pixel_array.shape[4]
+        pixels.SizeY = pixel_array.shape[3]
+        pixels.SizeC = pixel_array.shape[2]
+        pixels.SizeZ = pixel_array.shape[1]
+        pixels.SizeT = pixel_array.shape[0]
+        pixels.PixelType = pixel_type
+
+        channel_count = len(channels)
+        pixels.channel_count = channel_count
+        for i in range(channel_count):
+            pixels.Channel(i).ID = "Channel:0:{}".format(i)
+            pixels.Channel(i).Name = channels[i]
+
+        root = et.XML(str(omexml))
+        ome = "{http://www.openmicroscopy.org/Schemas/OME/2016-06}"
+        pixels_elem = root.find("{}Image/{}Pixels".format(ome, ome))
+
+        # Repeat for-loop because XML parsing must have channel adjustments
+        for i in range(channel_count):
+            et.SubElement(
+                pixels_elem,
+                '{}TiffData'.format(ome),
+                FirstC=str(i),
+                FirstT="0",
+                FirstZ="0",
+                IFD="0",
+                PlaneCount="1"
+            )
+
+        return omexmlClass.OMEXML(et.tostring(root))
+
     def to_ometiff(self, channel_clips, sample, json_file):
         channels = []
         images = []
@@ -118,18 +158,23 @@ class ImgHdf5Reader:
                 sample=sample,
                 max_allowed=256,
                 clip=float(clip)
-            ).astype(np.int8)
+            ).astype(np.uint8)
 
             images.append(array)
 
         image = np.transpose(np.dstack(tuple(images)))
         image = np.expand_dims(image, axis=0)
+        image = np.expand_dims(image, axis=0)
 
-        writer = omeTifWriter.OmeTifWriter(
-            file_path=ometif_path,
-            overwrite_file=False
+        channels = [tup[0] for tup in channel_clips]
+        omexml = self.get_omexml(
+            pixel_array=image,
+            channels=channels,
+            name='linnarsson',
+            pixel_type='uint8'
         )
-        writer.save(image, channel_names=channels)
+
+        io.write_ometiff(ometif_path, image, str(omexml))
 
 
 if __name__ == '__main__':
