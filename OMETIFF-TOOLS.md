@@ -17,8 +17,8 @@
 - Good validation errors/warnings for incomplete OME-XML
 - Drag and drop or importer to view image (for large images, will sample image data for viewing)
 
-
 ## OMERO
+
 - [Installation guide](https://www.openmicroscopy.org/omero/downloads/)
 - Requires a server to run, can request access to demo server
 - Must import data through the app, cannot import through website
