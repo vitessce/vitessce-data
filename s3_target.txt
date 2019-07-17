@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 vitessce-data/0.0.17/ometiff-conversion
+=======
+vitessce-data/mccalluc/update-target-with-branch
+>>>>>>> master

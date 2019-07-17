@@ -10,6 +10,15 @@ if [ "$#" -ne 0 ]; then
     die 'No arguments: Lints the python files, and runs unit and end-to-end tests.'
 fi
 
+start target
+TARGET=`sed -e 's/vitessce-data\///' s3_target.txt`
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+[[ "$BRANCH" == 'HEAD' ]] \
+  || [[ "$BRANCH" == "$TARGET" ]] \
+  || die "branch ($BRANCH) != target ($TARGET); Update target:
+          echo 'vitessce-data/$BRANCH' > s3_target.txt"
+end target
+
 start flake8
 flake8
 end flake8
@@ -37,9 +46,9 @@ perl -pne \
 
 # If you have problems with the TIFF, try this:
 #
-hexdump -C fake-files/output/linnarsson.images.ome.tif > output-dump.txt
-hexdump -C fake-files/output-expected/linnarsson.images.ome.tif > output-expected-dump.txt
-diff output-dump.txt output-expected-dump.txt
+# hexdump -C fake-files/output/linnarsson.images.ome.tif > output-dump.txt
+# hexdump -C fake-files/output-expected/linnarsson.images.ome.tif > output-expected-dump.txt
+# diff output-dump.txt output-expected-dump.txt
 
 diff -w -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100 | cut -c 1-100
 end endtoend

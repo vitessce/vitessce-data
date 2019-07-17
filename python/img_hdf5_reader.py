@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 
 from h5py import File
+<<<<<<< HEAD
 from apeer_ometiff_library import io, omexmlClass
 import xml.etree.ElementTree as et
 import datetime
+=======
+from aicsimageio import omeTifWriter
+>>>>>>> master
 import numpy as np
 import png
 import argparse
@@ -107,6 +111,7 @@ class ImgHdf5Reader:
         # This JSON file is not used right now:
         # really just a list of the files processed.
 
+<<<<<<< HEAD
     def get_omexml(self, image, channels, name, pixel_type):
         omexml = omexmlClass.OMEXML()
         omexml.image().Name = name
@@ -144,6 +149,8 @@ class ImgHdf5Reader:
 
         return omexmlClass.OMEXML(et.tostring(root))
 
+=======
+>>>>>>> master
     def to_ometiff(self, channel_clips, sample, json_file):
         channels = []
         images = []
@@ -157,18 +164,31 @@ class ImgHdf5Reader:
                 sample=sample,
                 max_allowed=256,
                 clip=float(clip)
+<<<<<<< HEAD
             ).astype(np.uint8)
+=======
+            ).astype(np.int8)
+>>>>>>> master
 
             images.append(array)
 
         image = np.transpose(np.dstack(tuple(images)))
         image = np.expand_dims(image, axis=0)
+<<<<<<< HEAD
         image = np.expand_dims(image, axis=0)
 
         channels = [tup[0] for tup in channel_clips]
         omexml = self.get_omexml(image, channels, 'linnarsson', 'uint8')
 
         io.write_ometiff(ometif_path, image, str(omexml))
+=======
+
+        writer = omeTifWriter.OmeTifWriter(
+            file_path=ometif_path,
+            overwrite_file=False
+        )
+        writer.save(image, channel_names=channels)
+>>>>>>> master
 
 
 if __name__ == '__main__':
