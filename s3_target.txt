@@ -1,1 +1,1 @@
-vitessce-data/0.0.17/mermaid
+vitessce-data/0.0.17/ometiff-conversion

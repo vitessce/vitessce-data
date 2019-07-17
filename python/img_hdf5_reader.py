@@ -4,7 +4,6 @@ from h5py import File
 from apeer_ometiff_library import io, omexmlClass
 import xml.etree.ElementTree as et
 import datetime
-import uuid
 import numpy as np
 import png
 import argparse
@@ -120,7 +119,6 @@ class ImgHdf5Reader:
         pixels.SizeZ = image.shape[1]
         pixels.SizeT = image.shape[0]
         pixels.PixelType = pixel_type
-
 
         channel_count = len(channels)
         pixels.channel_count = channel_count
