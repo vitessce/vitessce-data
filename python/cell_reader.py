@@ -276,12 +276,12 @@ def add_log_pca(metadata):
     '''
     pca = decomposition.PCA(n_components=2)
     principle_components = pca.fit_transform(
-        genes_to_samples_by_features(metadata).apply(
-            lambda x: round(np.log(x + 1), 2)
-        )
+        genes_to_samples_by_features(metadata).apply(lambda x: np.log(x + 1))
     ).tolist()
     for (k, pc) in zip(metadata.keys(), principle_components):
-        metadata[k]['mappings']['log PCA'] = [pc]
+        metadata[k]['mappings']['log PCA'] = [
+            round(component, 2) for component in pc
+        ]
 
 
 if __name__ == '__main__':
@@ -316,7 +316,7 @@ if __name__ == '__main__':
 
     metadata = LoomReader(args.loom).data()
     add_pca(metadata)
-    # add_log_pca(metadata)
+    add_log_pca(metadata)
 
     for cell in metadata.values():
         # "Clusters" in the raw data are called "subclusters"

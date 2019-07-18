@@ -166,7 +166,7 @@ process_linnarson_images() {
     [ -e "$HDF5_IN" ] || \
       wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
-    "$BASE/python/img_hdf5_reader.py" \g
+    "$BASE/python/img_hdf5_reader.py" \
       --hdf5 "$HDF5_IN" \
       --channel_clip_pairs polyT:200 nuclei:20 \
       --sample 8 \
