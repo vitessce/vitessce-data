@@ -239,7 +239,6 @@ process_mermaid() {
   else
     wget "$MERMAID_URL/data.csv.gz" -O "$CSV_IN.gz"
     gunzip -df "$CSV_IN"
-    mv
   fi
 
   PNG_IN="$INPUT/mermaid.png"

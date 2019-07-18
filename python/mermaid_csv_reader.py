@@ -8,7 +8,7 @@ from cell_reader import octagon
 import argparse
 
 
-def cells_json(df):
+def cells_dict(df):
     cells_dict = {}
     xy_dict = defaultdict(list)
 
@@ -27,7 +27,7 @@ def cells_json(df):
     return cells_dict
 
 
-def molecules_json(df):
+def molecules_dict(df):
     molecules_dict = defaultdict(list)
 
     for index, row in df.iterrows():
@@ -36,7 +36,7 @@ def molecules_json(df):
     return molecules_dict
 
 
-def image_json():
+def image_dict():
     s3_target = open('s3_target.txt').read().strip()
     url = 'https://s3.amazonaws.com/{}/mermaid.images/info.json'.format(
         s3_target
@@ -72,8 +72,8 @@ if __name__ == '__main__':
         df = pd.read_csv(csv_file)
 
     if args.cells_file:
-        json.dump(cells_json(df), args.cells_file, indent=1)
+        json.dump(cells_dict(df), args.cells_file, indent=1)
     if args.molecules_file:
-        json.dump(molecules_json(df), args.molecules_file, indent=1)
+        json.dump(molecules_dict(df), args.molecules_file, indent=1)
     if args.images_file:
-        json.dump(image_json(), args.images_file, indent=1)
+        json.dump(image_dict(), args.images_file, indent=1)

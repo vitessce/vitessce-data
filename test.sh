@@ -10,6 +10,15 @@ if [ "$#" -ne 0 ]; then
     die 'No arguments: Lints the python files, and runs unit and end-to-end tests.'
 fi
 
+# start target
+# TARGET=`sed -e 's/vitessce-data\///' s3_target.txt`
+# BRANCH=`git rev-parse --abbrev-ref HEAD`
+# [[ "$BRANCH" == 'HEAD' ]] \
+#   || [[ "$BRANCH" == "$TARGET" ]] \
+#   || die "branch ($BRANCH) != target ($TARGET); Update target:
+#           echo 'vitessce-data/$BRANCH' > s3_target.txt"
+# end target
+
 start flake8
 flake8
 end flake8
@@ -31,15 +40,15 @@ CI=true ./process.sh
 # Redundant on Travis, but doesn't hurt anything.
 
 perl -pne \
-  's/uuid:.{36}/uuid:00000000-0000-0000-0000-000000000000/;
-	s/<AcquisitionDate>.{26}/<AcquisitionDate>0000-00-00T00:00:00.000000/;
+  's/<ome:AcquisitionDate>.{26}/<ome:AcquisitionDate>0000-00-00T00:00:00.000000/;
 	s/tifffile.py.{20}/tifffile.py.0000:00:00 00:00:00/' -i fake-files/output/linnarsson.images.ome.tif
+
 
 # If you have problems with the TIFF, try this:
 #
 # hexdump -C fake-files/output/linnarsson.images.ome.tif > output-dump.txt
 # hexdump -C fake-files/output-expected/linnarsson.images.ome.tif > output-expected-dump.txt
-# diff -y output-dump.txt output-expected-dump.txt
+# diff output-dump.txt output-expected-dump.txt
 
 diff -w -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100 | cut -c 1-100
 end endtoend
