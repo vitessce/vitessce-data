@@ -276,12 +276,12 @@ def add_log_pca(metadata):
     '''
     pca = decomposition.PCA(n_components=2)
     principle_components = pca.fit_transform(
-        genes_to_samples_by_features(metadata).apply(lambda x: np.log(x + 1))
+        genes_to_samples_by_features(metadata).apply(
+            lambda x: round(np.log(x + 1), 2)
+        )
     ).tolist()
     for (k, pc) in zip(metadata.keys(), principle_components):
-        metadata[k]['mappings']['log PCA'] = [
-            round(component, 2) for component in pc
-        ]
+        metadata[k]['mappings']['log PCA'] = [pc]
 
 
 if __name__ == '__main__':
