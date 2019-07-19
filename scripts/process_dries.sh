@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source ./scripts/utils.sh
+. ./scripts/utils.sh
 
 set -o errexit
 
