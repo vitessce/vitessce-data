@@ -48,7 +48,7 @@ get_CLI_args(){
                     usage
                 ;;
             t)
-                TARGET=${OPTARG}
+                S3_TARGET=${OPTARG}
                 ;;
         esac
     done
