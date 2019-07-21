@@ -1,1 +1,1 @@
-vitessce-data/0.0.18/separate_scripts
+vitessce-data/0.0.18/rename_output
