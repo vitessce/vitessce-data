@@ -16,7 +16,7 @@ class ImgHdf5Reader:
 
     def keys(self):
         '''
-        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> path = 'fake-files/input/linnarsson/linnarsson.imagery.hdf5'
         >>> reader = ImgHdf5Reader(path)
         >>> len(reader.keys())
         2
@@ -31,7 +31,7 @@ class ImgHdf5Reader:
 
     def sample_image(self, channel, sample):
         '''
-        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> path = 'fake-files/input/linnarsson/linnarsson.imagery.hdf5'
         >>> reader = ImgHdf5Reader(path)
         >>> sampled = reader.sample_image('polyT', 2)
         >>> sampled.shape
@@ -44,7 +44,7 @@ class ImgHdf5Reader:
         '''
         Assumes there are no negative values
 
-        >>> path = 'fake-files/input/linnarsson.imagery.hdf5'
+        >>> path = 'fake-files/input/linnarsson/linnarsson.imagery.hdf5'
         >>> reader = ImgHdf5Reader(path)
         >>> sample = reader.scale_sample('polyT', 10, 255, 20)
         >>> sample.shape

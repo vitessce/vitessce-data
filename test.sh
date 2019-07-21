@@ -30,8 +30,9 @@ end doctest
 start endtoend
 rm -rf fake-files/output || echo 'Nothing to delete'
 mkdir fake-files/output || echo 'Did not mkdir'
+mkdir fake-files/output/linnarsson || echo 'Did not mkdir'
 
-cp fake-files/output{-expected,}/linnarsson.neighborhoods.json
+cp fake-files/output{-expected,}/linnarsson/linnarsson.neighborhoods.json
 # Calculating neightborhoods is slow, and not a requirement right now,
 # so copy over the expected output, and it will not be regenerated.
 
@@ -41,7 +42,7 @@ CI=true ./process.sh
 
 perl -pne \
   's/<ome:AcquisitionDate>.{26}/<ome:AcquisitionDate>0000-00-00T00:00:00.000000/;
-	s/tifffile.py.{20}/tifffile.py.0000:00:00 00:00:00/' -i fake-files/output/linnarsson.images.ome.tif
+	s/tifffile.py.{20}/tifffile.py.0000:00:00 00:00:00/' -i fake-files/output/linnarsson/linnarsson.images.ome.tif
 
 
 # If you have problems with the TIFF, try this:

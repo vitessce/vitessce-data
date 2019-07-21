@@ -41,7 +41,8 @@ class LoomReader:
         '''
         Returns information about each cluster.
 
-        >>> lr = LoomReader('fake-files/input/linnarsson.cells.loom')
+        >>> lr = LoomReader('fake-files/input/linnarsson/\
+linnarsson.cells.loom')
         >>> clusters = lr.clusters()
         >>> clusters[4].name
         'pyramidal L4'
@@ -69,7 +70,8 @@ class LoomReader:
         '''
         Returns a tSNE pair for each valid cell.
 
-        >>> lr = LoomReader('fake-files/input/linnarsson.cells.loom')
+        >>> lr = LoomReader('fake-files/input/linnarsson/\
+linnarsson.cells.loom')
         >>> tsne = lr.tsne()
         >>> tsne['42']
         (-6.917..., 16.644...)
@@ -91,7 +93,8 @@ class LoomReader:
         '''
         Returns the xy position for each valid cell.
 
-        >>> lr = LoomReader('fake-files/input/linnarsson.cells.loom')
+        >>> lr = LoomReader('fake-files/input/linnarsson/\
+linnarsson.cells.loom')
         >>> xy = lr.xy()
         >>> xy['42']
         (21164.7..., 35788.1...)
@@ -113,7 +116,8 @@ class LoomReader:
         '''
         Given a cell_id, returns a dict with the values for each gene.
 
-        >>> lr = LoomReader('fake-files/input/linnarsson.cells.loom')
+        >>> lr = LoomReader('fake-files/input/linnarsson/\
+linnarsson.cells.loom')
         >>> lr.by_cell('42')['Gad2']
         7
         '''
@@ -126,7 +130,8 @@ class LoomReader:
         '''
         Given a gene, returns a dict with the values for each cell.
 
-        >>> lr = LoomReader('fake-files/input/linnarsson.cells.loom')
+        >>> lr = LoomReader('fake-files/input/linnarsson/\
+linnarsson.cells.loom')
         >>> lr.by_gene('Gad2')['42']
         7
         '''
