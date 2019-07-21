@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-. ./scripts/utils.sh
-
 set -o errexit
+
+. ./scripts/utils.sh
 
 main() {
     process_linnarson_cells
@@ -15,6 +15,7 @@ BLOBS_URL='https://storage.googleapis.com/linnarsson-lab-www-blobs/blobs'
 OSMFISH_URL='http://linnarssonlab.org/osmFISH'
 
 ### Functions
+
 process_linnarson_cells() {
     # Download and process data which describes cell locations, boundaries,
     # and gene expression levels. Multiple JSON output files are produced:
@@ -26,18 +27,18 @@ process_linnarson_cells() {
     JSON_OUT="$OUTPUT/linnarsson.cells.json"
 
     CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
-    add_arg 'cells' 'linnarsson'
-    add_arg 'clusters' 'linnarsson'
-    add_arg 'genes' 'linnarsson'
-    add_arg 'neighborhoods' 'linnarsson'
-    add_arg 'factors' 'linnarsson'
+    add_CLI_ARGS 'cells' 'linnarsson'
+    add_CLI_ARGS 'clusters' 'linnarsson'
+    add_CLI_ARGS 'genes' 'linnarsson'
+    add_CLI_ARGS 'neighborhoods' 'linnarsson'
+    add_CLI_ARGS 'factors' 'linnarsson'
 
     echo "Download and process cells..."
 
     [ -e "$LOOM_IN" ] || \
-    wget "$OSMFISH_URL/osmFISH_SScortex_mouse_all_cells.loom" -O "$LOOM_IN"
+        wget "$OSMFISH_URL/osmFISH_SScortex_mouse_all_cells.loom" -O "$LOOM_IN"
     [ -e "$PKL_IN" ] || \
-    wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
+        wget "$BLOBS_URL/osmFISH/data/polyT_seg.pkl" -O "$PKL_IN"
 
     if [ -e "$JSON_OUT" ]
     then
@@ -60,7 +61,7 @@ process_linnarson_molecules() {
     echo "Download and process molecules..."
 
     [ -e "$HDF5_IN" ] || \
-    wget "$BLOBS_URL/osmFISH/data/mRNA_coords_raw_counting.hdf5" -O "$HDF5_IN"
+        wget "$BLOBS_URL/osmFISH/data/mRNA_coords_raw_counting.hdf5" -O "$HDF5_IN"
 
     if [ -e "$JSON_OUT" ]
     then
@@ -90,13 +91,13 @@ process_linnarson_images() {
         echo "Download and generate big images..."
 
         [ -e "$HDF5_IN" ] || \
-        wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
+            wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
         CMD="$BASE/python/img_hdf5_reader.py
-        --hdf5 $HDF5_IN
-        --channel_clip_pairs polyT:200 nuclei:20
-        --sample 8
-        --json_file $JSON_OUT"
+            --hdf5 $HDF5_IN
+            --channel_clip_pairs polyT:200 nuclei:20
+            --sample 8
+            --json_file $JSON_OUT"
         echo "Running: $CMD"
         $CMD
     fi
@@ -108,15 +109,15 @@ process_linnarson_images() {
         echo "Skipping tiling -- output already exists: $TILES_PATH"
     else
         URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/$TILES_BASE"
-        CMD="iiif_static.py $OUTPUT/*.png \
-        --prefix=$URL_PREFIX \
-        --dst=$TILES_PATH \
-        --max-image-pixels=2000000000"
+        CMD="iiif_static.py $OUTPUT/*.png
+            --prefix=$URL_PREFIX
+            --dst=$TILES_PATH
+            --max-image-pixels=2000000000"
         echo "Running: $CMD"
         eval $CMD
     fi
 }
 
 ### Main
-
+get_CLI_args "$@"
 main

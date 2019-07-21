@@ -13,33 +13,41 @@ fi
 
 main() {
     echo
-    echo 'input:'
+    echo 'Input:'
     ls -lh "$INPUT"/
 
     echo
-    echo 'output:'
+    echo 'Output:'
     ls -lh "$OUTPUT"/
 
-    sh ./scripts/process_linnarsson.sh
-    sh ./scripts/process_dries.sh
-    sh ./scripts/process_wang.sh
+    echo
+    echo "Processing Linnarsson data"
+    ./scripts/process_linnarsson.sh -b "$BASE" -i "$INPUT" -o "$OUTPUT" -t "$S3_TARGET"
 
-    echo 'AWS:'
-    if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
-    then
-      echo 'CI: Skip push to AWS'
-    else
-      # Exclude the *HUGE* PNGs in the base directory:
-      # The tiles for S3 are in subdirectories;
-      # We keep the PNGs around because it takes a long time to generate them.
-      aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
-    fi
+    echo
+    echo "Processing Dries data"
+    ./scripts/process_dries.sh -b "$BASE" -i "$INPUT" -o "$OUTPUT" -t "$S3_TARGET"
+
+    echo
+    echo "Processing Wang data"
+    ./scripts/process_wang.sh -b "$BASE" -i "$INPUT" -o "$OUTPUT" -t "$S3_TARGET"
+
+    # echo 'AWS:'
+    # if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
+    # then
+    #     echo 'CI: Skip push to AWS'
+    # else
+    #     # Exclude the *HUGE* PNGs in the base directory:
+    #     # The tiles for S3 are in subdirectories;
+    #     # We keep the PNGs around because it takes a long time to generate them.
+    #     aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
+    # fi
 }
 
 ### Globals
 
-export BASE=`dirname "$0"`
-export S3_TARGET=`cat s3_target.txt`
+BASE=`dirname "$0"`
+S3_TARGET=`cat s3_target.txt`
 
 if [[ "$CI" = 'true' ]]
 then
@@ -51,8 +59,8 @@ else
     FILES="$BASE/big-files"
 fi
 
-export INPUT="$FILES/input"
-export OUTPUT="$FILES/output"
+INPUT="$FILES/input"
+OUTPUT="$FILES/output"
 
 [ -d "$INPUT" ] || mkdir "$INPUT"
 [ -d "$OUTPUT" ] || mkdir "$OUTPUT"

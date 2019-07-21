@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-. ./scripts/utils.sh
-
 set -o errexit
+
+. ./scripts/utils.sh
 
 main() {
     # Download and process data which describes cell locations, boundaries,
@@ -9,21 +9,26 @@ main() {
     # The files are redudant, but this reduces the processing that needs
     # to be done on the client-side.
 
+    get_CLI_args "$@"
+
     CSV_IN="$INPUT/mermaid.csv"
     PNG_IN="$INPUT/mermaid.png"
 
     CLI_ARGS="--csv_file $CSV_IN"
-    add_arg 'cells' 'mermaid'
-    add_arg 'molecules' 'mermaid'
-    add_arg 'images' 'mermaid'
+    add_CLI_ARGS 'cells' 'mermaid'
+    add_CLI_ARGS 'molecules' 'mermaid'
+    add_CLI_ARGS 'images' 'mermaid'
 
     echo "Download and process cells..."
 
-    [ -e "$CSV_IN" ] || \
-    (wget "$MERMAID_URL/data.csv.gz" -O "$CSV_IN.gz" && gunzip -df "$CSV_IN")
+    if [ -e "$CSV_IN" ]
+    then
+        wget "$MERMAID_URL/data.csv.gz" -O "$CSV_IN.gz"
+        gunzip -df "$CSV_IN"
+    fi
 
     [ -e "$PNG_IN" ] || \
-    wget "$MERMAID_URL/bg.png" -O "$PNG_IN"
+        wget "$MERMAID_URL/bg.png" -O "$PNG_IN"
 
     IMAGE_OUT="$OUTPUT/mermaid.png"
     if [ -e "$IMAGE_OUT" ]
@@ -35,7 +40,7 @@ main() {
 
     TILE_BASE='mermaid.images'
     TILE_PATH="$OUTPUT/$TILE_BASE"
-    if [ -e "TILE_PATH" ]
+    if [ -e "$OUTPUT/mermaid.images/info.json" ]
     then
         echo "Skipping tile -- output already exists: $TILE_PATH"
     else
@@ -49,7 +54,6 @@ main() {
     if [ -e "$CELLS_OUT" ]
     then
         echo "Skipping cells -- output already exists: $CELLS_OUT"
-        return
     else
         echo 'Generating cells JSON may take a while...'
         CMD="$BASE/python/mermaid_csv_reader.py $CLI_ARGS"
@@ -64,4 +68,5 @@ MERMAID_URL='https://jef.works/MERmaid'
 
 ### Main
 
+get_CLI_args "$@"
 main
