@@ -1,1 +1,1 @@
-vitessce-data/0.0.18/rename_output
+vitessce-data/0.0.18/reorganize_folders

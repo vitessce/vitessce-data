@@ -89,8 +89,10 @@ class ImgHdf5Reader:
                 # TODO: Pass in portions of this path as parameters
                 'tileSource':
                     'https://s3.amazonaws.com/'
-                + '{}/linnarsson.tiles/linnarsson.images.{}/'.format(
-                    s3_target, channel)
+                + '{}/linnarsson/linnarsson.tiles/'
+                + 'linnarsson.images.{}/'.format(
+                    s3_target, channel
+                )
                 + 'info.json'
             }
             png_path = '{}.{}.png'.format(
