@@ -21,7 +21,7 @@ main() {
 
     echo "Download and process cells..."
 
-    if [ -e "$CSV_IN" ]
+    if [ ! -e "$CSV_IN" ]
     then
         wget "$MERMAID_URL/data.csv.gz" -O "$CSV_IN.gz"
         gunzip -df "$CSV_IN"
