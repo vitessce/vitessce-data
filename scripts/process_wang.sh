@@ -45,9 +45,9 @@ main() {
         echo "Skipping tile -- output already exists: $TILE_PATH"
     else
         URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET"
-        mkdir -p "$OUTPUT/wang.images/"
+        mkdir -p "$TILE_PATH"
         JSON_STRING='{ "type": "image", "url": "'$URL_PREFIX'/wang.png" }'
-        echo $JSON_STRING > "$OUTPUT/wang.images/info.json"
+        echo $JSON_STRING > "$TILE_PATH/info.json"
     fi
 
     CELLS_OUT="$OUTPUT/wang.cells.json"
@@ -62,11 +62,6 @@ main() {
     fi
 }
 
-### Globals
-
-WANG_URL='https://jef.works/MERmaid'
-
 ### Main
 
-get_CLI_args "$@"
-main
+main "$@"
