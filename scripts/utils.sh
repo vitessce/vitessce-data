@@ -18,13 +18,11 @@ add_CLI_ARGS() {
 }
 
 usage() {
-    echo "Usage: $0 -b <directory> -i <directory> -o <directory> -t <target>
-    \t -b \t Base directory
-    \t -i \t Input directory
-    \t -o \t Output directory
-    \t -t \t Amazon S3 target"  1>&2
-
-    exit 1
+    die "Usage: $0 -b <directory> -i <directory> -o <directory> -t <target>
+    -b   Base directory
+    -i   Input directory
+    -o   Output directory
+    -t   Amazon S3 target"
 }
 
 get_CLI_args(){
