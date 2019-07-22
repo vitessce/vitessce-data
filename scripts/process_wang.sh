@@ -21,6 +21,7 @@ main() {
 
     echo "Download and process cells..."
 
+    MERMAID_URL='https://jef.works/MERmaid'
     if [ ! -e "$CSV_IN" ]
     then
         wget "$MERMAID_URL/data.csv.gz" -O "$CSV_IN.gz"
@@ -40,14 +41,14 @@ main() {
 
     TILE_BASE='mermaid.images'
     TILE_PATH="$OUTPUT/$TILE_BASE"
-    if [ -e "$OUTPUT/mermaid.images/info.json" ]
+    if [ -e "$TILE_PATH/info.json" ]
     then
         echo "Skipping tile -- output already exists: $TILE_PATH"
     else
         URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET"
-        mkdir -p "$OUTPUT/mermaid.images/"
+        mkdir -p "$TILE_PATH"
         JSON_STRING='{ "type": "image", "url": "'$URL_PREFIX'/mermaid.png" }'
-        echo $JSON_STRING > "$OUTPUT/mermaid.images/info.json"
+        echo $JSON_STRING > "$TILE_PATH/info.json"
     fi
 
     CELLS_OUT="$OUTPUT/mermaid.cells.json"
@@ -62,11 +63,6 @@ main() {
     fi
 }
 
-### Globals
-
-MERMAID_URL='https://jef.works/MERmaid'
-
 ### Main
 
-get_CLI_args "$@"
-main
+main "$@"

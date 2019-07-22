@@ -36,5 +36,4 @@ main() {
 
 ### Main
 
-get_CLI_args "$@"
-main
+main "$@"
