@@ -32,16 +32,16 @@ main() {
     echo "Processing Wang data"
     ./scripts/process_wang.sh -b "$BASE" -i "$INPUT" -o "$OUTPUT" -t "$S3_TARGET"
 
-    # echo 'AWS:'
-    # if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
-    # then
-    #     echo 'CI: Skip push to AWS'
-    # else
-    #     # Exclude the *HUGE* PNGs in the base directory:
-    #     # The tiles for S3 are in subdirectories;
-    #     # We keep the PNGs around because it takes a long time to generate them.
-    #     aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
-    # fi
+    echo 'AWS:'
+    if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
+    then
+        echo 'CI: Skip push to AWS'
+    else
+        # Exclude the *HUGE* PNGs in the base directory:
+        # The tiles for S3 are in subdirectories;
+        # We keep the PNGs around because it takes a long time to generate them.
+        aws s3 cp --exclude "$OUTPUT/*.png" --recursive "$OUTPUT" s3://"$S3_TARGET"
+    fi
 }
 
 ### Globals

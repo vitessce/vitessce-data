@@ -250,40 +250,6 @@ def add_pca(metadata):
         ]
 
 
-def add_log_pca(metadata):
-    '''
-    >>> metadata = {
-    ...   '0': {
-    ...     'mappings': {},
-    ...     'genes': {'A': 0, 'B': 0, 'A2': 1, 'B2': 0}
-    ...   },
-    ...   '1': {
-    ...     'mappings': {},
-    ...     'genes': {'A': 1, 'B': 1, 'A2': 0, 'B2': 1}
-    ...   },
-    ...   '2': {
-    ...     'mappings': {},
-    ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
-    ...   }
-    ... }
-    >>> add_log_pca(metadata)
-    >>> metadata['0']['mappings']['log PCA']
-    [-1.17, -0.28]
-    >>> metadata['1']['mappings']['log PCA']
-    [-0.04, 0.53]
-    >>> metadata['2']['mappings']['log PCA']
-    [1.21, -0.25]
-    '''
-    pca = decomposition.PCA(n_components=2)
-    principle_components = pca.fit_transform(
-        genes_to_samples_by_features(metadata).apply(lambda x: np.log(x + 1))
-    ).tolist()
-    for (k, pc) in zip(metadata.keys(), principle_components):
-        metadata[k]['mappings']['log PCA'] = [
-            round(component, 2) for component in pc
-        ]
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON with cell metadata and, '
@@ -316,7 +282,6 @@ if __name__ == '__main__':
 
     metadata = LoomReader(args.loom).data()
     add_pca(metadata)
-    # add_log_pca(metadata)
 
     for cell in metadata.values():
         # "Clusters" in the raw data are called "subclusters"
