@@ -17,6 +17,7 @@ main() {
     CLI_ARGS="--csv_file $CSV_IN"
     add_CLI_ARGS 'cells' 'wang'
     add_CLI_ARGS 'molecules' 'wang'
+    add_CLI_ARGS 'genes' 'wang'
     add_CLI_ARGS 'images' 'wang'
 
     echo "Download and process cells..."
