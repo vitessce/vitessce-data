@@ -10,7 +10,13 @@ import argparse
 
 def cells_dict(df):
     cells_dict = {}
+    genes_dict = defaultdict(list)
     xy_dict = defaultdict(list)
+
+    df_genes = df.groupby(['cell', 'gene1']).size().reset_index(name='count')
+
+    for index, row in df_genes.iterrows():
+            genes_dict[row['cell']].append((row['gene1'], row['count']))
 
     for index, row in df.iterrows():
             xy_dict[row['cell']].append([row['x'], row['y']])
@@ -18,7 +24,7 @@ def cells_dict(df):
     for cell in xy_dict:
         cells_dict[cell] = {
             "mappings": {},
-            "genes": {},
+            "genes": dict(genes_dict[cell]),
             "xy": list(map(np.mean, zip(*xy_dict[cell]))),
             "factors": {},
             "poly": octagon(np.array(xy_dict[cell]))
