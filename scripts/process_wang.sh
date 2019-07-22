@@ -17,6 +17,7 @@ main() {
     CLI_ARGS="--csv_file $CSV_IN"
     add_CLI_ARGS 'cells' 'wang'
     add_CLI_ARGS 'molecules' 'wang'
+    add_CLI_ARGS 'genes' 'wang'
     add_CLI_ARGS 'images' 'wang'
 
     echo "Download and process cells..."
@@ -51,15 +52,15 @@ main() {
     fi
 
     CELLS_OUT="$OUTPUT/wang.cells.json"
-    if [ -e "$CELLS_OUT" ]
-    then
-        echo "Skipping cells -- output already exists: $CELLS_OUT"
-    else
+    # if [ -e "$CELLS_OUT" ]
+    # then
+    #     echo "Skipping cells -- output already exists: $CELLS_OUT"
+    # else
         echo 'Generating cells JSON may take a while...'
         CMD="$BASE/python/wang_csv_reader.py $CLI_ARGS"
         echo "Running: $CMD"
         eval $CMD
-    fi
+    # fi
 }
 
 ### Globals
