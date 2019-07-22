@@ -108,7 +108,7 @@ process_linnarson_images() {
     then
         echo "Skipping tiling -- output already exists: $TILES_PATH"
     else
-        URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarson/$TILES_BASE"
+        URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
         CMD="iiif_static.py $OUTPUT/*.png
             --prefix=$URL_PREFIX
             --dst=$TILES_PATH
