@@ -20,10 +20,11 @@ add_CLI_ARGS() {
 usage() {
     echo "$0 processes and prepares data for visualization using Vitessce."
     echo "Usage: $0 --b <directory> --i <directory> --o <directory> --t <target>"
-    echo "\t -b \t Base directory"
-    echo "\t -i \t Input directory"
-    echo "\t -o \t Output directory"
-    echo "\t -t \t Amazon S3 target\n"
+    echo -e "\t -b \t Base directory"
+    echo -e "\t -i \t Input directory"
+    echo -e "\t -o \t Output directory"
+    echo -e "\t -t \t Amazon S3 target"
+    echo
 
     exit 1
 }
