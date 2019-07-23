@@ -72,6 +72,7 @@ OUTPUT="$FILES/output"
 [ -d "$OUTPUT/dries" ] || mkdir "$OUTPUT/dries"
 [ -d "$OUTPUT/wang" ] || mkdir "$OUTPUT/wang"
 
+
 ### Main
 
 main

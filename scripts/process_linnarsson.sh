@@ -4,6 +4,8 @@ set -o errexit
 . ./scripts/utils.sh
 
 main() {
+    get_CLI_args "$@"
+
     process_linnarson_cells
     process_linnarson_molecules
     process_linnarson_images
@@ -119,5 +121,5 @@ process_linnarson_images() {
 }
 
 ### Main
-get_CLI_args "$@"
-main
+
+main "$@"
