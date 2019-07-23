@@ -44,7 +44,7 @@ def molecules_dict(df):
 
 def image_dict():
     s3_target = open('s3_target.txt').read().strip()
-    url = 'https://s3.amazonaws.com/{}/mermaid.images/info.json'.format(
+    url = 'https://s3.amazonaws.com/{}/wang.images/info.json'.format(
         s3_target
     )
     image_dict = {
