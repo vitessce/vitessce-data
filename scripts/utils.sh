@@ -18,7 +18,8 @@ add_CLI_ARGS() {
 }
 
 usage() {
-    die "Usage: $0 -b <directory> -i <directory> -o <directory> -t <target>
+    die "$1 is not a directory.
+Usage: $0 -b <directory> -i <directory> -o <directory> -t <target>
     -b   Base directory
     -i   Input directory
     -o   Output directory
@@ -32,19 +33,16 @@ get_CLI_args(){
         count=$(($count + 1))
         case $arg in
             b)
+                [ -d "$OPTARG" ] || usage "$OPTARG"
                 BASE=${OPTARG}
-                [ -d "${OPTARG}" ] || \
-                    usage
                 ;;
             i)
+                [ -d "$OPTARG" ] || usage "$OPTARG"
                 INPUT=${OPTARG}
-                [ -d "${OPTARG}" ] || \
-                    usage
                 ;;
             o)
+                [ -d "$OPTARG" ] || usage "$OPTARG"
                 OUTPUT=${OPTARG}
-                [ -d "${OPTARG}" ] || \
-                    usage
                 ;;
             t)
                 S3_TARGET=${OPTARG}

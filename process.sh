@@ -32,6 +32,10 @@ main() {
     echo "Processing Wang data"
     ./scripts/process_wang.sh -b "$BASE" -i "$INPUT/wang" -o "$OUTPUT/wang" -t "$S3_TARGET"
 
+    echo
+    echo "Processing Cao data"
+    ./scripts/process_cao.sh -b "$BASE" -i "$INPUT/cao" -o "$OUTPUT/cao" -t "$S3_TARGET"
+
     echo 'AWS:'
     if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
     then
