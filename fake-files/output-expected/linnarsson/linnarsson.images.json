@@ -1,0 +1,10 @@
+{
+  "polyT": {
+    "sample": 8,
+    "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.18/reorganize_folders/linnarsson/linnarsson.tiles/linnarsson.images.polyT/info.json"
+  },
+  "nuclei": {
+    "sample": 8,
+    "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.18/reorganize_folders/linnarsson/linnarsson.tiles/linnarsson.images.nuclei/info.json"
+  }
+}

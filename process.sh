@@ -22,15 +22,15 @@ main() {
 
     echo
     echo "Processing Linnarsson data"
-    ./scripts/process_linnarsson.sh -b "$BASE" -i "$INPUT" -o "$OUTPUT" -t "$S3_TARGET"
+    ./scripts/process_linnarsson.sh -b "$BASE" -i "$INPUT/linnarsson" -o "$OUTPUT/linnarsson" -t "$S3_TARGET"
 
     echo
     echo "Processing Dries data"
-    ./scripts/process_dries.sh -b "$BASE" -i "$INPUT" -o "$OUTPUT" -t "$S3_TARGET"
+    ./scripts/process_dries.sh -b "$BASE" -i "$INPUT/dries" -o "$OUTPUT/dries" -t "$S3_TARGET"
 
     echo
     echo "Processing Wang data"
-    ./scripts/process_wang.sh -b "$BASE" -i "$INPUT" -o "$OUTPUT" -t "$S3_TARGET"
+    ./scripts/process_wang.sh -b "$BASE" -i "$INPUT/wang" -o "$OUTPUT/wang" -t "$S3_TARGET"
 
     echo 'AWS:'
     if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
@@ -63,7 +63,15 @@ INPUT="$FILES/input"
 OUTPUT="$FILES/output"
 
 [ -d "$INPUT" ] || mkdir "$INPUT"
+[ -d "$INPUT/linnarsson" ] || mkdir "$INPUT/linnarsson"
+[ -d "$INPUT/dries" ] || mkdir "$INPUT/dries"
+[ -d "$INPUT/wang" ] || mkdir "$INPUT/wang"
+
 [ -d "$OUTPUT" ] || mkdir "$OUTPUT"
+[ -d "$OUTPUT/linnarsson" ] || mkdir "$OUTPUT/linnarsson"
+[ -d "$OUTPUT/dries" ] || mkdir "$OUTPUT/dries"
+[ -d "$OUTPUT/wang" ] || mkdir "$OUTPUT/wang"
+
 
 ### Main
 

@@ -12,7 +12,7 @@ class CountsHdf5Reader:
 
     def keys(self):
         '''
-        # >>> path = 'fake-files/input/linnarsson.molecules.hdf5'
+        # >>> path = 'fake-files/input/linnarsson/linnarsson.molecules.hdf5'
         # >>> reader = CountsHdf5Reader(path)
         # >>> len(reader.keys())
         # 39
@@ -24,7 +24,7 @@ class CountsHdf5Reader:
 
     def __getitem__(self, key):
         '''
-        # >>> path = 'fake-files/input/linnarsson.molecules.hdf5'
+        # >>> path = 'fake-files/input/linnarsson/linnarsson.molecules.hdf5'
         # >>> reader = CountsHdf5Reader(path)
         # >>> pairs = list(reader['Acta2_Hybridization5'])
         # >>> len(pairs)

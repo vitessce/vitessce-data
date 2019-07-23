@@ -22,6 +22,8 @@ main() {
 
     echo "Download and process cells..."
 
+    WANG_URL='https://jef.works/MERmaid'
+
     if [ ! -e "$CSV_IN" ]
     then
         wget "$WANG_URL/data.csv.gz" -O "$CSV_IN.gz"
