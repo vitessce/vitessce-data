@@ -29,6 +29,7 @@ Usage: $0 -b <directory> -i <directory> -o <directory> -t <target>
 }
 
 get_CLI_args(){
+    echo "Parsing: $@"
     while getopts "b:i:o:t:" arg; do
         count=$(($count + 1))
         case $arg in

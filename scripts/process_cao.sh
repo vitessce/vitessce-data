@@ -11,10 +11,7 @@ main() {
 
     get_CLI_args "$@"
 
-    # EXPRESSION_TSV_IN="$INPUT/cao.expression.tsv"
-    #
-    # CLI_ARGS="--tsv_file $EXPRESSION_TSV_IN"
-    # add_CLI_ARGS 'cells' 'cao'
+    add_CLI_ARGS 'cells' 'cao'
 
     echo "Download and process cells..."
 
@@ -47,17 +44,16 @@ main() {
         wget "https://cells.ucsc.edu/mouse-organogenesis/meta.tsv" -O "$META_TSV_IN"
     fi
 
-    # CELLS_OUT="$OUTPUT/cao.cells.json"
-    # if [ -e "$CELLS_OUT" ]
-    # then
-    #     echo "Skipping cells -- output already exists: $CELLS_OUT"
-    # else
-    #     echo 'Generating cells JSON may take a while...'
-    #     CMD="$BASE/python/cao_tsv_reader.py $CLI_ARGS"
-    #     echo "Running: $CMD"
-    #     echo 'TODO!!!'
-    #     # eval $CMD
-    # fi
+    CELLS_OUT="$OUTPUT/cao.cells.json"
+    if [ -e "$CELLS_OUT" ]
+    then
+        echo "Skipping cells -- output already exists: $CELLS_OUT"
+    else
+        echo 'Generating cells JSON may take a while...'
+        CMD="$BASE/python/cao_tsv_reader.py $CLI_ARGS"
+        echo "Running: $CMD"
+        eval $CMD
+    fi
 }
 
 ### Main

@@ -12,29 +12,23 @@ if [ "$#" -ne 0 ]; then
 fi
 
 main() {
-    echo
-    echo 'Input:'
-    ls -lh "$INPUT"/
+    INPUT="$FILES/input"
+    OUTPUT="$FILES/output"
 
-    echo
-    echo 'Output:'
-    ls -lh "$OUTPUT"/
+    for DATASET in linnarsson dries wang; do
+        INPUT_SET="$INPUT/$DATASET"
+        OUTPUT_SET="$OUTPUT/$DATASET"
+        [ -d "$INPUT_SET" ] || mkdir -p "$INPUT_SET"
+        [ -d "$OUTPUT_SET" ] || mkdir -p "$OUTPUT_SET"
 
-    echo
-    echo "Processing Linnarsson data"
-    ./scripts/process_linnarsson.sh -b "$BASE" -i "$INPUT/linnarsson" -o "$OUTPUT/linnarsson" -t "$S3_TARGET"
-
-    echo
-    echo "Processing Dries data"
-    ./scripts/process_dries.sh -b "$BASE" -i "$INPUT/dries" -o "$OUTPUT/dries" -t "$S3_TARGET"
-
-    echo
-    echo "Processing Wang data"
-    ./scripts/process_wang.sh -b "$BASE" -i "$INPUT/wang" -o "$OUTPUT/wang" -t "$S3_TARGET"
-
-    echo
-    echo "Processing Cao data"
-    ./scripts/process_cao.sh -b "$BASE" -i "$INPUT/cao" -o "$OUTPUT/cao" -t "$S3_TARGET"
+        echo
+        echo "Processing $DATASET ..."
+        ./scripts/process_$DATASET.sh \
+            -b "$BASE" \
+            -i "$INPUT_SET" \
+            -o "$OUTPUT_SET" \
+            -t "$S3_TARGET"
+    done
 
     echo 'AWS:'
     if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
@@ -62,20 +56,6 @@ then
 else
     FILES="$BASE/big-files"
 fi
-
-INPUT="$FILES/input"
-OUTPUT="$FILES/output"
-
-[ -d "$INPUT" ] || mkdir "$INPUT"
-[ -d "$INPUT/linnarsson" ] || mkdir "$INPUT/linnarsson"
-[ -d "$INPUT/dries" ] || mkdir "$INPUT/dries"
-[ -d "$INPUT/wang" ] || mkdir "$INPUT/wang"
-
-[ -d "$OUTPUT" ] || mkdir "$OUTPUT"
-[ -d "$OUTPUT/linnarsson" ] || mkdir "$OUTPUT/linnarsson"
-[ -d "$OUTPUT/dries" ] || mkdir "$OUTPUT/dries"
-[ -d "$OUTPUT/wang" ] || mkdir "$OUTPUT/wang"
-
 
 ### Main
 
