@@ -10,7 +10,9 @@ main() {
     # to be done on the client-side.
 
     get_CLI_args "$@"
+    TSV_TSNE_IN="$INPUT/cao.coords.tsv"
 
+    CLI_ARGS="--tsv_tsne_file $TSV_TSNE_IN"
     add_CLI_ARGS 'cells' 'cao'
 
     echo "Download and process cells..."
@@ -29,16 +31,13 @@ main() {
     #     gunzip -df "$EXPRESSION_TSV_IN"
     # fi
 
-    COORDS_TSV_IN="$INPUT/cao.coords.tsv"
-
-    if [ ! -e "$COORDS_TSV_IN" ]
+    if [ ! -e "$TSV_TSNE_IN" ]
     then
-        wget "https://cells.ucsc.edu/mouse-organogenesis/tSNE.coords.tsv.gz" -O "$COORDS_TSV_IN.gz"
-        gunzip -df "$COORDS_TSV_IN"
+        wget "https://cells.ucsc.edu/mouse-organogenesis/tSNE.coords.tsv.gz" -O "$TSV_TSNE_IN.gz"
+        gunzip -df "$TSV_TSNE_IN"
     fi
 
     META_TSV_IN="$INPUT/cao.meta.tsv"
-
     if [ ! -e "$META_TSV_IN" ]
     then
         wget "https://cells.ucsc.edu/mouse-organogenesis/meta.tsv" -O "$META_TSV_IN"

@@ -23,12 +23,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create JSON from Cao t-SNE TSV from UCSB.')
     parser.add_argument(
-        '--tsv_file', required=True,
+        '--tsv_tsne_file', required=True,
         help='TSV file from UCSB giving t-SNE coordinates.')
     parser.add_argument(
         '--cells_file', type=argparse.FileType('x'), required=True,
         help='Write the cell data to this file.')
     args = parser.parse_args()
 
-    cells = cells_dict(args.csv_file)
+    cells = cells_dict(args.tsv_tsne_file)
     json.dump(cells, args.cells_file, indent=1)

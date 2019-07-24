@@ -15,7 +15,8 @@ main() {
     INPUT="$FILES/input"
     OUTPUT="$FILES/output"
 
-    for DATASET in linnarsson dries wang; do
+    #for DATASET in linnarsson dries wang cao; do
+    for DATASET in cao; do
         INPUT_SET="$INPUT/$DATASET"
         OUTPUT_SET="$OUTPUT/$DATASET"
         [ -d "$INPUT_SET" ] || mkdir -p "$INPUT_SET"
@@ -59,4 +60,4 @@ fi
 
 ### Main
 
-main
+main "$FILES"
