@@ -18,8 +18,8 @@ add_CLI_ARGS() {
 }
 
 usage() {
-    die "$1 is not a directory.
-Usage: $0 -b <directory> -i <directory> -o <directory> -t <target>
+    [ -z "$1" ] || echo "$1 is not a directory." 1>&2
+    die "Usage: $0 -b <directory> -i <directory> -o <directory> -t <target>
     -b   Base directory
     -i   Input directory
     -o   Output directory
