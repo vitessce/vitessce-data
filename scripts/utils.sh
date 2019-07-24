@@ -23,9 +23,7 @@ usage() {
     -b   Base directory
     -i   Input directory
     -o   Output directory
-    -t   Amazon S3 target" 1>&2
-
-    exit 1
+    -t   Amazon S3 target"
 }
 
 get_CLI_args(){
