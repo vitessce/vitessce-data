@@ -1,0 +1,82 @@
+{
+ "sci3-me-001.GTCGGAGTTTGAGGTAGAA": {
+  "mappings": {
+   "t-SNE": [
+    35344.0,
+    37644.0
+   ]
+  }
+ },
+ "sci3-me-001.ATTAGTCTGTGTATAATACG": {
+  "mappings": {
+   "t-SNE": [
+    58583.0,
+    26203.0
+   ]
+  }
+ },
+ "sci3-me-001.GAGGAACTTAATACCATCC": {
+  "mappings": {
+   "t-SNE": [
+    10691.0,
+    25870.0
+   ]
+  }
+ },
+ "sci3-me-001.TTCGCGGATACTCTCTCAA": {
+  "mappings": {
+   "t-SNE": [
+    30857.0,
+    36022.0
+   ]
+  }
+ },
+ "sci3-me-001.ACTGGTTATTTGCGCCATCT": {
+  "mappings": {
+   "t-SNE": [
+    35205.0,
+    51712.0
+   ]
+  }
+ },
+ "sci3-me-001.TGGTCGAATGATCGCTTCT": {
+  "mappings": {
+   "t-SNE": [
+    31552.0,
+    46250.0
+   ]
+  }
+ },
+ "sci3-me-001.TTGGCGACTGCTCAGCCGG": {
+  "mappings": {
+   "t-SNE": [
+    37155.0,
+    38946.0
+   ]
+  }
+ },
+ "sci3-me-001.ATAAGCGAATTAGATCTACT": {
+  "mappings": {
+   "t-SNE": [
+    21831.0,
+    29858.0
+   ]
+  }
+ },
+ "sci3-me-001.GTCGGAGTTTAGACTTCTT": {
+  "mappings": {
+   "t-SNE": [
+    23428.0,
+    48366.0
+   ]
+  }
+ },
+ "sci3-me-001.AATACCGAATAATTATCAGC": {
+  "mappings": {
+   "t-SNE": [
+    33425.0,
+    53473.0
+   ]
+  }
+ }
+}

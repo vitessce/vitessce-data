@@ -13,7 +13,7 @@ def cells_dict(filename):
             id, x, y = row
             cells[id] = {
                 'mappings': {
-                    't-SNE': [x, y]
+                    't-SNE': [float(x), float(y)]
                 }
             }
     return cells
