@@ -98,7 +98,7 @@ process_linnarson_images() {
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN
             --channel_clip_pairs polyT:200 nuclei:20
-            --sample 8
+            --sample 1
             --json_file $JSON_OUT"
         echo "Running: $CMD"
         $CMD
