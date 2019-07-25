@@ -8,16 +8,17 @@ import os
 # clean environment, brew install vips and pip install pyvips
 def tile_ometiff(filename, channel_pages, output_directory):
 
-    print("enter func")
     for (channel, page) in channel_pages:
-        print("enter forloop")
         image = pyvips.Image.tiffload(filename, page=page)
-        print("image loaded")
-        subfolder = 'linnarsson.images.{}'.format(channel)
-        path = os.path.join(output_directory, subfolder)
-        print("made path: " + path)
+
+        path = os.path.join(
+            output_directory,
+            'linnarsson.images.{}'.format(channel)
+        )
+
         if not os.path.exists(path):
             os.mkdir(path)
+
         pyvips.Image.dzsave(image, os.path.join(path, channel))
 
 if __name__ == '__main__':
@@ -34,11 +35,7 @@ if __name__ == '__main__':
         help='Directory for output')
     args = parser.parse_args()
 
-    print("enter main")
-
     channel_pages = [pair.split(':') for pair in args.channel_page_pairs]
-
-    print("channel split")
 
     tile_ometiff(
         filename=args.ometiff_file,
