@@ -1,1 +1,1 @@
-vitessce-data/0.0.18/reorganize_folders
+vitessce-data/0.0.18/tile_ometiff

@@ -59,7 +59,7 @@ def image_dict():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Create JSON with cell metadata from erMAID CSV.')
+        description='Create JSON with cell metadata from MERmaid CSV.')
     parser.add_argument(
         '--csv_file', required=True,
         help='CSV file from MERfish data.')
