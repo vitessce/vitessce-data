@@ -5,11 +5,18 @@ import os
 # pyvips can run into issues with conda environments. Recommend to use a
 # clean environment, brew install vips and pip install pyvips
 def tile_ometiff(filename, channel_pages, output_directory):
-    print(channel_pages)
+
+    print("enter func")
     for (channel, page) in channel_pages:
+        print("enter forloop")
         image = pyvips.Image.tiffload(filename, page=page)
-        path = os.path.join(output_directory, channel)
-        pyvips.Image.dzsave(image, path)
+        print("image loaded")
+        subfolder = 'linnarson.images.{}'.format(channel)
+        path = os.path.join(output_directory, subfolder)
+        print("made path: " + path)
+        if not os.path.exists(path):
+            os.mkdir(path)
+        pyvips.Image.dzsave(image, os.path.join(path, channel))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -25,10 +32,12 @@ if __name__ == '__main__':
         help='Directory for output')
     args = parser.parse_args()
 
+    print("enter main")
+
     channel_pages = [pair.split(':') for pair in args.channel_page_pairs]
 
-    # output_directory = big-files/output/linnarsson/
-    # if you try to add another folder layer, it will not let work
+    print("channel split")
+
     tile_ometiff(
         filename=args.ometiff_file,
         channel_pages=channel_pages,
