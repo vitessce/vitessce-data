@@ -29,7 +29,7 @@ main() {
     else
         echo 'Generating cells JSON may take a while...'
         CMD="$BASE/python/dries_json_reader.py $CLI_ARGS"
-        echo "running: $CMD"
+        echo "Running: $CMD"
         eval $CMD
     fi
 }

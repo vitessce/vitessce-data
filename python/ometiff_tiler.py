@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pyvips
 import argparse
 import os
@@ -11,7 +13,7 @@ def tile_ometiff(filename, channel_pages, output_directory):
         print("enter forloop")
         image = pyvips.Image.tiffload(filename, page=page)
         print("image loaded")
-        subfolder = 'linnarson.images.{}'.format(channel)
+        subfolder = 'linnarsson.images.{}'.format(channel)
         path = os.path.join(output_directory, subfolder)
         print("made path: " + path)
         if not os.path.exists(path):
