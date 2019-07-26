@@ -12,7 +12,10 @@ addons:
 #     and hopefully that's good enough?
 # https://docs.travis-ci.com/user/reference/osx#runtimes
 install:
+  # TODO: These are just for debugging...
+  - ls -d /usr/local/lib/python*
   - python3 --version
+
   - pip3 install -r requirements.txt
   - pip3 install -r requirements-dev.txt
 script:
