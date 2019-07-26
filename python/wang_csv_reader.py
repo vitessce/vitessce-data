@@ -16,10 +16,10 @@ def cells_dict(df):
     df_genes = df.groupby(['cell', 'gene1']).size().reset_index(name='count')
 
     for index, row in df_genes.iterrows():
-            genes_pair_list[row['cell']].append((row['gene1'], row['count']))
+        genes_pair_list[row['cell']].append((row['gene1'], row['count']))
 
     for index, row in df.iterrows():
-            xy_dict[row['cell']].append([row['x'], row['y']])
+        xy_dict[row['cell']].append([row['x'], row['y']])
 
     for cell in xy_dict:
         cells_dict[cell] = {
@@ -37,7 +37,7 @@ def molecules_dict(df):
     molecules_dict = defaultdict(list)
 
     for index, row in df.iterrows():
-            molecules_dict[row['gene1']].append([row['x'], row['y']])
+        molecules_dict[row['gene1']].append([row['x'], row['y']])
 
     return molecules_dict
 

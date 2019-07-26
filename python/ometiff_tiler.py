@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-
 import pyvips
 import argparse
 import os
 
 # pyvips can run into issues with conda environments. Recommend to use a
 # clean environment, brew install vips and pip install pyvips
-def tile_ometiff(filename, channel_pages, output_directory):
 
+
+def tile_ometiff(filename, channel_pages, output_directory):
     for (channel, page) in channel_pages:
         image = pyvips.Image.tiffload(filename, page=page)
 
@@ -20,6 +20,7 @@ def tile_ometiff(filename, channel_pages, output_directory):
             os.mkdir(path)
 
         pyvips.Image.dzsave(image, os.path.join(path, channel))
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
