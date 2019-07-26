@@ -5,14 +5,15 @@ addons:
   homebrew:
     packages:
       - vips
+      - python3
 # ... but Python isn't as well supported on Mac images:
 # https://github.com/travis-ci/travis-ci/issues/9744#issuecomment-419426053
 # ... so we can't specify version, but at least one Python version should be pre-installed,
 #     and hopefully that's good enough?
 # https://docs.travis-ci.com/user/reference/osx#runtimes
 install:
-  - python --version
-  - pip install -r requirements.txt
-  - pip install -r requirements-dev.txt
+  - python3 --version
+  - pip3 install -r requirements.txt
+  - pip3 install -r requirements-dev.txt
 script:
   - ./test.sh
