@@ -3,7 +3,7 @@ python:
   - '3.6'
 cache: pip
 before_install:
-  - sudo apt-get install python3-gi gir1.2-vips-8.0
+  - sudo apt-get install libvips libvips-dev
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
