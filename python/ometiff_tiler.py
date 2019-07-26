@@ -3,9 +3,6 @@ import pyvips
 import argparse
 import os
 
-# pyvips can run into issues with conda environments. Recommend to use a
-# clean environment, brew install vips and pip install pyvips
-
 
 def tile_ometiff(filename, channel_pages, output_directory):
     for (channel, page) in channel_pages:
