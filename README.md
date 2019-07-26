@@ -14,8 +14,13 @@ For example: The mRNA HDF5 is 30M, but as JSON it is still only 37M.
 
 ## Install
 
-`vitessce-data` requires Python 3. Set up a clean environment using venv or conda,
-install vips with `brew`:
+`vitessce-data` requires Python 3. First, set up a clean environment. If you are using conda:
+```
+conda create python=3.6 -n vitessce-data
+# Confirm install, and then:
+source activate vitessce-data
+```
+Then install vips with `brew`:
 ```
 brew install vips
 ```
