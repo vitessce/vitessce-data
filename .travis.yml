@@ -3,7 +3,9 @@ python:
   - '3.6'
 cache: pip
 before_install:
-  - wget http://ftp.us.debian.org/debian/pool/main/v/vips/libvips42_8.7.4-1_amd64.deb
+  - sudo apt-get clean
+  - sudo apt-get update
+  - sudo apt-get install dpkgwget http://ftp.us.debian.org/debian/pool/main/v/vips/libvips42_8.7.4-1_amd64.deb
   - sudo dpkg -i libvips42_8.7.4-1_amd64.deb
 install:
   - pip install -r requirements.txt
