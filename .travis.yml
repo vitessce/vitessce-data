@@ -1,3 +1,10 @@
+os: osx
+# We only need OSX to make the libvips install easier:
+# Debian packages are available, but not for versions that Travis supports? Argh.
+addons:
+  homebrew:
+    packages:
+      - vips
 language: python
 python:
   - '3.6'
