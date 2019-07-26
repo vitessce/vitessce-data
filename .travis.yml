@@ -3,8 +3,12 @@ python:
   - '3.6'
 cache: pip
 before_install:
-  - which python
-  - sudo apt install libvips libvips-dev
+  - ls /home/travis/virtualenv/python3.6.3/lib/python3.6/
+  - ls /home/travis/virtualenv/python3.6.3/lib/python3.6/dist-packages/
+  - ls /home/travis/virtualenv/python3.6.3/lib/python3.6/dist-packages/gi/
+  - ls /home/travis/virtualenv/python3.6.3/lib/python3.6/dist-packages/gi/overrides/
+  - sudo apt install libvips libvips-tools
+  - sudo apt-get update
   - sudo apt-get install python3-gi gir1.2-vips-8.0
   - sudo wget https://raw.githubusercontent.com/jcupitt/libvips/8.4/python/packages/gi/overrides/Vips.py -O /usr/lib/python3/dist-packages/gi/overrides/Vips.py
 install:
