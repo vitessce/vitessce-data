@@ -3,7 +3,11 @@ python:
   - '3.6'
 cache: pip
 before_install:
-  - sudo apt-get install libvips libvips-dev
+  - sudo apt-get install python3-gi gir1.2-vips-8.0
+  - sudo su
+  - wget https://raw.githubusercontent.com/jcupitt/libvips/8.4/python/packages/gi/overrides/Vips.py \
+    -O /usr/lib/python3/dist-packages/gi/overrides/Vips.py
+exit
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
