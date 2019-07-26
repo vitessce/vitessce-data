@@ -24,7 +24,7 @@ flake8
 end flake8
 
 start doctest
-python -m doctest python/*.py -o ELLIPSIS
+python3 -m doctest python/*.py -o ELLIPSIS
 end doctest
 
 start endtoend
