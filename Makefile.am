@@ -17,7 +17,7 @@ EXTRA_DIST = \
 	libvips.supp \
 	lsan.supp \
 	depcomp \
-	README.md
+	README.md 
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = vips.pc vips-cpp.pc
