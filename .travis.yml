@@ -28,8 +28,6 @@ addons:
       - libpoppler-glib-dev
       - librsvg2-dev
       - libwebp-dev
-        # missing on trusty, unfortunately
-        # - libwebpmux2
       - libfftw3-dev
       - libglib2.0-dev
 
