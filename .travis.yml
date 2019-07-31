@@ -14,24 +14,24 @@ dist: trusty
 addons:
   apt:
     packages:
-      - libexpat1-dev
+      - libexpat1
       - gettext
-      - liblcms2-dev
-      - libmagickwand-dev
-      - libopenexr-dev
-      - libcfitsio3-dev
-      - libgif-dev
-      - libgs-dev
-      - libgsf-1-dev
-      - libmatio-dev
-      - libopenslide-dev
-      - liborc-0.4-dev
-      - libpango1.0-dev
-      - libpoppler-glib-dev
-      - librsvg2-dev
-      - libwebp-dev
-      - libfftw3-dev
-      - libglib2.0-dev
+      - liblcms2
+      - libmagickwand
+      - libopenexr
+      - libcfitsio3
+      - libgif
+      - libgs
+      - libgsf-1
+      - libmatio
+      - libopenslide
+      - liborc-0.4
+      - libpango1.0
+      - libpoppler-glib
+      - librsvg2
+      - libwebp
+      - libfftw3
+      - libglib2.0
 
 # The following is our own code
 
