@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This file was sourced from https://github.com/libvips/pyvips
+# This file was sourced from https://github.com/libvips/pyvips/blob/master/install-vips.sh
 
 vips_site=https://github.com/libvips/libvips/releases/download
 version=$VIPS_VERSION_MAJOR.$VIPS_VERSION_MINOR.$VIPS_VERSION_MICRO
