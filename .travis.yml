@@ -1,3 +1,5 @@
+# The following is sourced from https://github.com/libvips/pyvips
+
 env:
   global:
     - VIPS_VERSION_MAJOR=8
@@ -28,19 +30,24 @@ addons:
       - libpoppler-glib-dev
       - librsvg2-dev
       - libwebp-dev
-        # missing on trusty, unfortunately
-        # - libwebpmux2
       - libfftw3-dev
       - libglib2.0-dev
+
+# The following is our own code
 
 language: python
 python:
   - '3.6'
 cache: pip
+
+# The following is sourced from https://github.com/libvips/pyvips
+
 before_install:
-  - uname -a
-  - bash install-vips.sh --without-python
+  - ./install-vips.sh --without-python
   - pip install -U setuptools
+
+# The following is our own code
+
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt

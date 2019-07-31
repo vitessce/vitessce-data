@@ -1,12 +1,12 @@
-#!/bin/bash 
+#!/bin/bash
+
+# This file was sourced from https://github.com/libvips/pyvips
 
 vips_site=https://github.com/libvips/libvips/releases/download
 version=$VIPS_VERSION_MAJOR.$VIPS_VERSION_MINOR.$VIPS_VERSION_MICRO
 
 set -e
 
-# do we already have the correct vips built? early exit if yes
-# we could check the configure params as well I guess
 if [ -d "$HOME/vips/bin" ]; then
 	installed_version=$($HOME/vips/bin/vips --version)
 	escaped_version="$VIPS_VERSION_MAJOR\.$VIPS_VERSION_MINOR\.$VIPS_VERSION_MICRO"

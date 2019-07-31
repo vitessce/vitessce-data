@@ -22,6 +22,10 @@ pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
 
+If you encounter linking errors with libvips to pyvips in ometiff_tiler.py, it
+is likely due to issues with Conda environments. The developer of pyvips
+recommends to use a clean environment to brew install vips and pip install pyvips.
+
 ## Run
 
 `process.sh` runs all the other scripts: It will fetch files,

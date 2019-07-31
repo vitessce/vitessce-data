@@ -115,7 +115,8 @@ process_linnarson_images() {
         CMD="$BASE/python/ometiff_tiler.py
             --ometiff_file $OUTPUT/linnarsson.images.ome.tif
             --channel_page_pairs polyT:0 nuclei:1
-            --output_directory $TILES_PATH"
+            --output_directory $TILES_PATH
+            --dataset_name linnarson"
         echo "Running: $CMD"
         eval $CMD
     fi
