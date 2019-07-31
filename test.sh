@@ -20,7 +20,7 @@ fi
 # end target
 
 start flake8
-flake8 --exclude=/vips-8.7.1/
+flake8 --exclude /vips-8.7.1/
 end flake8
 
 start doctest
