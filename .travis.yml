@@ -22,7 +22,7 @@ addons:
       - libcfitsio3
       - libgif
       - libgs
-      - libgsf-1
+      - libgsf-1-dev
       - libmatio
       - libopenslide
       - liborc-0.4
