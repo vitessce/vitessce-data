@@ -6,17 +6,21 @@ import argparse
 
 
 def cells_dict(filename):
-    cells = {}
+    cells_dict = {}
     with open(filename) as file:
         rows = csv.reader(file, delimiter='\t')
         for row in rows:
             id, x, y = row
-            cells[id] = {
+            cells_dict[id] = {
                 'mappings': {
                     't-SNE': [float(x), float(y)]
-                }
+                },
+                'genes': {},
+                'factors': {},
+                'poly': []
             }
-    return cells
+
+    return cells_dict
 
 
 if __name__ == '__main__':

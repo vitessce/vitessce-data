@@ -98,7 +98,7 @@ process_linnarson_images() {
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN
             --channel_clip_pairs polyT:200 nuclei:20
-            --sample 8
+            --sample 1
             --json_file $JSON_OUT"
         echo "Running: $CMD"
         $CMD
@@ -110,11 +110,12 @@ process_linnarson_images() {
     then
         echo "Skipping tiling -- output already exists: $TILES_PATH"
     else
+        mkdir $TILES_PATH
         URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
-        CMD="iiif_static.py $OUTPUT/*.png
-            --prefix=$URL_PREFIX
-            --dst=$TILES_PATH
-            --max-image-pixels=2000000000"
+        CMD="$BASE/python/ometiff_tiler.py
+            --ometiff_file $OUTPUT/linnarsson.images.ome.tif
+            --channel_page_pairs polyT:0 nuclei:1
+            --output_directory $TILES_PATH"
         echo "Running: $CMD"
         eval $CMD
     fi

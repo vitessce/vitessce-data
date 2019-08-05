@@ -20,7 +20,7 @@ fi
 # end target
 
 start flake8
-flake8
+flake8 --exclude=*.py ./vips-8.7.1/
 end flake8
 
 start doctest
@@ -46,9 +46,9 @@ perl -pne \
 
 
 # If you have problems with the TIFF, try this:
-#
-# hexdump -C fake-files/output/linnarsson.images.ome.tif > output-dump.txt
-# hexdump -C fake-files/output-expected/linnarsson.images.ome.tif > output-expected-dump.txt
+
+# hexdump -C fake-files/output/linnarson/linnarsson.images.ome.tif > output-dump.txt
+# hexdump -C fake-files/output-expected/linnarson/linnarsson.images.ome.tif > output-expected-dump.txt
 # diff output-dump.txt output-expected-dump.txt
 
 diff -w -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100 | cut -c 1-100

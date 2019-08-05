@@ -145,12 +145,22 @@ class ImgHdf5Reader:
         return omexmlClass.OMEXML(et.tostring(root))
 
     def to_ometiff(self, channel_clips, sample, json_file):
+        channel_data = {}
         channels = []
         images = []
         ometif_path = '{}.ome.tif'.format(
             json_file.name.replace('.json', '')
         )
+        s3_target = open('s3_target.txt').read().strip()
         for (channel, clip) in channel_clips:
+            channel_data[channel] = {
+                'sample': sample,
+                'tileSource':
+                    'https://s3.amazonaws.com/{}/linnarsson/'.format(s3_target)
+                + 'linnarsson.tiles/linnarsson.images.{}/'.format(channel)
+                + '{}.dzi'.format(channel)
+            }
+
             channels.append(channel)
             array = self.scale_sample(
                 channel=channel,
@@ -160,6 +170,8 @@ class ImgHdf5Reader:
             ).astype(np.uint8)
 
             images.append(array)
+
+        json.dump(channel_data, json_file, indent=2)
 
         image = np.transpose(np.dstack(tuple(images)))
         image = np.expand_dims(image, axis=0)
@@ -197,12 +209,7 @@ if __name__ == '__main__':
 
     reader = ImgHdf5Reader(args.hdf5)
 
-    reader.to_pngs(
-        channel_clips=channel_clips,
-        sample=args.sample,
-        json_file=args.json_file
-    )
-
+    # Using instead of PNG functions
     reader.to_ometiff(
         channel_clips=channel_clips,
         sample=args.sample,

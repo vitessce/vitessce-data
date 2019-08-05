@@ -5,7 +5,10 @@
     35344.0,
     37644.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.ATTAGTCTGTGTATAATACG": {
   "mappings": {
@@ -13,7 +16,10 @@
     58583.0,
     26203.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.GAGGAACTTAATACCATCC": {
   "mappings": {
@@ -21,7 +27,10 @@
     10691.0,
     25870.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.TTCGCGGATACTCTCTCAA": {
   "mappings": {
@@ -29,7 +38,10 @@
     30857.0,
     36022.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.ACTGGTTATTTGCGCCATCT": {
   "mappings": {
@@ -37,7 +49,10 @@
     35205.0,
     51712.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.TGGTCGAATGATCGCTTCT": {
   "mappings": {
@@ -45,7 +60,10 @@
     31552.0,
     46250.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.TTGGCGACTGCTCAGCCGG": {
   "mappings": {
@@ -53,7 +71,10 @@
     37155.0,
     38946.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.ATAAGCGAATTAGATCTACT": {
   "mappings": {
@@ -61,7 +82,10 @@
     21831.0,
     29858.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.GTCGGAGTTTAGACTTCTT": {
   "mappings": {
@@ -69,7 +93,10 @@
     23428.0,
     48366.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  },
  "sci3-me-001.AATACCGAATAATTATCAGC": {
   "mappings": {
@@ -77,6 +104,9 @@
     33425.0,
     53473.0
    ]
-  }
+  },
+  "genes": {},
+  "factors": {},
+  "poly": []
  }
 }
