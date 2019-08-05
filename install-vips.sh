@@ -7,6 +7,9 @@ version=$VIPS_VERSION_MAJOR.$VIPS_VERSION_MINOR.$VIPS_VERSION_MICRO
 
 set -e
 
+# Do we already have the correct vips built?
+# Early exit if so.
+# We could check the configure params as well I guess.
 if [ -d "$HOME/vips/bin" ]; then
 	installed_version=$($HOME/vips/bin/vips --version)
 	escaped_version="$VIPS_VERSION_MAJOR\.$VIPS_VERSION_MINOR\.$VIPS_VERSION_MICRO"

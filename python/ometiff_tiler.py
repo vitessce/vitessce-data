@@ -3,7 +3,6 @@ import pyvips
 import argparse
 import os
 
-
 def tile_ometiff(filename, channel_pages, output_directory, data_name):
     for (channel, page) in channel_pages:
         image = pyvips.Image.tiffload(filename, page=page)

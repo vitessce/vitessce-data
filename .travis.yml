@@ -40,14 +40,15 @@ python:
   - '3.6'
 cache: pip
 
-# The following is sourced from https://github.com/libvips/pyvips/blob/master/.travis.yml
-
 before_install:
+  # The following is sourced from https://github.com/libvips/pyvips/blob/master/.travis.yml
   - ./install-vips.sh --without-python
   - pip install -U setuptools
 
-# The following is our own code
-
+  # The following is our own code
+  - uname -a
+  - bash install-vips.sh --without-python
+  - pip install -U setuptools
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
