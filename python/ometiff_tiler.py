@@ -3,17 +3,14 @@ import pyvips
 import argparse
 import os
 
-# pyvips can run into issues with conda environments. Recommend to use a
-# clean environment, brew install vips and pip install pyvips
 
-
-def tile_ometiff(filename, channel_pages, output_directory):
+def tile_ometiff(filename, channel_pages, output_directory, data_name):
     for (channel, page) in channel_pages:
         image = pyvips.Image.tiffload(filename, page=page)
 
         path = os.path.join(
             output_directory,
-            'linnarsson.images.{}'.format(channel)
+            '{}.images.{}'.format(data_name, channel)
         )
 
         if not os.path.exists(path):
@@ -34,6 +31,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--output_directory', required=True,
         help='Directory for output')
+    parser.add_argument(
+        '--dataset_name', required=True,
+        help='Name for dataset')
     args = parser.parse_args()
 
     channel_pages = [pair.split(':') for pair in args.channel_page_pairs]
@@ -41,5 +41,6 @@ if __name__ == '__main__':
     tile_ometiff(
         filename=args.ometiff_file,
         channel_pages=channel_pages,
-        output_directory=args.output_directory
+        output_directory=args.output_directory,
+        data_name=args.dataset_name
     )

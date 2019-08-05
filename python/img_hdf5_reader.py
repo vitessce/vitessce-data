@@ -209,7 +209,6 @@ if __name__ == '__main__':
 
     reader = ImgHdf5Reader(args.hdf5)
 
-    # Using instead of PNG functions
     reader.to_ometiff(
         channel_clips=channel_clips,
         sample=args.sample,
