@@ -20,11 +20,7 @@ conda create python=3.6 -n vitessce-data
 # Confirm install, then:
 source activate vitessce-data
 ```
-Then install vips with `brew`:
-```
-brew install vips
-```
-and install other dependencies with `pip`:
+Then install dependencies with `pip`:
 ```
 pip install -r requirements.txt
 pip install -r requirements-dev.txt

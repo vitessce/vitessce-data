@@ -30,21 +30,21 @@ main() {
             -t "$S3_TARGET"
     done
 
-    echo 'AWS:'
-    if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
-    then
-        echo 'CI: Skip push to AWS'
-    else
-        # Exclude the *HUGE* PNGs in the base directory:
-        # The tiles for S3 are in subdirectories;
-        # We keep the PNGs around because it takes a long time to generate them.
-        aws s3 cp --exclude "$OUTPUT/*.ome.tif" --recursive "$OUTPUT" s3://"$S3_TARGET"
-    fi
+    # echo 'AWS:'
+    # if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
+    # then
+    #     echo 'CI: Skip push to AWS'
+    # else
+    #     # Exclude the *HUGE* PNGs in the base directory:
+    #     # The tiles for S3 are in subdirectories;
+    #     # We keep the PNGs around because it takes a long time to generate them.
+    #     aws s3 cp --exclude "$OUTPUT/*.ome.tif" --recursive "$OUTPUT" s3://"$S3_TARGET"
+    # fi
 }
 
 ### Globals
 
-BASE=`dirname "$0"`
+BASE=`pwd`
 S3_TARGET=`cat s3_target.txt`
 
 if [[ "$CI" = 'true' ]]
