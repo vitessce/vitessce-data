@@ -115,10 +115,10 @@ process_linnarson_images() {
 
         CMD='docker run --rm
             -e "CHANNEL_PAGE_PAIRS=polyT:0 nuclei:1"
-            -e "DATASET_NAME=linnarsson"
+            -e "PREFIX=linnarsson"
             --mount "type=bind,src='$OUTPUT'/linnarsson.images.ome.tif,destination=/input.ome.tif"
             --mount "type=bind,src='$TILES_PATH',destination=/output_dir"
-            --name tiler gehlenborglab/ome-tiff-tiler:v0.0.1'
+            --name tiler gehlenborglab/ome-tiff-tiler:v0.0.2'
         echo "Running: $CMD"
         eval $CMD
     fi
