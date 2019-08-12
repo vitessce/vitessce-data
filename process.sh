@@ -44,7 +44,7 @@ main() {
 
 ### Globals
 
-BASE=`dirname "$0"`
+BASE=`pwd`
 S3_TARGET=`cat s3_target.txt`
 
 if [[ "$CI" = 'true' ]]

@@ -112,11 +112,13 @@ process_linnarson_images() {
     else
         mkdir $TILES_PATH
         URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
-        CMD="$BASE/python/ometiff_tiler.py
-            --ometiff_file $OUTPUT/linnarsson.images.ome.tif
-            --channel_page_pairs polyT:0 nuclei:1
-            --output_directory $TILES_PATH
-            --dataset_name linnarsson"
+
+        CMD='docker run --rm
+            -e "CHANNEL_PAGE_PAIRS=polyT:0 nuclei:1"
+            -e "DATASET_NAME=linnarsson"
+            --mount "type=bind,src='$OUTPUT'/linnarsson.images.ome.tif,destination=/input.ome.tif"
+            --mount "type=bind,src='$TILES_PATH',destination=/output_dir"
+            --name tiler gehlenborglab/ome-tiff-tiler:v0.0.1'
         echo "Running: $CMD"
         eval $CMD
     fi
