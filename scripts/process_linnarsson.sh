@@ -118,7 +118,7 @@ process_linnarson_images() {
             -e "PREFIX=linnarsson"
             --mount "type=bind,src='$OUTPUT'/linnarsson.images.ome.tif,destination=/input.ome.tif"
             --mount "type=bind,src='$TILES_PATH',destination=/output_dir"
-            --name tiler gehlenborglab/ome-tiff-tiler:v0.0.2'
+            --name tiler gehlenborglab/ome-tiff-tiler:v0.0.3'
         echo "Running: $CMD"
         eval $CMD
     fi
