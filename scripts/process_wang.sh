@@ -22,16 +22,16 @@ main() {
 
     echo "Download and process cells..."
 
-    WANG_URL='https://jef.works/MERmaid'
+    WANG_URL='https://github.com/JEFworks/MERmaid/blob/ac5b204f9645dd5e2a4ed696a9308b25938344fe/public'
 
     if [ ! -e "$CSV_IN" ]
     then
-        wget "$WANG_URL/data.csv.gz" -O "$CSV_IN.gz"
+        wget "$WANG_URL/data.csv.gz?raw=true" -O "$CSV_IN.gz"
         gunzip -df "$CSV_IN"
     fi
 
     [ -e "$PNG_IN" ] || \
-        wget "$WANG_URL/bg.png" -O "$PNG_IN"
+        wget "$WANG_URL/bg.png?raw=true" -O "$PNG_IN"
 
     IMAGE_OUT="$OUTPUT/wang.png"
     if [ -e "$IMAGE_OUT" ]
