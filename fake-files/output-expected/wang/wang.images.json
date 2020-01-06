@@ -1,6 +1,6 @@
 {
  "MERrfish": {
   "sample": 1,
-  "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.18/tile_ometiff/wang.images/info.json"
+  "tileSource": "https://s3.amazonaws.com/vitessce-data/0.0.20/master_release/wang.images/info.json"
  }
 }
