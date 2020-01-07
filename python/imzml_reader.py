@@ -74,12 +74,12 @@ class IMSDataset:
     def to_array(self):
         x_min, y_min, x_max, y_max = self.__get_min_max_coords()
         arr = np.zeros(
-            (x_max - x_min + 1, y_max - y_min + 1, self.parser.mzLengths[0])
+            (self.parser.mzLengths[0], x_max - x_min + 1, y_max - y_min + 1)
         )
 
         for idx, (x, y, _) in enumerate(self.parser.coordinates):
             _, intensities = self.parser.getspectrum(idx)
-            arr[x - x_min, y - y_min, :] = intensities
+            arr[:, x - x_min, y - y_min] = intensities
 
         return arr
 
