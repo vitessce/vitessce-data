@@ -16,12 +16,12 @@ main() {
 
     echo "Download and process IMS data..."
 
-    SPRAGGINS_URL="http://localhost:8000"
+    SPRAGGINS_URL="https://vitessce-data.s3.amazonaws.com/source-data/spraggins"
 
     [ -e "$IMZML_IN" ] || \
-        wget "$SPRAGGINS_URL/VAN0001-RK-1-21-IMS.imzML" -O "$IMZML_IN"
+        wget "$SPRAGGINS_URL/spraggins.ims.imzml" -O "$IMZML_IN"
     [ -e "$IBD_IN" ] || \
-        wget "$SPRAGGINS_URL/VAN0001-RK-1-21-IMS.ibd" -O "$IBD_IN"
+        wget "$SPRAGGINS_URL/spraggins.ims.ibd" -O "$IBD_IN"
 
     if [ -e "$ZARR_OUT" ]
     then
