@@ -6,6 +6,9 @@ from pyimzml.ImzMLParser import ImzMLParser
 import zarr
 
 import argparse
+from collections import namedtuple
+
+CoordExtent = namedtuple("CoordExtent", "x_min y_min x_max y_max")
 
 
 class IMSDataset:
@@ -34,13 +37,13 @@ class IMSDataset:
             )
         self.mzs, _ = self.parser.getspectrum(0)
 
-    def __get_min_max_coords(self):
+    def _get_min_max_coords(self):
         coords = np.array(self.parser.coordinates)
         x_min, y_min, _ = np.min(coords, axis=0)
         x_max, y_max, _ = np.max(coords, axis=0)
-        return x_min, y_min, x_max, y_max
+        return CoordExtent(x_min, y_min, x_max, y_max)
 
-    def __format_mzs(self, precision=4):
+    def _format_mzs(self, precision=4):
         return np.round(self.mzs, precision).astype(str)
 
     def to_columnar(self, dtype="uint32"):
@@ -51,10 +54,8 @@ class IMSDataset:
             {
                 "x": x,
                 "y": y,
-                "micro_x_topleft": x * self.ims_px_in_micro
-                - self.ims_px_in_micro,
-                "micro_y_topleft": y * self.ims_px_in_micro
-                - self.ims_px_in_micro,
+                "micro_x_topleft": self.ims_px_in_micro * (x - 1),
+                "micro_y_topleft": self.ims_px_in_micro * (y - 1),
                 "micro_px_width": np.repeat(self.ims_px_in_micro, len(coords)),
             },
             dtype=dtype,
@@ -65,21 +66,25 @@ class IMSDataset:
             _, coord_intensities = self.parser.getspectrum(i)
             intensities[i, :] = coord_intensities
 
-        intensities = pd.DataFrame(
-            intensities, columns=self.__format_mzs(), dtype=dtype,
+        intensities_df = pd.DataFrame(
+            intensities, columns=self._format_mzs(), dtype=dtype,
         )
 
-        return coords_df.join(intensities)
+        return coords_df.join(intensities_df)
 
     def to_array(self):
-        x_min, y_min, x_max, y_max = self.__get_min_max_coords()
+        extent = self._get_min_max_coords()
         arr = np.zeros(
-            (self.parser.mzLengths[0], x_max - x_min + 1, y_max - y_min + 1)
+            (
+                self.parser.mzLengths[0],
+                extent.x_max - extent.x_min + 1,
+                extent.y_max - extent.y_min + 1,
+            )
         )
 
         for idx, (x, y, _) in enumerate(self.parser.coordinates):
             _, intensities = self.parser.getspectrum(idx)
-            arr[:, x - x_min, y - y_min] = intensities
+            arr[:, x - extent.x_min, y - extent.y_min] = intensities
 
         return arr
 
@@ -92,11 +97,11 @@ class IMSDataset:
         )
         # write array with metadata
         z_arr[:, :, :] = arr
-        x_min, y_min, x_max, y_max = self.__get_min_max_coords()
-        z_arr.attrs["x_extent"] = [float(x_min), float(x_max)]
-        z_arr.attrs["y_extent"] = [float(y_min), float(y_max)]
+        extent = self._get_min_max_coords()
+        z_arr.attrs["x_extent"] = [float(extent.x_min), float(extent.x_max)]
+        z_arr.attrs["y_extent"] = [float(extent.y_min), float(extent.y_max)]
         z_arr.attrs["scaling_factor"] = self.ims_px_in_micro
-        z_arr.attrs["mz"] = self.__format_mzs().tolist()
+        z_arr.attrs["mz"] = self._format_mzs().tolist()
 
 
 if __name__ == "__main__":
