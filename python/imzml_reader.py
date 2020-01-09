@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 from pyimzml.ImzMLParser import ImzMLParser
+from numcodecs import Zlib
 import zarr
 
 import argparse
@@ -112,12 +113,12 @@ class IMSDataset:
 
         return arr
 
-    def write_zarr(self, path, dtype):
+    def write_zarr(self, path, dtype, compressor=None):
         arr = self.to_array()
         # zarr.js does not support compression yet
         # https://github.com/gzuidhof/zarr.js/issues/1
         z_arr = zarr.open(
-            path, mode="w", shape=arr.shape, compressor=None, dtype=dtype
+            path, mode="w", shape=arr.shape, compressor=compressor, dtype=dtype
         )
         # write array with metadata
         z_arr[:, :, :] = arr
@@ -151,4 +152,4 @@ if __name__ == "__main__":
     dataset = IMSDataset(
         args.imzml_file, args.ibd_file, micro_res=0.5, ims_res=10
     )
-    dataset.write_zarr(args.ims_file, dtype="i4")
+    dataset.write_zarr(args.ims_file, dtype="i4", compressor=Zlib(level=1))
