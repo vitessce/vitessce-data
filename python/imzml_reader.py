@@ -61,7 +61,10 @@ class IMSDataset:
             dtype=dtype,
         )
 
+        # Pre-allocate memory for array of known dimensions for performance.
         intensities = np.zeros((len(coords_df), len(self.mzs)))
+
+        # Fill array with intensities rather than using list comprehension.
         for i in range(len(coords)):
             _, coord_intensities = self.parser.getspectrum(i)
             intensities[i, :] = coord_intensities
@@ -74,6 +77,9 @@ class IMSDataset:
 
     def to_array(self):
         extent = self._get_min_max_coords()
+
+        # Pre-allocate memory for 3D array of known dimensions (mz, x, y).
+        # Better performance filling contiguous memory allocation.
         arr = np.zeros(
             (
                 self.parser.mzLengths[0],
@@ -82,6 +88,24 @@ class IMSDataset:
             )
         )
 
+        # Use the shifted x and y coordinates to index into 3D array.
+        # Fill the mz dimension for the particular x, y coordinate.
+        # This seems to be the safest/most reliable way get the
+        # correct ordering of intensities in the 3D array, since
+        # the array will be filled the same regardless of the
+        # ordering of the coordinates yielded by the parser.
+        #
+        # Ex.
+        #
+        # for idx, coord in enumerate(self.parser.coordinates):
+        # print(coord)
+        # (0, 0)      (0, 0)       (1, 2)
+        # (0, 1)      (1, 0)       (1, 0)
+        # (0, 2)      (0, 1)       (0, 2)
+        # (1, 0)  vs  (1, 1)   vs  (0, 0)
+        # (1, 1)      (0, 2)       (0, 1)
+        # (1, 2)      (1, 2)       (1, 2)
+        #
         for idx, (x, y, _) in enumerate(self.parser.coordinates):
             _, intensities = self.parser.getspectrum(idx)
             arr[:, x - extent.x_min, y - extent.y_min] = intensities
