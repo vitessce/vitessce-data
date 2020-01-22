@@ -6,7 +6,6 @@
   ],
   "zarrConfig": {
     "store": "https://s3.amazonaws.com/vitessce-data/0.0.20/master_release/spraggins/",
-    "path": "spraggins.ims.zarr",
-    "mode": "r"
+    "path": "spraggins.ims.zarr"
   }
 }

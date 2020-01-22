@@ -137,7 +137,6 @@ def write_metadata_json(json_file):
         "zarrConfig": {
             "store": f"https://s3.amazonaws.com/{s3_target}/spraggins/",
             "path": "spraggins.ims.zarr",
-            "mode": "r",
         },
     }
     json.dump(json_out, json_file, indent=2)
@@ -162,8 +161,9 @@ if __name__ == "__main__":
         required=True,
         help="Write the IMS data to this zarr file.",
     )
+    # FileType('x'): exclusive file creation, fails if file already exits.
     parser.add_argument(
-        "--ims_file",
+        "--ims_metadata",
         type=argparse.FileType("x"),
         required=True,
         help="Write the metadata about the IMS zarr store on S3.",
@@ -174,4 +174,4 @@ if __name__ == "__main__":
         args.imzml_file, args.ibd_file, micro_res=0.5, ims_res=10
     )
     dataset.write_zarr(args.ims_zarr, dtype="i4", compressor=Zlib(level=1))
-    write_metadata_json(args.ims_file)
+    write_metadata_json(args.ims_metadata)
