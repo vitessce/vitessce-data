@@ -7,6 +7,7 @@ from numcodecs import Zlib
 import zarr
 
 import argparse
+import json
 from collections import namedtuple
 
 CoordExtent = namedtuple("CoordExtent", "x_min y_min x_max y_max")
@@ -129,6 +130,18 @@ class IMSDataset:
         z_arr.attrs["mz"] = self._format_mzs().tolist()
 
 
+def write_metadata_json(json_file):
+    s3_target = open("s3_target.txt").read().strip()
+    json_out = {
+        "dimensions": ["mz", "x", "y"],
+        "zarrConfig": {
+            "store": f"https://s3.amazonaws.com/{s3_target}/spraggins/",
+            "path": "spraggins.ims.zarr",
+        },
+    }
+    json.dump(json_out, json_file, indent=2)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Create zarr from Spraggins dataset."
@@ -144,12 +157,21 @@ if __name__ == "__main__":
         help="Corresponding ibd file from Jeff Spraggins' lab",
     )
     parser.add_argument(
-        "--ims_file",
+        "--ims_zarr",
         required=True,
         help="Write the IMS data to this zarr file.",
     )
+    # FileType('x'): exclusive file creation, fails if file already exits.
+    parser.add_argument(
+        "--ims_metadata",
+        type=argparse.FileType("x"),
+        required=True,
+        help="Write the metadata about the IMS zarr store on S3.",
+    )
     args = parser.parse_args()
+
     dataset = IMSDataset(
         args.imzml_file, args.ibd_file, micro_res=0.5, ims_res=10
     )
-    dataset.write_zarr(args.ims_file, dtype="i4", compressor=Zlib(level=1))
+    dataset.write_zarr(args.ims_zarr, dtype="i4", compressor=Zlib(level=1))
+    write_metadata_json(args.ims_metadata)
