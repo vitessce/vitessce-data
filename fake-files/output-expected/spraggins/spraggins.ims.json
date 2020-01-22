@@ -4,5 +4,9 @@
     "x",
     "y"
   ],
-  "zarrSource": "https://s3.amazonaws.com/vitessce-data/0.0.20/master_release/spraggins/spraggins.ims.zarr"
+  "zarrConfig": {
+    "store": "https://s3.amazonaws.com/vitessce-data/0.0.20/master_release/spraggins/",
+    "path": "spraggins.ims.zarr",
+    "mode": "r"
+  }
 }

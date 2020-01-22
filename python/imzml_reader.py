@@ -134,10 +134,11 @@ def write_metadata_json(json_file):
     s3_target = open("s3_target.txt").read().strip()
     json_out = {
         "dimensions": ["mz", "x", "y"],
-        "zarrSource": (
-            f"https://s3.amazonaws.com/{s3_target}"
-            f"/spraggins/spraggins.ims.zarr"
-        ),
+        "zarrConfig": {
+            "store": f"https://s3.amazonaws.com/{s3_target}/spraggins/",
+            "path": "spraggins.ims.zarr",
+            "mode": "r",
+        },
     }
     json.dump(json_out, json_file, indent=2)
 
