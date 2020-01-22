@@ -4,7 +4,7 @@ set -o errexit
 . ./scripts/utils.sh
 
 main() {
-    # Download and process data which describes an imaging 
+    # Download and process data which describes an imaging
     # mass spectrometry (IMS) experiment. A single zarr store is created.
 
     get_CLI_args "$@"
@@ -12,7 +12,8 @@ main() {
     IBD_IN="$INPUT/spraggins.ims.ibd"
     ZARR_OUT="$OUTPUT/spraggins.ims.zarr"
 
-    CLI_ARGS="--imzml_file $IMZML_IN --ibd_file $IBD_IN --ims_file $ZARR_OUT"
+    CLI_ARGS="--imzml_file $IMZML_IN --ibd_file $IBD_IN --ims_zarr $ZARR_OUT"
+    add_CLI_ARGS 'ims' 'spraggins'
 
     echo "Download and process IMS data..."
 
