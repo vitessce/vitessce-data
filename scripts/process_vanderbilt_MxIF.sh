@@ -14,6 +14,12 @@ main() {
       echo "Skipping tiling -- output already exists: $TILES_PATH"
   else
       mkdir $TILES_PATH
+      if [ -e "$INPUT/vanderbilt.ome.tif" ]
+      then
+        echo "Not copying $INPUT/vanderbilt.ome.tif from s3 - already exists or testing"
+      else
+        aws s3 cp s3://vitessce-data/source-data/vanderbilt_MxIF/vanderbilt.ome.tif "$INPUT/vanderbilt.ome.tif"
+      fi
       SERVER_URL="https://vitessce-vanderbilt-data.storage.googleapis.com/"
       CMD='docker run --rm
           -e "SERVER_URL='$SERVER_URL'"
