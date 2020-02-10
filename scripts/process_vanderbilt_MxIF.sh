@@ -23,7 +23,9 @@ main() {
           --mount "type=bind,src='$OUTPUT',destination=/output_dir"
           --name tiler gehlenborglab/ome-tiff-tiler:v0.0.4'
       echo "Running: $CMD"
+      # vitessce relies on this naming strategy, whereas the docker image is more general
       eval $CMD
+      mv "$TILES_PATH/tiff.json" "$TILES_PATH/vanderbilt_MxIF.tiff.json"
   fi
 }
 
