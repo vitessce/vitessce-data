@@ -1,0 +1,9 @@
+{
+  "width": 50,
+  "height": 50,
+  "tile_size": 512,
+  "channels": {
+    "polyT": "https:/vitessce-data.storage.googleapis.com/vanderbilt.images/polyT.ome.tiff",
+    "nuclei": "https:/vitessce-data.storage.googleapis.com/vanderbilt.images/nuclei.ome.tiff"
+  }
+}

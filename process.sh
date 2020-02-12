@@ -15,7 +15,7 @@ main() {
     INPUT="$FILES/input"
     OUTPUT="$FILES/output"
 
-    for DATASET in linnarsson dries wang cao spraggins vanderbilt_MxIF; do
+    for DATASET in linnarsson dries wang cao spraggins vanderbilt; do
         INPUT_SET="$INPUT/$DATASET"
         OUTPUT_SET="$OUTPUT/$DATASET"
         [ -d "$INPUT_SET" ] || mkdir -p "$INPUT_SET"
@@ -38,9 +38,9 @@ main() {
         # Exclude the *HUGE* PNGs in the base directory:
         # The tiles for S3 are in subdirectories;
         # We keep the PNGs around because it takes a long time to generate them.
-        TILES_BASE='vanderbilt_MxIF.images'
+        TILES_BASE='vanderbilt.images'
         aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --recursive "$OUTPUT" s3://"$S3_TARGET"
-        gsutil cp "$OUTPUT/$TILES_BASE/*.ome.tif*" gs://vitessce-demo-data/$TILES_BASE
+        gsutil cp "$OUTPUT/vanderbilt/$TILES_BASE/*.ome.tif*" gs://vitessce-data/$TILES_BASE
     fi
 }
 
