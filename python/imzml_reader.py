@@ -85,8 +85,8 @@ class IMSDataset:
         arr = np.zeros(
             (
                 self.parser.mzLengths[0],
-                extent.x_max - extent.x_min + 1,
                 extent.y_max - extent.y_min + 1,
+                extent.x_max - extent.x_min + 1,
             )
         )
 
@@ -110,20 +110,35 @@ class IMSDataset:
         #
         for idx, (x, y, _) in enumerate(self.parser.coordinates):
             _, intensities = self.parser.getspectrum(idx)
-            arr[:, x - extent.x_min, y - extent.y_min] = intensities
+            arr[:, y - extent.y_min, x - extent.x_min] = intensities
 
         return arr
 
-    def write_zarr(self, path, dtype, compressor=None):
+    def write_zarr(self, path, dtype, compressor=None, chunks=None):
         arr = self.to_array()
+        extent = self._get_min_max_coords()
+
+        if chunks is None:
+            # If chunk size not specified, optimized for 2D access:
+            # Each mz offset is a contiguous 2D image channel.
+            chunks = [
+                1,
+                extent.y_max - extent.y_min + 1,
+                extent.x_max - extent.x_min + 1,
+            ]
+
         # zarr.js does not support compression yet
         # https://github.com/gzuidhof/zarr.js/issues/1
         z_arr = zarr.open(
-            path, mode="w", shape=arr.shape, compressor=compressor, dtype=dtype
+            path,
+            mode="w",
+            shape=arr.shape,
+            compressor=compressor,
+            dtype=dtype,
+            chunks=chunks,
         )
         # write array with metadata
         z_arr[:, :, :] = arr
-        extent = self._get_min_max_coords()
         z_arr.attrs["x_extent"] = [float(extent.x_min), float(extent.x_max)]
         z_arr.attrs["y_extent"] = [float(extent.y_min), float(extent.y_max)]
         z_arr.attrs["scaling_factor"] = self.ims_px_in_micro
@@ -133,7 +148,7 @@ class IMSDataset:
 def write_metadata_json(json_file):
     s3_target = open("s3_target.txt").read().strip()
     json_out = {
-        "dimensions": ["mz", "x", "y"],
+        "dimensions": ["mz", "y", "x"],
         "zarrConfig": {
             "store": f"https://s3.amazonaws.com/{s3_target}/spraggins/",
             "path": "spraggins.ims.zarr",
