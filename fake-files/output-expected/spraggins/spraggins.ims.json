@@ -1,8 +1,8 @@
 {
   "dimensions": [
     "mz",
-    "x",
-    "y"
+    "y",
+    "x"
   ],
   "zarrConfig": {
     "store": "https://s3.amazonaws.com/vitessce-data/0.0.20/master_release/spraggins/",
