@@ -63,7 +63,7 @@ class ImgHdf5Reader:
         return sampled / clip * (max_allowed - 1)
 
     def to_png(self, channel, sample, png_path, clip):
-        MAX_ALLOWED = 256
+        MAX_ALLOWED = 65536
         NP_TYPE = np.int8
 
         scaled_sample = self.scale_sample(
@@ -163,11 +163,8 @@ class ImgHdf5Reader:
 
             channels.append(channel)
             array = self.scale_sample(
-                channel=channel,
-                sample=sample,
-                max_allowed=256,
-                clip=float(clip)
-            ).astype(np.uint8)
+                channel=channel, sample=sample, max_allowed=65536, clip=float(clip)
+            ).astype(np.uint16)
 
             images.append(array)
 
@@ -179,10 +176,7 @@ class ImgHdf5Reader:
 
         channels = [tup[0] for tup in channel_clips]
         omexml = self.get_omexml(
-            pixel_array=image,
-            channels=channels,
-            name='linnarsson',
-            pixel_type='uint8'
+            pixel_array=image, channels=channels, name="linnarsson", pixel_type="uint16"
         )
 
         io.write_ometiff(ometif_path, image, str(omexml))
