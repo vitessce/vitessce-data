@@ -2,6 +2,9 @@
 
 from h5py import File
 from apeer_ometiff_library import io, omexmlClass
+import dask.array as da
+from numcodecs import Zlib
+import zarr
 import xml.etree.ElementTree as et
 import datetime
 import numpy as np
@@ -29,7 +32,7 @@ class ImgHdf5Reader:
     def __getitem__(self, key):
         return self.data[key]
 
-    def sample_image(self, channel, sample):
+    def sample_image(self, channel, sample, use_dask=False):
         '''
         >>> path = 'fake-files/input/linnarsson/linnarsson.imagery.hdf5'
         >>> reader = ImgHdf5Reader(path)
@@ -38,9 +41,14 @@ class ImgHdf5Reader:
         (25, 25)
 
         '''
-        return self.data[channel][::sample, ::sample]
+        data = (
+            self.data[channel]
+            if not use_dask
+            else da.array(self.data[channel])
+        )
+        return data[::sample, ::sample]
 
-    def scale_sample(self, channel, sample, max_allowed, clip):
+    def scale_sample(self, channel, sample, max_allowed, clip, use_dask=False):
         '''
         Assumes there are no negative values
 
@@ -58,7 +66,7 @@ class ImgHdf5Reader:
         [0.0, 127.0, 254.0, 254.0, 254.0]
 
         '''
-        sampled = np.clip(self.sample_image(channel, sample), 0, clip)
+        sampled = self.sample_image(channel, sample, use_dask).clip(0, clip)
         # 255 displays as black... color table issue?
         return sampled / clip * (max_allowed - 1)
 
@@ -163,8 +171,11 @@ class ImgHdf5Reader:
 
             channels.append(channel)
             array = self.scale_sample(
-                channel=channel, sample=sample, max_allowed=65536, clip=float(clip)
-            ).astype(np.uint16)
+                channel=channel,
+                sample=sample,
+                max_allowed=256,
+                clip=float(clip)
+            ).astype(np.uint8)
 
             images.append(array)
 
@@ -176,10 +187,81 @@ class ImgHdf5Reader:
 
         channels = [tup[0] for tup in channel_clips]
         omexml = self.get_omexml(
-            pixel_array=image, channels=channels, name="linnarsson", pixel_type="uint16"
+            pixel_array=image,
+            channels=channels,
+            name='linnarsson',
+            pixel_type='uint8'
         )
 
         io.write_ometiff(ometif_path, image, str(omexml))
+
+    def to_zarr(self, channel_clips, sample, json_file):
+        # zarr default BLOSC not supported in browser
+        COMPRESSOR = Zlib(level=1)
+        MAX_ALLOWED = 65536
+        TILE_SIZE = 512
+
+        channels = [channel for (channel, clip) in channel_clips]
+        data_shape, data_dtype = self._get_shape_and_dtype(channels)
+
+        # Create mutable store
+        zarr_path = f"{json_file.name.replace('.json', '')}.zarr"
+        pyramid_group = "pyramid"
+        store = zarr.DirectoryStore(zarr_path)
+        root = zarr.group(store=store, overwrite=True)
+        root.create_group(pyramid_group, overwrite=True)
+
+        channel_data = {}
+        images = []
+        s3_target = open("s3_target.txt").read().strip()
+        for idx, (channel, clip) in enumerate(channel_clips):
+            channel_data[channel] = {
+                "sample": sample,
+                "tileSource": "https://s3.amazonaws.com/{}/linnarsson/".format(
+                    s3_target
+                )
+                + "linnarsson.images.zarr/pyramid/",
+            }
+
+            channels.append(channel)
+            array = self.scale_sample(
+                channel=channel,
+                sample=sample,
+                max_allowed=MAX_ALLOWED,
+                clip=float(clip),
+                use_dask=True,
+            ).astype(data_dtype)
+
+            images.append(array.T)
+
+        # Stack arrays using dask and rechunk to tile sizes (i.e. (2, 512, 512)
+        chunks = (len(channels), TILE_SIZE, TILE_SIZE)
+        da.array(images).rechunk(chunks).to_zarr(
+            zarr_path, component=f"{pyramid_group}/00", compressor=COMPRESSOR
+        )
+        json.dump(channel_data, json_file, indent=2)
+
+    def _get_shape_and_dtype(self, channels):
+        shapes, dtypes = zip(
+            *[(self.data[c].shape, self.data[c].dtype) for c in channels]
+        )
+        # Compare dimesion sizes to make sure all same size
+        shape = []
+        for shared_dimension in zip(*shapes):
+            first_el = shared_dimension[0]
+            all_same = 1
+            if not all_same:
+                raise ValueError(
+                    f"Data stored in {channels} are not the same shape."
+                )
+            shape.append(first_el)
+        # Ensure same dtype.
+        first_dtype = dtypes[0]
+        all_same = all(dtype == first_dtype for dtype in dtypes)
+        if not all_same:
+            raise ValueError(f"Dtypes are not the same for {channels}.")
+
+        return shape, first_dtype
 
 
 if __name__ == '__main__':
@@ -203,7 +285,7 @@ if __name__ == '__main__':
 
     reader = ImgHdf5Reader(args.hdf5)
 
-    reader.to_ometiff(
+    reader.to_zarr(
         channel_clips=channel_clips,
         sample=args.sample,
         json_file=args.json_file

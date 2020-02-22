@@ -40,11 +40,6 @@ CI=true ./process.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
 
-perl -pne \
-  's/<ome:AcquisitionDate>.{26}/<ome:AcquisitionDate>0000-00-00T00:00:00.000000/;
-	s/tifffile.py.{20}/tifffile.py.0000:00:00 00:00:00/' -i fake-files/output/linnarsson/linnarsson.images.ome.tif
-
-
 # If you have problems with the TIFF, try this:
 
 # hexdump -C fake-files/output/linnarson/linnarsson.images.ome.tif > output-dump.txt

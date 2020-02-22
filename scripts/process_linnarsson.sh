@@ -104,23 +104,18 @@ process_linnarson_images() {
         $CMD
     fi
 
-    TILES_BASE='linnarsson.tiles'
+    TILES_BASE='linnarsson.images.zarr/pyramid'
     TILES_PATH="$OUTPUT/$TILES_BASE"
-    if [ -e "$TILES_PATH" ]
+    if [ -e "$TILES_PATH/01" ]
     then
-        echo "Skipping tiling -- output already exists: $TILES_PATH"
+         echo "Skipping tiling -- output already exists: $TILES_PATH"
     else
-        mkdir $TILES_PATH
-        URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
+         URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
 
-        CMD='docker run --rm
-            -e "CHANNEL_PAGE_PAIRS=polyT:0 nuclei:1"
-            -e "PREFIX=linnarsson"
-            --mount "type=bind,src='$OUTPUT'/linnarsson.images.ome.tif,destination=/input.ome.tif"
-            --mount "type=bind,src='$TILES_PATH',destination=/output_dir"
-            --name tiler gehlenborglab/ome-tiff-tiler:v0.0.3'
+    CMD="$BASE/python/tile_zarr_base.py
+            --zarr_pyramid_base $TILES_PATH/00"
         echo "Running: $CMD"
-        eval $CMD
+        $CMD
     fi
 }
 
