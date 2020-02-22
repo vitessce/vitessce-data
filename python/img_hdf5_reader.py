@@ -245,7 +245,7 @@ class ImgHdf5Reader:
         shapes, dtypes = zip(
             *[(self.data[c].shape, self.data[c].dtype) for c in channels]
         )
-        # Compare dimesion sizes to make sure all same size
+        # Compare dimension sizes to make sure all same size
         shape = []
         for shared_dimension in zip(*shapes):
             first_el = shared_dimension[0]
