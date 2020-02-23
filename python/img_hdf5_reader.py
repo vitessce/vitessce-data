@@ -206,7 +206,7 @@ class ImgHdf5Reader:
         shape = []
         for shared_dimension in zip(*shapes):
             first_el = shared_dimension[0]
-            all_same = 1
+            all_same = all(dim == first_el for dim in shared_dimension)
             if not all_same:
                 raise ValueError(
                     f"Data stored in {channels} are not the same shape."
@@ -216,7 +216,9 @@ class ImgHdf5Reader:
         first_dtype = dtypes[0]
         all_same = all(dtype == first_dtype for dtype in dtypes)
         if not all_same:
-            raise ValueError(f"Dtypes are not the same for {channels}.")
+            raise ValueError(
+                f"Dtypes are not the same for {channels}: {dtypes}"
+            )
 
         return shape, first_dtype
 
