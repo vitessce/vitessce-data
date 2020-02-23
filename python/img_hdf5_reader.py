@@ -8,7 +8,6 @@ import zarr
 import xml.etree.ElementTree as et
 import datetime
 import numpy as np
-import png
 import argparse
 import json
 
@@ -69,50 +68,6 @@ class ImgHdf5Reader:
         sampled = self.sample_image(channel, sample, use_dask).clip(0, clip)
         # 255 displays as black... color table issue?
         return sampled / clip * (max_allowed - 1)
-
-    def to_png(self, channel, sample, png_path, clip):
-        MAX_ALLOWED = 65536
-        NP_TYPE = np.int8
-
-        scaled_sample = self.scale_sample(
-            channel=channel,
-            sample=sample,
-            max_allowed=MAX_ALLOWED,
-            clip=clip
-        ).astype(NP_TYPE)
-        scaled_sample_transposed = np.transpose(scaled_sample)
-
-        # Bug with PNG generation from transposed numpy arrays:
-        # https://github.com/drj11/pypng/issues/91
-        # Work-around is to dump and reload.
-        hack = np.array(scaled_sample_transposed.tolist()).astype(NP_TYPE)
-        png.from_array(hack, mode='L').save(png_path)
-
-    def to_pngs(self, channel_clips, sample, json_file):
-        channels = {}
-        s3_target = open('s3_target.txt').read().strip()
-        for (channel, clip) in channel_clips:
-            channels[channel] = {
-                'sample': sample,
-                # TODO: Pass in portions of this path as parameters
-                'tileSource':
-                    'https://s3.amazonaws.com/{}/linnarsson/'.format(s3_target)
-                + 'linnarsson.tiles/linnarsson.images.{}/'.format(channel)
-                + 'info.json'
-            }
-            png_path = '{}.{}.png'.format(
-                json_file.name.replace('.json', ''),
-                channel
-            )
-            self.to_png(
-                channel=channel,
-                clip=float(clip),
-                sample=sample,
-                png_path=png_path,
-            )
-        json.dump(channels, json_file, indent=2)
-        # This JSON file is not used right now:
-        # really just a list of the files processed.
 
     def get_omexml(self, pixel_array, channels, name, pixel_type):
         omexml = omexmlClass.OMEXML()
@@ -205,7 +160,7 @@ class ImgHdf5Reader:
         data_shape, data_dtype = self._get_shape_and_dtype(channels)
 
         # Create mutable store
-        zarr_path = f"{json_file.name.replace('.json', '')}.zarr"
+        zarr_path = json_file.name.replace('.json', '.zarr')
         pyramid_group = "pyramid"
         store = zarr.DirectoryStore(zarr_path)
         root = zarr.group(store=store, overwrite=True)
@@ -237,7 +192,9 @@ class ImgHdf5Reader:
         # Stack arrays using dask and rechunk to tile sizes (i.e. (2, 512, 512)
         chunks = (len(channels), TILE_SIZE, TILE_SIZE)
         da.array(images).rechunk(chunks).to_zarr(
-            zarr_path, component=f"{pyramid_group}/00", compressor=COMPRESSOR
+            zarr_path,
+            component=f"{pyramid_group}/00",
+            compressor=COMPRESSOR
         )
         json.dump(channel_data, json_file, indent=2)
 

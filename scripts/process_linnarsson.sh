@@ -112,7 +112,7 @@ process_linnarson_images() {
     else
          URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
 
-    CMD="$BASE/python/tile_zarr_base.py
+        CMD="$BASE/python/tile_zarr_base.py
             --zarr_pyramid_base $TILES_PATH/00"
         echo "Running: $CMD"
         $CMD

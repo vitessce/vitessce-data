@@ -40,11 +40,5 @@ CI=true ./process.sh
 # CI to get it to run as test locally;
 # Redundant on Travis, but doesn't hurt anything.
 
-# If you have problems with the TIFF, try this:
-
-# hexdump -C fake-files/output/linnarson/linnarsson.images.ome.tif > output-dump.txt
-# hexdump -C fake-files/output-expected/linnarson/linnarsson.images.ome.tif > output-expected-dump.txt
-# diff output-dump.txt output-expected-dump.txt
-
 diff -w -r fake-files/output fake-files/output-expected/ -x .DS_Store | head -n100 | cut -c 1-100
 end endtoend
