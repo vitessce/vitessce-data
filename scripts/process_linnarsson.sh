@@ -108,7 +108,7 @@ process_linnarson_images() {
     TILES_PATH="$OUTPUT/$TILES_BASE"
     if [ -e "$TILES_PATH/01" ]
     then
-         echo "Skipping tiling -- output already exists: $TILES_PATH"
+        echo "Skipping tiling -- output already exists: $TILES_PATH"
     else
          URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
 
