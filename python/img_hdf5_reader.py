@@ -155,16 +155,16 @@ class ImgHdf5Reader:
         COMPRESSOR = Zlib(level=1)
         MAX_ALLOWED = 65536
         TILE_SIZE = 512
+        PYRAMID_GROUP = "pyramid"
 
         channels = [channel for (channel, clip) in channel_clips]
         data_shape, data_dtype = self._get_shape_and_dtype(channels)
 
         # Create mutable store
         zarr_path = json_file.name.replace('.json', '.zarr')
-        pyramid_group = "pyramid"
         store = zarr.DirectoryStore(zarr_path)
         root = zarr.group(store=store, overwrite=True)
-        root.create_group(pyramid_group, overwrite=True)
+        pyramid_root = root.create_group(PYRAMID_GROUP, overwrite=True)
 
         channel_data = {}
         images = []
@@ -172,13 +172,12 @@ class ImgHdf5Reader:
         for idx, (channel, clip) in enumerate(channel_clips):
             channel_data[channel] = {
                 "sample": sample,
-                "tileSource": "https://s3.amazonaws.com/{}/linnarsson/".format(
-                    s3_target
-                )
-                + "linnarsson.images.zarr/pyramid/",
+                "tileSource": (
+                    f"https://s3.amazonaws.com/{s3_target}/linnarsson/"
+                    f"linnarsson.images.zarr/{PYRAMID_GROUP}/"
+                ),
             }
 
-            channels.append(channel)
             array = self.scale_sample(
                 channel=channel,
                 sample=sample,
@@ -193,10 +192,14 @@ class ImgHdf5Reader:
         chunks = (len(channels), TILE_SIZE, TILE_SIZE)
         da.array(images).rechunk(chunks).to_zarr(
             zarr_path,
-            component=f"{pyramid_group}/00",
+            component=f"{PYRAMID_GROUP}/00",
             compressor=COMPRESSOR
         )
         json.dump(channel_data, json_file, indent=2)
+
+        # Add metadata
+        z = pyramid_root.get("00")
+        z.attrs["channels"] = channels
 
     def _get_shape_and_dtype(self, channels):
         shapes, dtypes = zip(
