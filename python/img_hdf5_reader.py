@@ -150,14 +150,12 @@ class ImgHdf5Reader:
 
         io.write_ometiff(ometif_path, image, str(omexml))
 
-    def to_zarr(self, channel_clips, sample, json_file, zarr_url):
+    def to_zarr(self, channels, sample, json_file, zarr_url):
         # zarr default BLOSC not supported in browser
         COMPRESSOR = Zlib(level=1)
-        MAX_ALLOWED = 65536
         TILE_SIZE = 512
         PYRAMID_GROUP = "pyramid"
 
-        channels = [channel for (channel, clip) in channel_clips]
         data_shape, data_dtype = self._get_shape_and_dtype(channels)
 
         # Create mutable store
@@ -179,18 +177,16 @@ class ImgHdf5Reader:
 
         channel_data = {}
         images = []
-        for idx, (channel, clip) in enumerate(channel_clips):
+        for idx, channel in enumerate(channels):
             channel_data[channel] = {
                 "sample": sample,
                 "tileSource": f"{zarr_url}/{PYRAMID_GROUP}/",
                 "minZoom": -max_level  # deck.gl is flipped
             }
 
-            array = self.scale_sample(
+            array = self.sample_image(
                 channel=channel,
                 sample=sample,
-                max_allowed=MAX_ALLOWED,
-                clip=float(clip),
                 use_dask=True,
             ).astype(data_dtype)
 
@@ -241,11 +237,11 @@ if __name__ == '__main__':
         '--hdf5', required=True,
         help='HDF5 file with raster data')
     parser.add_argument(
-        '--channel_clip_pairs', required=True, nargs='+',
-        help='Colon-delimited pairs of channels and clip values')
-    parser.add_argument(
         '--json_file', required=True, type=argparse.FileType('x'),
         help='JSON file which will include image dimensions and location')
+    parser.add_argument(
+        '--channels', required=True,
+        help='List of channels to include in zarr image.')
     parser.add_argument(
         '--zarr_url', required=True,
         help='Output URL to zarr store.')
@@ -254,12 +250,11 @@ if __name__ == '__main__':
         help='Sample 1 pixel out of N')
     args = parser.parse_args()
 
-    channel_clips = [pair.split(':') for pair in args.channel_clip_pairs]
-
     reader = ImgHdf5Reader(args.hdf5)
 
+    channels = [c for c in args.channels.split(',')]
     reader.to_zarr(
-        channel_clips=channel_clips,
+        channels=channels,
         sample=args.sample,
         json_file=args.json_file,
         zarr_url=args.zarr_url,
