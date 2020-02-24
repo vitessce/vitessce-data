@@ -35,10 +35,10 @@ main() {
     then
         echo 'CI: Skip push to AWS'
     else
-        # Exclude the *HUGE* PNGs in the base directory:
-        # The tiles for S3 are in subdirectories;
-        # We keep the PNGs around because it takes a long time to generate them.
-        aws s3 cp --exclude "$OUTPUT/*.ome.tif" --recursive "$OUTPUT" s3://"$S3_TARGET"
+        # Exclude zarr from s3 but push tiles to google cloud with HTTP/2 support
+        # tile metadata (i.e. linnarsson.images.json ) are pushed to S3 for vitessce layer publisher
+        aws s3 cp --exclude "$OUTPUT/*.zarr" --recursive "$OUTPUT" s3://"$S3_TARGET"
+        gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$S3_TARGET/linnarsson/linnarsson.images.zarr"
     fi
 }
 

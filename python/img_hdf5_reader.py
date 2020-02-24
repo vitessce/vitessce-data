@@ -150,7 +150,7 @@ class ImgHdf5Reader:
 
         io.write_ometiff(ometif_path, image, str(omexml))
 
-    def to_zarr(self, channel_clips, sample, json_file):
+    def to_zarr(self, channel_clips, sample, json_file, zarr_url):
         # zarr default BLOSC not supported in browser
         COMPRESSOR = Zlib(level=1)
         MAX_ALLOWED = 65536
@@ -166,16 +166,24 @@ class ImgHdf5Reader:
         root = zarr.group(store=store, overwrite=True)
         pyramid_root = root.create_group(PYRAMID_GROUP, overwrite=True)
 
+        # Determine number of levels for pyramid
+        s_height, s_width = [dim // sample for dim in data_shape]
+        if s_height < TILE_SIZE and s_width < TILE_SIZE:
+            max_level = 0
+        else:
+            # create all levels up to 512 x 512
+            max_level = (
+                int(np.ceil(np.log2(np.maximum(s_height, s_width)))) - 9
+            )
+            max_level -= 1  # zero indexed
+
         channel_data = {}
         images = []
-        s3_target = open("s3_target.txt").read().strip()
         for idx, (channel, clip) in enumerate(channel_clips):
             channel_data[channel] = {
                 "sample": sample,
-                "tileSource": (
-                    f"https://s3.amazonaws.com/{s3_target}/linnarsson/"
-                    f"linnarsson.images.zarr/{PYRAMID_GROUP}/"
-                ),
+                "tileSource": f"{zarr_url}/{PYRAMID_GROUP}/",
+                "minZoom": -max_level  # deck.gl is flipped
             }
 
             array = self.scale_sample(
@@ -239,6 +247,9 @@ if __name__ == '__main__':
         '--json_file', required=True, type=argparse.FileType('x'),
         help='JSON file which will include image dimensions and location')
     parser.add_argument(
+        '--zarr_url', required=True,
+        help='Output URL to zarr store.')
+    parser.add_argument(
         '--sample', default=1, type=int,
         help='Sample 1 pixel out of N')
     args = parser.parse_args()
@@ -250,5 +261,6 @@ if __name__ == '__main__':
     reader.to_zarr(
         channel_clips=channel_clips,
         sample=args.sample,
-        json_file=args.json_file
+        json_file=args.json_file,
+        zarr_url=args.zarr_url,
     )
