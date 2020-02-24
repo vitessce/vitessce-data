@@ -115,7 +115,6 @@ process_linnarson_images() {
     then
         echo "Skipping tiling -- output already exists: $TILES_PATH"
     else
-
         CMD="$BASE/python/tile_zarr_base.py
             --zarr_pyramid_base $TILES_PATH/00"
         echo "Running: $CMD"

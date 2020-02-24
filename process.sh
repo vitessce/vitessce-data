@@ -15,7 +15,7 @@ main() {
     INPUT="$FILES/input"
     OUTPUT="$FILES/output"
 
-    for DATASET in linnarsson dries wang cao spraggins; do
+    for DATASET in linnarsson dries wang cao spraggins vanderbilt; do
         INPUT_SET="$INPUT/$DATASET"
         OUTPUT_SET="$OUTPUT/$DATASET"
         [ -d "$INPUT_SET" ] || mkdir -p "$INPUT_SET"
@@ -33,11 +33,11 @@ main() {
     echo 'AWS:'
     if [[ "$CI" = 'true' ]] || [[ "$NO_PUSH" = 'true' ]]
     then
-        echo 'CI: Skip push to AWS'
+        echo 'CI: Skip push to AWS and GCS'
     else
-        # Exclude zarr from s3 but push tiles to google cloud with HTTP/2 support
-        # tile metadata (i.e. linnarsson.images.json ) are pushed to S3 for vitessce layer publisher
-        aws s3 cp --exclude "$OUTPUT/*.zarr" --recursive "$OUTPUT" s3://"$S3_TARGET"
+        TILES_BASE='vanderbilt.images'
+        aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr" --recursive "$OUTPUT" s3://"$S3_TARGET"
+        gsutil cp "$OUTPUT/vanderbilt/$TILES_BASE/*.ome.tif*" gs://vitessce-data/$TILES_BASE
         gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$S3_TARGET/linnarsson/linnarsson.images.zarr"
     fi
 }
