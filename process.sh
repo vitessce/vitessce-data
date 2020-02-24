@@ -40,7 +40,7 @@ main() {
         # We keep the PNGs around because it takes a long time to generate them.
         TILES_BASE='vanderbilt.images'
         aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --recursive "$OUTPUT" s3://"$S3_TARGET"
-        gsutil cp "$OUTPUT/vanderbilt/$TILES_BASE/*.ome.tif*" gs://vitessce-data/$TILES_BASE
+        gsutil cp "$OUTPUT/vanderbilt/$RELEASE/$TILES_BASE/*.ome.tif*" gs://"$S3_TARGET"
     fi
 }
 

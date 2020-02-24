@@ -1,9 +1,8 @@
 {
-  "width": 50,
-  "height": 50,
-  "tile_size": 512,
-  "channels": {
-    "polyT": "https:/vitessce-data.storage.googleapis.com/0.0.20/master_release/vanderbilt.images/polyT.ome.tiff",
-    "nuclei": "https:/vitessce-data.storage.googleapis.com/0.0.20/master_release/vanderbilt.images/nuclei.ome.tiff"
-  }
+  "polyT": {
+    "tileSource": "https:/vitessce-data.storage.googleapis.com/0.0.20/master_release/vanderbilt.images/polyT.ome.tiff",
+    "sample": 1,
+  "nuclei": {
+    "tileSource": "https:/vitessce-data.storage.googleapis.com/0.0.20/master_release/vanderbilt.images/nuclei.ome.tiff",
+    "sample": 1,
 }
