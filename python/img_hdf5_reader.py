@@ -3,6 +3,7 @@
 from h5py import File
 from apeer_ometiff_library import io, omexmlClass
 import dask.array as da
+import dask
 from numcodecs import Zlib
 import zarr
 import xml.etree.ElementTree as et
@@ -178,17 +179,21 @@ class ImgHdf5Reader:
         channel_data = {}
         images = []
         for idx, channel in enumerate(channels):
-            channel_data[channel] = {
-                "sample": sample,
-                "tileSource": f"{zarr_url}/{PYRAMID_GROUP}/",
-                "minZoom": -max_level  # deck.gl is flipped
-            }
 
             array = self.sample_image(
                 channel=channel,
                 sample=sample,
                 use_dask=True,
             ).astype(data_dtype)
+
+            min_val, max_val = dask.compute(array.min(), array.max())
+
+            channel_data[channel] = {
+                "sample": sample,
+                "tileSource": f"{zarr_url}/{PYRAMID_GROUP}/",
+                "minZoom": -max_level,  # deck.gl is flipped
+                "range": [int(min_val), int(max_val)]
+            }
 
             images.append(array.T)
 
