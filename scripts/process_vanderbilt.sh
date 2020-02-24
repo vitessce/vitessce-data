@@ -8,7 +8,7 @@ main() {
   get_CLI_args "$@"
 
   TILES_BASE='vanderbilt.images'
-  TILES_PATH="$OUTPUT/$TILES_BASE"
+  TILES_PATH="$OUTPUT/vanderbilt/$TILES_BASE"
   if [ -e "$TILES_PATH" ]
   then
       echo "Skipping tiling -- output already exists: $TILES_PATH"

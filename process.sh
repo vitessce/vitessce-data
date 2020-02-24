@@ -38,7 +38,7 @@ main() {
         # Exclude the *HUGE* PNGs in the base directory:
         # The tiles for S3 are in subdirectories;
         # We keep the PNGs around because it takes a long time to generate them.
-        TILES_BASE='vanderbilt.images'
+        TILES_BASE='vanderbilt/vanderbilt.images'
         aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --recursive "$OUTPUT" s3://"$S3_TARGET"
         gsutil cp "$OUTPUT/vanderbilt/$RELEASE/$TILES_BASE/*.ome.tif*" gs://"$S3_TARGET"
     fi
