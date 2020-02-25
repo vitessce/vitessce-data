@@ -3,10 +3,12 @@ import csv
 import argparse
 import json
 
+
 def round_conv(s):
     # After the first decimal place, digits repeat, which I think
     # indicates the limited precision of the data.
     return round(float(s), 2)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
