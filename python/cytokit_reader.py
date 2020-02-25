@@ -22,7 +22,7 @@ if __name__ == '__main__':
     with open(args.cytokit) as csv_file:
         for row in csv.DictReader(csv_file):
             cells[row['id']] = {
-                'xy': [row['x'], row['y']]
+                'xy': [round(float(row['x']), 2), round(float(row['y']), 2)]
             }
 
     json.dump(cells, args.cells_file, indent=1)
