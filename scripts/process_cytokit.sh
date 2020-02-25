@@ -19,10 +19,7 @@ main() {
 
     if [ ! -e "$CYTOKIT_IN" ]
     then
-        echo 'TODO'
-        exit 1
-        # wget "https://cells.ucsc.edu/mouse-organogenesis/tSNE.coords.tsv.gz" -O "$TSV_TSNE_IN.gz"
-        # gunzip -df "$TSV_TSNE_IN"
+        wget "https://vitessce-data.s3.amazonaws.com/source-data/cytokit/cytokit.csv" -O "$CYTOKIT_IN"
     fi
 
     CELLS_OUT="$OUTPUT/cytokit.cells.json"
