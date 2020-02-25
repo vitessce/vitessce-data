@@ -5,16 +5,26 @@ import json
 
 
 def round_conv(s):
-    # TODO: Truncating after first decimal point might be slightly too aggressive?
-    return round(float(s), 2)
+    # TODO: Truncating after decimal point might be slightly too aggressive?
+    return round(float(s))
 
 
 def row_to_dict(row):
+    '''
+    >>> row = {
+    ...        'id': '123', 'x': '1.2', 'y': '3.4',
+    ...        'ci:ABC:mean': '5.6', 'ni:XYZ:mean': '7.8',
+    ...        'ci:EMPTY:mean': '9.0'
+    ... }
+    >>> row_to_dict(row)
+    {'xy': [1, 3], 'genes': {'ci:ABC': 6, 'ni:XYZ': 8}}
+    '''
+
     data_col_names = [
         k for k in row.keys()
         if k[:2] in {'ni', 'ci'} and 'EMPTY' not in k
     ]
-    cells[row['id']] = {
+    return {
         'xy': [round_conv(xy) for xy in [row['x'], row['y']]],
         'genes': {
             k.replace(':mean', ''): round_conv(row[k])
