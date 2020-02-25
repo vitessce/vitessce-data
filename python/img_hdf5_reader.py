@@ -151,7 +151,7 @@ class ImgHdf5Reader:
 
         io.write_ometiff(ometif_path, image, str(omexml))
 
-    def to_zarr(self, channels, sample, json_file, zarr_url):
+    def to_zarr(self, channels, sample, json_file, zarr_file, tiles_url):
         # zarr default BLOSC not supported in browser
         COMPRESSOR = Zlib(level=1)
         TILE_SIZE = 512
@@ -160,8 +160,7 @@ class ImgHdf5Reader:
         data_shape, data_dtype = self._get_shape_and_dtype(channels)
 
         # Create mutable store
-        zarr_path = json_file.name.replace('.json', '.zarr')
-        store = zarr.DirectoryStore(zarr_path)
+        store = zarr.DirectoryStore(zarr_file)
         root = zarr.group(store=store, overwrite=True)
         pyramid_root = root.create_group(PYRAMID_GROUP, overwrite=True)
 
@@ -190,7 +189,7 @@ class ImgHdf5Reader:
 
             channel_data[channel] = {
                 "sample": sample,
-                "tileSource": f"{zarr_url}/{PYRAMID_GROUP}/",
+                "tileSource": f"{tiles_url}/{PYRAMID_GROUP}/",
                 "minZoom": -max_level,  # deck.gl is flipped
                 "range": [int(min_val), int(max_val)]
             }
@@ -200,7 +199,7 @@ class ImgHdf5Reader:
         # Stack arrays using dask and rechunk to tile sizes (i.e. (2, 512, 512)
         chunks = (len(channels), TILE_SIZE, TILE_SIZE)
         da.array(images).rechunk(chunks).to_zarr(
-            zarr_path,
+            zarr_file,
             component=f"{PYRAMID_GROUP}/00",
             compressor=COMPRESSOR
         )
@@ -245,10 +244,13 @@ if __name__ == '__main__':
         '--json_file', required=True, type=argparse.FileType('x'),
         help='JSON file which will include image dimensions and location')
     parser.add_argument(
+        '--zarr_file', required=True,
+        help='Directory to write zarr output to.')
+    parser.add_argument(
         '--channels', required=True,
         help='List of channels to include in zarr image.')
     parser.add_argument(
-        '--zarr_url', required=True,
+        '--tiles_url', required=True,
         help='Output URL to zarr store.')
     parser.add_argument(
         '--sample', default=1, type=int,
@@ -262,5 +264,6 @@ if __name__ == '__main__':
         channels=channels,
         sample=args.sample,
         json_file=args.json_file,
-        zarr_url=args.zarr_url,
+        tiles_url=args.tiles_url,
+        zarr_file=args.zarr_file,
     )

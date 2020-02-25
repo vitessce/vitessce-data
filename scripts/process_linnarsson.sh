@@ -84,8 +84,8 @@ process_linnarson_images() {
     # NOTE: The name is actually "Linnarsson", with two "S"s, but this is the URL.
     PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
     HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
-    JSON_OUT="$OUTPUT/linnarsson.images.json"
-    ZARR_OUT='linnarsson.images.zarr'
+    JSON_OUT="$OUTPUT/linnarsson.raster.json"
+    ZARR_OUT="$OUTPUT/linnarsson.images.zarr"
 
     if [ -e "$JSON_OUT" ]
     then
@@ -97,20 +97,20 @@ process_linnarson_images() {
             wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
         RELEASE=${S3_TARGET//vitessce-data\//}
-        ZARR_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_OUT"
+        TILES_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_OUT"
 
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN
             --sample 1
             --channels polyT,nuclei
             --json_file $JSON_OUT
-            --zarr_url $ZARR_URL"
+            --zarr_file $ZARR_OUT
+            --tiles_url $TILES_URL"
         echo "Running: $CMD"
         $CMD
     fi
 
-    TILES_BASE="$ZARR_OUT/pyramid"
-    TILES_PATH="$OUTPUT/$TILES_BASE"
+    TILES_PATH="$ZARR_OUT/pyramid"
     echo "$TILES_PATH/01"
     if [ -e "$TILES_PATH/01" ]
     then

@@ -15,7 +15,7 @@ main() {
     INPUT="$FILES/input"
     OUTPUT="$FILES/output"
 
-    for DATASET in vanderbilt; do
+    for DATASET in linnarsson dries wang cao spraggins vanderbilt; do
         INPUT_SET="$INPUT/$DATASET"
         OUTPUT_SET="$OUTPUT/$DATASET"
         [ -d "$INPUT_SET" ] || mkdir -p "$INPUT_SET"
@@ -35,9 +35,9 @@ main() {
     then
         echo 'CI: Skip push to AWS and GCS'
     else
-        # aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$S3_TARGET"
+        aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$S3_TARGET"
         gsutil -m cp -r "$OUTPUT/vanderbilt/vanderbilt.images" gs://"$S3_TARGET/vanderbilt/vanderbilt.images"
-        # gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$S3_TARGET/linnarsson/linnarsson.images.zarr"
+        gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$S3_TARGET/linnarsson/linnarsson.images.zarr"
     fi
 }
 
