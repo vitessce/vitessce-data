@@ -19,13 +19,13 @@ fi
 #           echo 'vitessce-data/$BRANCH' > cloud_target.txt"
 # end target
 
-# start flake8
-# flake8 --exclude ./vips-8.7.1/
-# end flake8
-#
-# start doctest
-# python -m doctest python/*.py -o ELLIPSIS
-# end doctest
+start flake8
+flake8 --exclude ./vips-8.7.1/
+end flake8
+
+start doctest
+python -m doctest python/*.py -o ELLIPSIS
+end doctest
 
 start endtoend
 rm -rf fake-files/output || echo 'Nothing to delete'
