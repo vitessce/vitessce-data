@@ -26,8 +26,10 @@ if __name__ == '__main__':
     cells = {}
     with open(args.cytokit) as csv_file:
         for row in csv.DictReader(csv_file):
+            data_col_names = [k for k in row.keys() if k[:2] in {'ni', 'ci'}]
             cells[row['id']] = {
-                'xy': [round_conv(xy) for xy in [row['x'], row['y']]]
+                'xy': [round_conv(xy) for xy in [row['x'], row['y']]],
+                'genes': { k: row[k] for k in data_col_names }
             }
 
     json.dump(cells, args.cells_file, indent=1)
