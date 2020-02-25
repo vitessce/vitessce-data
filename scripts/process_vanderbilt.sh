@@ -34,6 +34,7 @@ main() {
       ls -ld $TILES_PATH
       ls -l $TILES_PATH
       touch "foo.json"
+      ls "foo.json"
       mv "$TILES_PATH/tiff.json" "$TILES_PATH/vanderbilt.raster.json"
   fi
 }
