@@ -85,7 +85,8 @@ process_linnarson_images() {
     PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
     HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
     JSON_OUT="$OUTPUT/linnarsson.raster.json"
-    ZARR_OUT="$OUTPUT/linnarsson.images.zarr"
+    ZARR_STORE="linnarsson.images.zarr"
+    ZARR_OUT="$OUTPUT/$ZARR_STORE"
 
     if [ -e "$JSON_OUT" ]
     then
@@ -97,7 +98,7 @@ process_linnarson_images() {
             wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
         RELEASE=${S3_TARGET//vitessce-data\//}
-        TILES_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_OUT"
+        TILES_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_STORE"
 
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN
