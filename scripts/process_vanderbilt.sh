@@ -33,8 +33,7 @@ main() {
       # vitessce relies on this naming strategy, whereas the docker image is more general
       ls -ld $TILES_PATH
       ls -l $TILES_PATH
-      touch "foo.json"
-      ls "foo.json"
+      touch "$TILES_PATH/foo.raster.json"
       mv "$TILES_PATH/tiff.json" "$TILES_PATH/vanderbilt.raster.json"
   fi
 }
