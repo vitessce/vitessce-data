@@ -97,8 +97,8 @@ process_linnarson_images() {
         [ -e "$HDF5_IN" ] || \
             wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
-        RELEASE=${S3_TARGET//vitessce-data\//}
-        TILES_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$"
+        RELEASE=${CLOUD_TARGET//vitessce-data\//}
+        TILES_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_STORE"
 
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN

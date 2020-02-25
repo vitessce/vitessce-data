@@ -115,14 +115,15 @@ class ImgHdf5Reader:
         ometif_path = '{}.ome.tif'.format(
             json_file.name.replace('.json', '')
         )
-        s3_target = open('s3_target.txt').read().strip()
+        cloud_target = open('cloud_target.txt').read().strip()
         for (channel, clip) in channel_clips:
             channel_data[channel] = {
                 'sample': sample,
-                'tileSource':
-                    'https://s3.amazonaws.com/{}/linnarsson/'.format(s3_target)
-                + 'linnarsson.tiles/linnarsson.images.{}/'.format(channel)
-                + '{}.dzi'.format(channel)
+                'tileSource': (
+                    f"https://s3.amazonaws.com/{cloud_target}/linnarsson/"
+                    f"linnarsson.tiles/linnarsson.images.{channel}/"
+                    f"{channel}.dzi"
+                )
             }
 
             channels.append(channel)

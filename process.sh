@@ -27,7 +27,7 @@ main() {
             -b "$BASE" \
             -i "$INPUT_SET" \
             -o "$OUTPUT_SET" \
-            -t "$S3_TARGET"
+            -t "$CLOUD_TARGET"
     done
 
     echo 'AWS:'
@@ -35,16 +35,16 @@ main() {
     then
         echo 'CI: Skip push to AWS and GCS'
     else
-        aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$S3_TARGET"
-        gsutil -m cp -r "$OUTPUT/vanderbilt/vanderbilt.images" gs://"$S3_TARGET/vanderbilt/vanderbilt.images"
-        gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$S3_TARGET/linnarsson/linnarsson.images.zarr"
+        aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$CLOUD_TARGET"
+        gsutil -m cp -r "$OUTPUT/vanderbilt/vanderbilt.images" "gs://$CLOUD_TARGET/vanderbilt/vanderbilt.images"
+        gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$CLOUD_TARGET/linnarsson/linnarsson.images.zarr"
     fi
 }
 
 ### Globals
 
 BASE=`pwd`
-S3_TARGET=`cat s3_target.txt`
+CLOUD_TARGET=`cat cloud_target.txt`
 
 if [[ "$CI" = 'true' ]]
 then
