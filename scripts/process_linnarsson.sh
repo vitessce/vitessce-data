@@ -84,7 +84,9 @@ process_linnarson_images() {
     # NOTE: The name is actually "Linnarsson", with two "S"s, but this is the URL.
     PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
     HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
-    JSON_OUT="$OUTPUT/linnarsson.images.json"
+    JSON_OUT="$OUTPUT/linnarsson.raster.json"
+    ZARR_STORE="linnarsson.images.zarr"
+    ZARR_OUT="$OUTPUT/$ZARR_STORE"
 
     if [ -e "$JSON_OUT" ]
     then
@@ -95,33 +97,29 @@ process_linnarson_images() {
         [ -e "$HDF5_IN" ] || \
             wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
+        RELEASE=${CLOUD_TARGET//vitessce-data\//}
+        TILES_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_STORE"
+
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN
-            --channel_clip_pairs polyT:200 nuclei:20
             --sample 1
-            --json_file $JSON_OUT"
+            --channels polyT,nuclei
+            --json_file $JSON_OUT
+            --zarr_file $ZARR_OUT
+            --tiles_url $TILES_URL"
         echo "Running: $CMD"
         $CMD
     fi
 
-    TILES_BASE='linnarsson.tiles'
-    TILES_PATH="$OUTPUT/$TILES_BASE"
-    if [ -e "$TILES_PATH" ]
+    TILES_PATH="$ZARR_OUT/pyramid"
+    if [ -e "$TILES_PATH/01" ]
     then
         echo "Skipping tiling -- output already exists: $TILES_PATH"
     else
-        mkdir $TILES_PATH
-        URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET/linnarsson/$TILES_BASE"
-
-        CMD='docker run --rm
-            -e "CHANNEL_PAGE_PAIRS=polyT:0 nuclei:1"
-            -e "PREFIX=linnarsson"
-            -e "PYRAMID_TYPE=dz"
-            --mount "type=bind,src='$OUTPUT'/linnarsson.images.ome.tif,destination=/input.ome.tif"
-            --mount "type=bind,src='$TILES_PATH',destination=/output_dir"
-            --name tiler gehlenborglab/ome-tiff-tiler:v0.0.4'
+        CMD="$BASE/python/tile_zarr_base.py
+            --zarr_pyramid_base $TILES_PATH/00"
         echo "Running: $CMD"
-        eval $CMD
+        $CMD
     fi
 }
 

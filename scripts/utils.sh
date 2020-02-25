@@ -44,7 +44,7 @@ get_CLI_args(){
                 OUTPUT=${OPTARG}
                 ;;
             t)
-                S3_TARGET=${OPTARG}
+                CLOUD_TARGET=${OPTARG}
                 ;;
         esac
     done

@@ -47,7 +47,7 @@ main() {
     then
         echo "Skipping tile -- output already exists: $TILE_PATH"
     else
-        URL_PREFIX="https://s3.amazonaws.com/$S3_TARGET"
+        URL_PREFIX="https://s3.amazonaws.com/$CLOUD_TARGET"
         mkdir -p "$TILE_PATH"
         JSON_STRING='{ "type": "image", "url": "'$URL_PREFIX'/wang.png" }'
         echo $JSON_STRING > "$TILE_PATH/info.json"

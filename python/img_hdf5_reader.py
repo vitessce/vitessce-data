@@ -2,10 +2,13 @@
 
 from h5py import File
 from apeer_ometiff_library import io, omexmlClass
+import dask.array as da
+import dask
+from numcodecs import Zlib
+import zarr
 import xml.etree.ElementTree as et
 import datetime
 import numpy as np
-import png
 import argparse
 import json
 
@@ -29,7 +32,7 @@ class ImgHdf5Reader:
     def __getitem__(self, key):
         return self.data[key]
 
-    def sample_image(self, channel, sample):
+    def sample_image(self, channel, sample, use_dask=False):
         '''
         >>> path = 'fake-files/input/linnarsson/linnarsson.imagery.hdf5'
         >>> reader = ImgHdf5Reader(path)
@@ -38,9 +41,14 @@ class ImgHdf5Reader:
         (25, 25)
 
         '''
-        return self.data[channel][::sample, ::sample]
+        data = (
+            self.data[channel]
+            if not use_dask
+            else da.array(self.data[channel])
+        )
+        return data[::sample, ::sample]
 
-    def scale_sample(self, channel, sample, max_allowed, clip):
+    def scale_sample(self, channel, sample, max_allowed, clip, use_dask=False):
         '''
         Assumes there are no negative values
 
@@ -58,53 +66,9 @@ class ImgHdf5Reader:
         [0.0, 127.0, 254.0, 254.0, 254.0]
 
         '''
-        sampled = np.clip(self.sample_image(channel, sample), 0, clip)
+        sampled = self.sample_image(channel, sample, use_dask).clip(0, clip)
         # 255 displays as black... color table issue?
         return sampled / clip * (max_allowed - 1)
-
-    def to_png(self, channel, sample, png_path, clip):
-        MAX_ALLOWED = 256
-        NP_TYPE = np.int8
-
-        scaled_sample = self.scale_sample(
-            channel=channel,
-            sample=sample,
-            max_allowed=MAX_ALLOWED,
-            clip=clip
-        ).astype(NP_TYPE)
-        scaled_sample_transposed = np.transpose(scaled_sample)
-
-        # Bug with PNG generation from transposed numpy arrays:
-        # https://github.com/drj11/pypng/issues/91
-        # Work-around is to dump and reload.
-        hack = np.array(scaled_sample_transposed.tolist()).astype(NP_TYPE)
-        png.from_array(hack, mode='L').save(png_path)
-
-    def to_pngs(self, channel_clips, sample, json_file):
-        channels = {}
-        s3_target = open('s3_target.txt').read().strip()
-        for (channel, clip) in channel_clips:
-            channels[channel] = {
-                'sample': sample,
-                # TODO: Pass in portions of this path as parameters
-                'tileSource':
-                    'https://s3.amazonaws.com/{}/linnarsson/'.format(s3_target)
-                + 'linnarsson.tiles/linnarsson.images.{}/'.format(channel)
-                + 'info.json'
-            }
-            png_path = '{}.{}.png'.format(
-                json_file.name.replace('.json', ''),
-                channel
-            )
-            self.to_png(
-                channel=channel,
-                clip=float(clip),
-                sample=sample,
-                png_path=png_path,
-            )
-        json.dump(channels, json_file, indent=2)
-        # This JSON file is not used right now:
-        # really just a list of the files processed.
 
     def get_omexml(self, pixel_array, channels, name, pixel_type):
         omexml = omexmlClass.OMEXML()
@@ -151,14 +115,15 @@ class ImgHdf5Reader:
         ometif_path = '{}.ome.tif'.format(
             json_file.name.replace('.json', '')
         )
-        s3_target = open('s3_target.txt').read().strip()
+        cloud_target = open('cloud_target.txt').read().strip()
         for (channel, clip) in channel_clips:
             channel_data[channel] = {
                 'sample': sample,
-                'tileSource':
-                    'https://s3.amazonaws.com/{}/linnarsson/'.format(s3_target)
-                + 'linnarsson.tiles/linnarsson.images.{}/'.format(channel)
-                + '{}.dzi'.format(channel)
+                'tileSource': (
+                    f"https://s3.amazonaws.com/{cloud_target}/linnarsson/"
+                    f"linnarsson.tiles/linnarsson.images.{channel}/"
+                    f"{channel}.dzi"
+                )
             }
 
             channels.append(channel)
@@ -187,6 +152,88 @@ class ImgHdf5Reader:
 
         io.write_ometiff(ometif_path, image, str(omexml))
 
+    def to_zarr(self, channels, sample, json_file, zarr_file, tiles_url):
+        # zarr default BLOSC not supported in browser
+        COMPRESSOR = Zlib(level=1)
+        TILE_SIZE = 512
+        PYRAMID_GROUP = "pyramid"
+
+        data_shape, data_dtype = self._get_shape_and_dtype(channels)
+
+        # Create mutable store
+        store = zarr.DirectoryStore(zarr_file)
+        root = zarr.group(store=store, overwrite=True)
+        pyramid_root = root.create_group(PYRAMID_GROUP, overwrite=True)
+
+        # Determine number of levels for pyramid
+        s_height, s_width = [dim // sample for dim in data_shape]
+        if s_height < TILE_SIZE and s_width < TILE_SIZE:
+            max_level = 0
+        else:
+            # create all levels up to 512 x 512
+            max_level = (
+                int(np.ceil(np.log2(np.maximum(s_height, s_width)))) - 9
+            )
+            max_level -= 1  # zero indexed
+
+        channel_data = {}
+        images = []
+        for idx, channel in enumerate(channels):
+
+            array = self.sample_image(
+                channel=channel,
+                sample=sample,
+                use_dask=True,
+            ).astype(data_dtype)
+
+            min_val, max_val = dask.compute(array.min(), array.max())
+
+            channel_data[channel] = {
+                "sample": sample,
+                "tileSource": f"{tiles_url}/{PYRAMID_GROUP}/",
+                "minZoom": -max_level,  # deck.gl is flipped
+                "range": [int(min_val), int(max_val)]
+            }
+
+            images.append(array.T)
+
+        # Stack arrays using dask and rechunk to tile sizes (i.e. (2, 512, 512)
+        chunks = (len(channels), TILE_SIZE, TILE_SIZE)
+        da.array(images).rechunk(chunks).to_zarr(
+            zarr_file,
+            component=f"{PYRAMID_GROUP}/00",
+            compressor=COMPRESSOR
+        )
+        json.dump(channel_data, json_file, indent=2)
+
+        # Add metadata
+        z = pyramid_root.get("00")
+        z.attrs["channels"] = channels
+
+    def _get_shape_and_dtype(self, channels):
+        shapes, dtypes = zip(
+            *[(self.data[c].shape, self.data[c].dtype) for c in channels]
+        )
+        # Compare dimension sizes to make sure all same size
+        shape = []
+        for shared_dimension in zip(*shapes):
+            first_el = shared_dimension[0]
+            all_same = all(dim == first_el for dim in shared_dimension)
+            if not all_same:
+                raise ValueError(
+                    f"Data stored in {channels} are not the same shape."
+                )
+            shape.append(first_el)
+        # Ensure same dtype.
+        first_dtype = dtypes[0]
+        all_same = all(dtype == first_dtype for dtype in dtypes)
+        if not all_same:
+            raise ValueError(
+                f"Dtypes are not the same for {channels}: {dtypes}"
+            )
+
+        return shape, first_dtype
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -195,22 +242,29 @@ if __name__ == '__main__':
         '--hdf5', required=True,
         help='HDF5 file with raster data')
     parser.add_argument(
-        '--channel_clip_pairs', required=True, nargs='+',
-        help='Colon-delimited pairs of channels and clip values')
-    parser.add_argument(
         '--json_file', required=True, type=argparse.FileType('x'),
         help='JSON file which will include image dimensions and location')
+    parser.add_argument(
+        '--zarr_file', required=True,
+        help='Directory to write zarr output to.')
+    parser.add_argument(
+        '--channels', required=True,
+        help='List of channels to include in zarr image.')
+    parser.add_argument(
+        '--tiles_url', required=True,
+        help='Output URL to zarr store.')
     parser.add_argument(
         '--sample', default=1, type=int,
         help='Sample 1 pixel out of N')
     args = parser.parse_args()
 
-    channel_clips = [pair.split(':') for pair in args.channel_clip_pairs]
-
     reader = ImgHdf5Reader(args.hdf5)
 
-    reader.to_ometiff(
-        channel_clips=channel_clips,
+    channels = [c for c in args.channels.split(',')]
+    reader.to_zarr(
+        channels=channels,
         sample=args.sample,
-        json_file=args.json_file
+        json_file=args.json_file,
+        tiles_url=args.tiles_url,
+        zarr_file=args.zarr_file,
     )

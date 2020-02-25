@@ -27,7 +27,7 @@ main() {
             -b "$BASE" \
             -i "$INPUT_SET" \
             -o "$OUTPUT_SET" \
-            -t "$S3_TARGET"
+            -t "$CLOUD_TARGET"
     done
 
     echo 'AWS:'
@@ -35,19 +35,16 @@ main() {
     then
         echo 'CI: Skip push to AWS and GCS'
     else
-        # Exclude the *HUGE* PNGs in the base directory:
-        # The tiles for S3 are in subdirectories;
-        # We keep the PNGs around because it takes a long time to generate them.
-        TILES_BASE='vanderbilt/vanderbilt.images'
-        aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --recursive "$OUTPUT" s3://"$S3_TARGET"
-        gsutil -m cp -r "$OUTPUT/$TILES_BASE/" gs://"$S3_TARGET/$TILES_BASE/"
+        aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$CLOUD_TARGET"
+        gsutil -m cp -r "$OUTPUT/vanderbilt/vanderbilt.images" "gs://$CLOUD_TARGET/vanderbilt/vanderbilt.images"
+        gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$CLOUD_TARGET/linnarsson/linnarsson.images.zarr"
     fi
 }
 
 ### Globals
 
 BASE=`pwd`
-S3_TARGET=`cat s3_target.txt`
+CLOUD_TARGET=`cat cloud_target.txt`
 
 if [[ "$CI" = 'true' ]]
 then

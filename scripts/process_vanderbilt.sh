@@ -19,7 +19,7 @@ main() {
       else
         aws s3 cp s3://vitessce-data/source-data/vanderbilt/vanderbilt.ome.tif "$INPUT/vanderbilt.ome.tif"
       fi
-      RELEASE=${S3_TARGET//vitessce-data\//}
+      RELEASE=${CLOUD_TARGET//vitessce-data\//}
       SERVER_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/vanderbilt/"
       CMD='docker run --rm
           -e "SERVER_URL='$SERVER_URL'"
