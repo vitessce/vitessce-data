@@ -85,6 +85,7 @@ process_linnarson_images() {
     PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
     HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
     JSON_OUT="$OUTPUT/linnarsson.images.json"
+    ZARR_OUT='linnarsson.images.zarr'
 
     if [ -e "$JSON_OUT" ]
     then
@@ -96,7 +97,6 @@ process_linnarson_images() {
             wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
         RELEASE=${S3_TARGET//vitessce-data\//}
-        ZARR_OUT='linnarsson.images.zarr'
         ZARR_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_OUT"
 
         CMD="$BASE/python/img_hdf5_reader.py
@@ -111,6 +111,7 @@ process_linnarson_images() {
 
     TILES_BASE="$ZARR_OUT/pyramid"
     TILES_PATH="$OUTPUT/$TILES_BASE"
+    echo "$TILES_PATH/01"
     if [ -e "$TILES_PATH/01" ]
     then
         echo "Skipping tiling -- output already exists: $TILES_PATH"
