@@ -43,9 +43,9 @@ def molecules_dict(df):
 
 
 def image_dict():
-    s3_target = open('s3_target.txt').read().strip()
+    cloud_target = open('cloud_target.txt').read().strip()
     url = 'https://s3.amazonaws.com/{}/wang.images/info.json'.format(
-        s3_target
+        cloud_target
     )
     image_dict = {
         'MERrfish': {
