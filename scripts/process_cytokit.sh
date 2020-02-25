@@ -4,10 +4,7 @@ set -o errexit
 . ./scripts/utils.sh
 
 main() {
-    # Download and process data which describes cell locations,
-    # and gene expression levels. Multiple JSON output files are produced:
-    # The files are redudant, but this reduces the processing that needs
-    # to be done on the client-side.
+    # Download and process CSV which describes cell locations and CODEX data.
 
     get_CLI_args "$@"
     CYTOKIT_IN="$INPUT/cytokit.csv"
