@@ -2,6 +2,10 @@ language: python
 python:
   - "3.6"
 cache: pip
+before_script:
+  - mkdir -p "${/home/travis/build/hubmapconsortium/vitessce-data/fake-files/output/vanderbilt/vanderbilt.images/vanderbilt.raster.json%/*}"
+  - touch /home/travis/build/hubmapconsortium/vitessce-data/fake-files/output/vanderbilt/vanderbilt.images/vanderbilt.raster.json
+  - chmod +x /home/travis/build/hubmapconsortium/vitessce-data/fake-files/output/vanderbilt/vanderbilt.images/vanderbilt.raster.json
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
