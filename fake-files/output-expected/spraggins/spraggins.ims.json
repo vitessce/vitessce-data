@@ -5,7 +5,7 @@
     "x"
   ],
   "zarrConfig": {
-    "store": "https://s3.amazonaws.com/vitessce-data/0.0.20/master_release/spraggins/",
+    "store": "https://s3.amazonaws.com/vitessce-data/0.0.23/master_release/spraggins/",
     "path": "spraggins.ims.zarr"
   }
 }
