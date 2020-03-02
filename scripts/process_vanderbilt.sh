@@ -27,7 +27,7 @@ main() {
           -e "PYRAMID_TYPE=tiff"
           --mount "type=bind,src='$INPUT'/vanderbilt.ome.tif,destination=/input.ome.tif"
           --mount "type=bind,src='$OUTPUT',destination=/output_dir"
-          --name tiler gehlenborglab/ome-tiff-tiler:v0.0.5'
+          --name tiler gehlenborglab/ome-tiff-tiler:v0.0.6'
       echo "Running: $CMD"
       eval $CMD
       # vitessce relies on this naming strategy, whereas the docker image is more general
