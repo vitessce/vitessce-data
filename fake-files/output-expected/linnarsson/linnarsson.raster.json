@@ -1,7 +1,7 @@
 {
   "polyT": {
     "sample": 1,
-    "tileSource": "https://vitessce-data.storage.googleapis.com/0.0.23/master_release/linnarsson/linnarsson.images.zarr/pyramid/",
+    "tileSource": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/linnarsson/linnarsson.images.zarr/pyramid/",
     "minZoom": 0,
     "range": [
       0,
@@ -10,7 +10,7 @@
   },
   "nuclei": {
     "sample": 1,
-    "tileSource": "https://vitessce-data.storage.googleapis.com/0.0.23/master_release/linnarsson/linnarsson.images.zarr/pyramid/",
+    "tileSource": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/linnarsson/linnarsson.images.zarr/pyramid/",
     "minZoom": 0,
     "range": [
       0,
