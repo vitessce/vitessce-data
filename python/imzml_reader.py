@@ -142,10 +142,16 @@ class IMSDataset:
         # write array with metadata
         z_arr[:, :, :] = arr
         self.domain = [int(np.min(z_arr)), int(np.max(z_arr))]
-        self.translate = [int(extent.y_min), int(extent.x_min)]
+        self.translate = [
+            int(extent.y_min * self.ims_px_in_micro),
+            int(extent.x_min * self.ims_px_in_micro),
+        ]
         z_arr.attrs["domain"] = self.domain
-        z_arr.attrs["translate"] = self.translate
-        z_arr.attrs["scale"] = self.ims_px_in_micro
+        z_arr.attrs["transform"] = {
+            "translate": self.translate,
+            "scale": self.ims_px_in_micro,
+        }
+
         z_arr.attrs["mz"] = self._format_mzs().tolist()
 
 
@@ -156,8 +162,7 @@ def write_metadata_json(
         "dimensions": ["mz", "y", "x"],
         "zarrConfig": {"store": zarr_store_url, "path": zarr_path},
         "domain": domain,
-        "scale": scale,
-        "translate": translate,
+        "transform": {"scale": scale, "translate": translate},
     }
     json.dump(json_out, json_file, indent=2)
 

@@ -5,7 +5,18 @@
     "x"
   ],
   "zarrConfig": {
-    "store": "https://s3.amazonaws.com/vitessce-data/0.0.23/master_release/spraggins/",
+    "store": "https://vitessce-data.storage.googleapis.com/0.0.23/master_release/spraggins",
     "path": "spraggins.ims.zarr"
+  },
+  "domain": [
+    0,
+    1
+  ],
+  "transform": {
+    "scale": 20.0,
+    "translate": [
+      1000,
+      20
+    ]
   }
 }
