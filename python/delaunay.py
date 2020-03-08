@@ -26,7 +26,7 @@ class DictDelaunay2d:
     >>> points = {'A':[0,0], 'B':[1,2], 'C':[2,1], 'D':[1,3], 'E':[3,1], 'F':[3,3]}
     >>> delaunay = DictDelaunay2d(points)
     >>> delaunay.getTriangles()
-    [['B', 'C', 'F'], ['B', 'F', 'D'], ['C', 'F', 'E'], ['B', 'A', 'C'], ['C', 'A', 'E'], ['B', 'D', 'A']]
+    [['B', 'C', 'F'], ['B', 'F', 'D'], ['C', 'F', 'E'], ['B', 'A', 'C'], ['B', 'D', 'A'], ['C', 'A', 'E']]
 
     '''
     def __init__(self, pairs_dict):
@@ -74,12 +74,12 @@ class Delaunay2d:
     5
 
     >>> delaunay.triangles
-    [[0, 1, 4], [0, 4, 2], [1, 4, 3], [0, 5, 1], [1, 5, 3], [0, 2, 5]]
+    [[0, 1, 4], [0, 4, 2], [1, 4, 3], [0, 5, 1], [0, 2, 5], [1, 5, 3]]
 
     Internal order!
 
     >>> delaunay.getTriangles()
-    [[1, 2, 5], [1, 5, 3], [2, 5, 4], [1, 0, 2], [2, 0, 4], [1, 3, 0]]
+    [[1, 2, 5], [1, 5, 3], [2, 5, 4], [1, 0, 2], [1, 3, 0], [2, 0, 4]]
 
     Original order!
     '''

@@ -130,7 +130,7 @@ class IMSDataset:
         # zarr.js does not support compression yet
         # https://github.com/gzuidhof/zarr.js/issues/1
         z_arr = zarr.open(
-            path,
+            str(path),
             mode="w",
             shape=arr.shape,
             compressor=compressor,
