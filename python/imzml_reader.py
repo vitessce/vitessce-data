@@ -13,6 +13,14 @@ from pathlib import Path
 
 CoordExtent = namedtuple("CoordExtent", "x_min y_min x_max y_max")
 
+# Pyimzml dtype specification
+DTYPE_DICT = {
+    'f': np.float32,
+    'd': np.float64,
+    'i': np.int32,
+    'l': np.int64,
+}
+
 
 class IMSDataset:
     """Converts IMS data stored as imzML into columnar or ndarray formats
@@ -116,7 +124,7 @@ class IMSDataset:
 
         return arr
 
-    def write_zarr(self, path, dtype, compressor=None, chunks=None):
+    def write_zarr(self, path, dtype=None, compressor=None, chunks=None):
         arr = self.to_array()
         extent = self._get_min_max_coords()
 
@@ -128,6 +136,10 @@ class IMSDataset:
                 None,
                 None,
             ]
+
+        if dtype is None:
+            # Get corresponding dtype from pyimzml spec
+            dtype = DTYPE_DICT[self.parser.intensityPrecision]
 
         # zarr.js does not support compression yet
         # https://github.com/gzuidhof/zarr.js/issues/1
@@ -203,7 +215,7 @@ if __name__ == "__main__":
     dataset = IMSDataset(
         args.imzml_file, args.ibd_file, micro_res=0.5, ims_res=10
     )
-    dataset.write_zarr(args.ims_zarr, dtype="uint32", compressor=Zlib(level=1))
+    dataset.write_zarr(args.ims_zarr, compressor=Zlib(level=1))
     write_metadata_json(
         args.ims_metadata,
         args.zarr_store_url,
