@@ -36,9 +36,7 @@ main() {
         echo 'CI: Skip push to AWS and GCS'
     else
         aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$CLOUD_TARGET"
-        gsutil -m cp -r "$OUTPUT/vanderbilt/vanderbilt.images" "gs://$CLOUD_TARGET/vanderbilt/vanderbilt.images"
-        gsutil -m cp -r "$OUTPUT/spraggins/spraggins.ims.zarr" "gs://$CLOUD_TARGET/spraggins/spraggins.ims.zarr"
-        gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$CLOUD_TARGET/linnarsson/linnarsson.images.zarr"
+        gsutil -m rsync -r -x ".*\.png$|.*\.json$" "$OUTPUT" gs://"$CLOUD_TARGET"
     fi
 }
 
