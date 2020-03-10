@@ -192,7 +192,7 @@ class ImgHdf5Reader:
                 "sample": sample,
                 "tileSource": f"{tiles_url}/{PYRAMID_GROUP}/",
                 "minZoom": -max_level,  # deck.gl is flipped
-                "range": [int(min_val), int(max_val)]
+                "domain": [int(min_val), int(max_val)]
             }
 
             images.append(array.T)

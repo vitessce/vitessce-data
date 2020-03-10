@@ -37,6 +37,7 @@ main() {
     else
         aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$CLOUD_TARGET"
         gsutil -m cp -r "$OUTPUT/spraggins/spraggins.images" "gs://$CLOUD_TARGET/spraggins/spraggins.images"
+        gsutil -m cp -r "$OUTPUT/spraggins/spraggins.ims.zarr" "gs://$CLOUD_TARGET/spraggins/spraggins.ims.zarr"
         gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$CLOUD_TARGET/linnarsson/linnarsson.images.zarr"
     fi
 }

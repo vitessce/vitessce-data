@@ -3,7 +3,7 @@
     "sample": 1,
     "tileSource": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/linnarsson/linnarsson.images.zarr/pyramid/",
     "minZoom": 0,
-    "range": [
+    "domain": [
       0,
       49
     ]
@@ -12,7 +12,7 @@
     "sample": 1,
     "tileSource": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/linnarsson/linnarsson.images.zarr/pyramid/",
     "minZoom": 0,
-    "range": [
+    "domain": [
       0,
       49
     ]

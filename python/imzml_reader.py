@@ -9,8 +9,17 @@ import zarr
 import argparse
 import json
 from collections import namedtuple
+from pathlib import Path
 
 CoordExtent = namedtuple("CoordExtent", "x_min y_min x_max y_max")
+
+# Pyimzml dtype specification
+DTYPE_DICT = {
+    'f': np.float32,
+    'd': np.float64,
+    'i': np.int32,
+    'l': np.int64,
+}
 
 
 class IMSDataset:
@@ -38,6 +47,7 @@ class IMSDataset:
                 "The number of m/z is not the same at each coordinate."
             )
         self.mzs, _ = self.parser.getspectrum(0)
+        self.domain = None
 
     def _get_min_max_coords(self):
         coords = np.array(self.parser.coordinates)
@@ -114,7 +124,7 @@ class IMSDataset:
 
         return arr
 
-    def write_zarr(self, path, dtype, compressor=None, chunks=None):
+    def write_zarr(self, path, dtype=None, compressor=None, chunks=None):
         arr = self.to_array()
         extent = self._get_min_max_coords()
 
@@ -123,9 +133,13 @@ class IMSDataset:
             # Each mz offset is a contiguous 2D image channel.
             chunks = [
                 1,
-                extent.y_max - extent.y_min + 1,
-                extent.x_max - extent.x_min + 1,
+                None,
+                None,
             ]
+
+        if dtype is None:
+            # Get corresponding dtype from pyimzml spec
+            dtype = DTYPE_DICT[self.parser.intensityPrecision]
 
         # zarr.js does not support compression yet
         # https://github.com/gzuidhof/zarr.js/issues/1
@@ -139,20 +153,28 @@ class IMSDataset:
         )
         # write array with metadata
         z_arr[:, :, :] = arr
-        z_arr.attrs["x_extent"] = [float(extent.x_min), float(extent.x_max)]
-        z_arr.attrs["y_extent"] = [float(extent.y_min), float(extent.y_max)]
-        z_arr.attrs["scaling_factor"] = self.ims_px_in_micro
+        self.domain = [int(np.min(z_arr)), int(np.max(z_arr))]
+        self.translate = [
+            int(extent.y_min * self.ims_px_in_micro),
+            int(extent.x_min * self.ims_px_in_micro),
+        ]
+        z_arr.attrs["domain"] = self.domain
+        z_arr.attrs["transform"] = {
+            "translate": self.translate,
+            "scale": self.ims_px_in_micro,
+        }
+
         z_arr.attrs["mz"] = self._format_mzs().tolist()
 
 
-def write_metadata_json(json_file):
-    cloud_target = open("cloud_target.txt").read().strip()
+def write_metadata_json(
+    json_file, zarr_store_url, zarr_path, domain, scale, translate
+):
     json_out = {
         "dimensions": ["mz", "y", "x"],
-        "zarrConfig": {
-            "store": f"https://s3.amazonaws.com/{cloud_target}/spraggins/",
-            "path": "spraggins.ims.zarr",
-        },
+        "zarrConfig": {"store": zarr_store_url, "path": zarr_path},
+        "domain": domain,
+        "transform": {"scale": scale, "translate": translate},
     }
     json.dump(json_out, json_file, indent=2)
 
@@ -183,10 +205,22 @@ if __name__ == "__main__":
         required=True,
         help="Write the metadata about the IMS zarr store on S3.",
     )
+    parser.add_argument(
+        "--zarr_store_url",
+        required=True,
+        help="Destination for zarr output in cloud.",
+    )
     args = parser.parse_args()
 
     dataset = IMSDataset(
         args.imzml_file, args.ibd_file, micro_res=0.5, ims_res=10
     )
-    dataset.write_zarr(args.ims_zarr, dtype="i4", compressor=Zlib(level=1))
-    write_metadata_json(args.ims_metadata)
+    dataset.write_zarr(args.ims_zarr, compressor=Zlib(level=1))
+    write_metadata_json(
+        args.ims_metadata,
+        args.zarr_store_url,
+        Path(args.ims_zarr).name,
+        dataset.domain,
+        dataset.ims_px_in_micro,
+        dataset.translate,
+    )

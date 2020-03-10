@@ -13,7 +13,8 @@ main() {
     ZARR_OUT="$OUTPUT/spraggins.ims.zarr"
     JSON_OUT="$OUTPUT/spraggins.ims.json"
 
-    CLI_ARGS="--imzml_file $IMZML_IN --ibd_file $IBD_IN --ims_zarr $ZARR_OUT --ims_metadata $JSON_OUT"
+    RELEASE=${CLOUD_TARGET//vitessce-data\//}
+    ZARR_STORE_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/spraggins"
 
     echo "Download and process IMS data..."
 
@@ -29,7 +30,12 @@ main() {
         echo "Skipping zarr -- output already exists: $ZARR_OUT"
     else
         echo 'Generating IMS zarr may take a while...'
-        CMD="$BASE/python/imzml_reader.py $CLI_ARGS"
+        CMD="$BASE/python/imzml_reader.py
+            --imzml_file $IMZML_IN
+            --ibd_file $IBD_IN
+            --ims_zarr $ZARR_OUT
+            --ims_metadata $JSON_OUT
+            --zarr_store_url $ZARR_STORE_URL"
         echo "Running: $CMD"
         eval $CMD
     fi
