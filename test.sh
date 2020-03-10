@@ -19,6 +19,10 @@ fi
 #           echo 'vitessce-data/$BRANCH' > cloud_target.txt"
 # end target
 
+start black
+black --line-length 79 --check ./python
+end black
+
 start flake8
 flake8 --exclude ./vips-8.7.1/
 end flake8

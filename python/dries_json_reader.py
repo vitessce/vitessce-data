@@ -5,7 +5,7 @@ import argparse
 
 
 def cells_json(data):
-    '''
+    """
     >>> data = {
     ...     "cell_1": {
     ...         "locations": [1632.02, -1305.7],
@@ -25,31 +25,31 @@ def cells_json(data):
     >>> cells['cell_1'].keys()
     dict_keys(['mappings', 'genes', 'xy', 'factors', 'poly'])
 
-    '''
+    """
     cell_dict = {}
     for cell_id in data.keys():
         mappings_dict = {
-            't-SNE': data[cell_id]['mappings']['tsne'],
-            'UMAP': data[cell_id]['mappings']['umap']
+            "t-SNE": data[cell_id]["mappings"]["tsne"],
+            "UMAP": data[cell_id]["mappings"]["umap"],
         }
-        factors = data[cell_id]['factors']
+        factors = data[cell_id]["factors"]
         factors_dict = {
-            'pleiden_clus': 'Cluster {}'.format(factors['pleiden_clus'][0]),
-            'kmeans': 'Cluster {}'.format(factors['kmeans'][0])
+            "pleiden_clus": "Cluster {}".format(factors["pleiden_clus"][0]),
+            "kmeans": "Cluster {}".format(factors["kmeans"][0]),
         }
         cell_dict[cell_id] = {
-            'mappings': mappings_dict,
-            'genes': {},
-            'xy': data[cell_id]['locations'],
-            'factors': factors_dict,
-            'poly': []
+            "mappings": mappings_dict,
+            "genes": {},
+            "xy": data[cell_id]["locations"],
+            "factors": factors_dict,
+            "poly": [],
         }
 
     return cell_dict
 
 
 def factors_json(data):
-    '''
+    """
     >>> data = {
     ...     "cell_1": {
     ...         "locations": [1632.02, -1305.7],
@@ -69,55 +69,62 @@ def factors_json(data):
     >>> factors['kmeans'].keys()
     dict_keys(['map', 'cells'])
 
-    '''
+    """
+
     def get_factor(cell, factor_name):
-        return cell['factors'][factor_name][0]
-    pleiden_clusters = list({
-        get_factor(cell, 'pleiden_clus') for cell in data.values()
-    })
-    kmeans_clusters = list({
-        get_factor(cell, 'kmeans') for cell in data.values()
-    })
+        return cell["factors"][factor_name][0]
+
+    pleiden_clusters = list(
+        {get_factor(cell, "pleiden_clus") for cell in data.values()}
+    )
+    kmeans_clusters = list(
+        {get_factor(cell, "kmeans") for cell in data.values()}
+    )
 
     pleiden_cells = {}
     kmeans_cells = {}
 
     for cell_id in data:
-        factors = data[cell_id]['factors']
+        factors = data[cell_id]["factors"]
         pleiden_cells[cell_id] = pleiden_clusters.index(
-            factors['pleiden_clus'][0]
+            factors["pleiden_clus"][0]
         )
-        kmeans_cells[cell_id] = kmeans_clusters.index(
-            factors['kmeans'][0]
-        )
+        kmeans_cells[cell_id] = kmeans_clusters.index(factors["kmeans"][0])
 
     factors_dict = {
-        'pleiden_clus': {
-            'map': ['Cluster {}'.format(c) for c in pleiden_clusters],
-            'cells': pleiden_cells
+        "pleiden_clus": {
+            "map": ["Cluster {}".format(c) for c in pleiden_clusters],
+            "cells": pleiden_cells,
         },
-        'kmeans': {
-            'map': ['Cluster {}'.format(c) for c in kmeans_clusters],
-            'cells': kmeans_cells
-        }
+        "kmeans": {
+            "map": ["Cluster {}".format(c) for c in kmeans_clusters],
+            "cells": kmeans_cells,
+        },
     }
 
     return factors_dict
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Create JSON with cell metadata from '
-        'Giotto-produced JSON.')
+        description="Create JSON with cell metadata from "
+        "Giotto-produced JSON."
+    )
     parser.add_argument(
-        '--json_file', required=True,
-        help='JSON file produced by Giotto object.')
+        "--json_file",
+        required=True,
+        help="JSON file produced by Giotto object.",
+    )
     parser.add_argument(
-        '--cells_file', type=argparse.FileType('x'),
-        help='Write the cell data to this file.')
+        "--cells_file",
+        type=argparse.FileType("x"),
+        help="Write the cell data to this file.",
+    )
     parser.add_argument(
-        '--factors_file', type=argparse.FileType('x'),
-        help='Write the cell factors to this file.')
+        "--factors_file",
+        type=argparse.FileType("x"),
+        help="Write the cell factors to this file.",
+    )
     args = parser.parse_args()
 
     with open(args.json_file) as json_file:

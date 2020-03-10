@@ -13,13 +13,13 @@ def cells_dict(df):
     genes_pair_list = defaultdict(list)
     xy_dict = defaultdict(list)
 
-    df_genes = df.groupby(['cell', 'gene1']).size().reset_index(name='count')
+    df_genes = df.groupby(["cell", "gene1"]).size().reset_index(name="count")
 
     for index, row in df_genes.iterrows():
-        genes_pair_list[row['cell']].append((row['gene1'], row['count']))
+        genes_pair_list[row["cell"]].append((row["gene1"], row["count"]))
 
     for index, row in df.iterrows():
-        xy_dict[row['cell']].append([row['x'], row['y']])
+        xy_dict[row["cell"]].append([row["x"], row["y"]])
 
     for cell in xy_dict:
         cells_dict[cell] = {
@@ -27,7 +27,7 @@ def cells_dict(df):
             "genes": dict(genes_pair_list[cell]),
             "xy": list(map(np.mean, zip(*xy_dict[cell]))),
             "factors": {},
-            "poly": octagon(np.array(xy_dict[cell]))
+            "poly": octagon(np.array(xy_dict[cell])),
         }
 
     return cells_dict
@@ -37,44 +37,48 @@ def molecules_dict(df):
     molecules_dict = defaultdict(list)
 
     for index, row in df.iterrows():
-        molecules_dict[row['gene1']].append([row['x'], row['y']])
+        molecules_dict[row["gene1"]].append([row["x"], row["y"]])
 
     return molecules_dict
 
 
 def image_dict():
-    cloud_target = open('cloud_target.txt').read().strip()
-    url = 'https://s3.amazonaws.com/{}/wang.images/info.json'.format(
+    cloud_target = open("cloud_target.txt").read().strip()
+    url = "https://s3.amazonaws.com/{}/wang.images/info.json".format(
         cloud_target
     )
-    image_dict = {
-        'MERrfish': {
-            'sample': 1,
-            'tileSource': url
-        }
-    }
+    image_dict = {"MERrfish": {"sample": 1, "tileSource": url}}
 
     return image_dict
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Create JSON with cell metadata from MERmaid CSV.')
+        description="Create JSON with cell metadata from MERmaid CSV."
+    )
     parser.add_argument(
-        '--csv_file', required=True,
-        help='CSV file from MERfish data.')
+        "--csv_file", required=True, help="CSV file from MERfish data."
+    )
     parser.add_argument(
-        '--cells_file', type=argparse.FileType('x'),
-        help='Write the cell data to this file.')
+        "--cells_file",
+        type=argparse.FileType("x"),
+        help="Write the cell data to this file.",
+    )
     parser.add_argument(
-        '--molecules_file', type=argparse.FileType('x'),
-        help='Create JSON with molecule locations.')
+        "--molecules_file",
+        type=argparse.FileType("x"),
+        help="Create JSON with molecule locations.",
+    )
     parser.add_argument(
-        '--genes_file', type=argparse.FileType('x'),
-        help='Write a list of genes to this file.')
+        "--genes_file",
+        type=argparse.FileType("x"),
+        help="Write a list of genes to this file.",
+    )
     parser.add_argument(
-        '--images_file', type=argparse.FileType('x'),
-        help='JSON file which will include image location.')
+        "--images_file",
+        type=argparse.FileType("x"),
+        help="JSON file which will include image location.",
+    )
     args = parser.parse_args()
 
     with open(args.csv_file) as csv_file:

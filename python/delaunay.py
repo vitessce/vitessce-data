@@ -13,7 +13,7 @@ import copy
 
 
 class DictDelaunay2d:
-    '''
+    """
     Wrapper for Delaunay2d: Instead of supplying a list and getting indices, this takes a dict and
     returns keys for the dict.
 
@@ -28,7 +28,8 @@ class DictDelaunay2d:
     >>> delaunay.getTriangles()
     [['B', 'C', 'F'], ['B', 'F', 'D'], ['C', 'F', 'E'], ['B', 'A', 'C'], ['C', 'A', 'E'], ['B', 'D', 'A']]
 
-    '''
+    """
+
     def __init__(self, pairs_dict):
         items = pairs_dict.items()
         self.keys = [item[0] for item in items]
@@ -41,7 +42,7 @@ class DictDelaunay2d:
 
 
 class Delaunay2d:
-    '''
+    """
     The algorithm uses the S-hull method by D A Sinclair (http://www.s-hull.org/paper/s_hull.pdf).
     The method involves ordering the points in increasing distance from the cloud's center of
     gravity, creating a triangle with the first three points, and adding the remaining points while
@@ -82,7 +83,7 @@ class Delaunay2d:
     [[1, 2, 5], [1, 5, 3], [2, 5, 4], [1, 0, 2], [2, 0, 4], [1, 3, 0]]
 
     Original order!
-    '''
+    """
 
     EPS = 1.23456789e-14
 
@@ -106,6 +107,7 @@ class Delaunay2d:
         def distanceSquare(pt):
             d = pt - cg
             return numpy.dot(d, d)
+
         dSqFromCenter = numpy.array([distanceSquare(pt) for pt in self.points])
         self.order = list(dSqFromCenter.argsort())
         self.points = [self.points[i] for i in self.order]
@@ -135,13 +137,19 @@ class Delaunay2d:
             self.boundaryEdges.add(e20)
 
             e01 = self.makeKey(e01[0], e01[1])
-            self.edge2Triangles[e01] = [0, ]
+            self.edge2Triangles[e01] = [
+                0,
+            ]
 
             e12 = self.makeKey(e12[0], e12[1])
-            self.edge2Triangles[e12] = [0, ]
+            self.edge2Triangles[e12] = [
+                0,
+            ]
 
             e20 = self.makeKey(e20[0], e20[1])
-            self.edge2Triangles[e20] = [0, ]
+            self.edge2Triangles[e20] = [
+                0,
+            ]
 
         else:
             # all the points fall on a line
@@ -175,7 +183,7 @@ class Delaunay2d:
         """
         d1 = self.points[ip1] - self.points[ip0]
         d2 = self.points[ip2] - self.points[ip0]
-        return (d1[0]*d2[1] - d1[1]*d2[0])
+        return d1[0] * d2[1] - d1[1] * d2[0]
 
     def isEdgeVisible(self, ip, edge):
         """
@@ -211,7 +219,7 @@ class Delaunay2d:
         # assume edge is sorted
         tris = self.edge2Triangles.get(edge, [])
         if len(tris) < 2:
-                # nothing to do, just return
+            # nothing to do, just return
             return res
 
         iTri1, iTri2 = tris
@@ -240,7 +248,7 @@ class Delaunay2d:
         angle2 = abs(math.atan2(crossProd2, dotProd2))
 
         # Delaunay's test
-        if angle1 + angle2 > math.pi*(1.0 + self.EPS):
+        if angle1 + angle2 > math.pi * (1.0 + self.EPS):
 
             # flip the triangles
             #                         / ^ \                                        / b \
@@ -309,7 +317,7 @@ class Delaunay2d:
                 newEdgeSet |= self.flipOneEdge(edge)
 
             edgeSet = copy.copy(newEdgeSet)
-            continueFlipping = (len(edgeSet) > 0)
+            continueFlipping = len(edgeSet) > 0
 
     def addPoint(self, ip):
         """
@@ -381,7 +389,14 @@ class Delaunay2d:
             return (i1, i2)
         return (i2, i1)
 
-    def show(self, width=500, height=500, showVertices=False, showCells=False, showContour=[]):
+    def show(
+        self,
+        width=500,
+        height=500,
+        showVertices=False,
+        showCells=False,
+        showContour=[],
+    ):
         import tkinter
 
         xmin = min([p[0] for p in self.points])
@@ -389,40 +404,61 @@ class Delaunay2d:
         xmax = max([p[0] for p in self.points])
         ymax = max([p[1] for p in self.points])
         padding = 5
-        w = width - 2*padding
-        h = height - 2*padding
+        w = width - 2 * padding
+        h = height - 2 * padding
 
         master = tkinter.Tk()
         c = tkinter.Canvas(master, width=width, height=height)
         c.pack()
         for e in self.edge2Triangles:
-          i1, i2 = e
-          xp1 = padding + int(w*(self.points[i1][0] - xmin)/(xmax - xmin))
-          yp1 = padding + int(h*(ymax - self.points[i1][1])/(ymax - ymin))
-          xp2 = padding + int(w*(self.points[i2][0] - xmin)/(xmax - xmin))
-          yp2 = padding + int(h*(ymax - self.points[i2][1])/(ymax - ymin))
-          c.create_line(xp1, yp1, xp2, yp2)
+            i1, i2 = e
+            xp1 = padding + int(
+                w * (self.points[i1][0] - xmin) / (xmax - xmin)
+            )
+            yp1 = padding + int(
+                h * (ymax - self.points[i1][1]) / (ymax - ymin)
+            )
+            xp2 = padding + int(
+                w * (self.points[i2][0] - xmin) / (xmax - xmin)
+            )
+            yp2 = padding + int(
+                h * (ymax - self.points[i2][1]) / (ymax - ymin)
+            )
+            c.create_line(xp1, yp1, xp2, yp2)
 
         if showVertices:
-          for i in range(len(self.points)):
-            xp = padding + int(w*(self.points[i][0] - xmin)/(xmax - xmin))
-            yp = padding + int(h*(ymax - self.points[i][1])/(ymax - ymin))
-            c.create_text(xp, yp, text=str(i))
+            for i in range(len(self.points)):
+                xp = padding + int(
+                    w * (self.points[i][0] - xmin) / (xmax - xmin)
+                )
+                yp = padding + int(
+                    h * (ymax - self.points[i][1]) / (ymax - ymin)
+                )
+                c.create_text(xp, yp, text=str(i))
 
         if showCells:
-          for tId, tVals in self.triangles.items():
-            cg = reduce(operator.add, [self.points[i] for i in tVals])/float(len(tVals))
-            xp = padding + int(w*(cg[0] - xmin)/(xmax - xmin))
-            yp = padding + int(h*(ymax - cg[1])/(ymax - ymin))
-            c.create_text(xp, yp, text=str(tId))
+            for tId, tVals in self.triangles.items():
+                cg = reduce(
+                    operator.add, [self.points[i] for i in tVals]
+                ) / float(len(tVals))
+                xp = padding + int(w * (cg[0] - xmin) / (xmax - xmin))
+                yp = padding + int(h * (ymax - cg[1]) / (ymax - ymin))
+                c.create_text(xp, yp, text=str(tId))
 
         if len(showContour) > 0:
-          for i in range(len(showContour) - 1):
-            xp1 = padding + int(w*(showContour[i][0] - xmin)/(xmax - xmin))
-            yp1 = padding + int(h*(ymax - showContour[i][1])/(ymax - ymin))
-            xp2 = padding + int(w*(showContour[i+1][0] - xmin)/(xmax - xmin))
-            yp2 = padding + int(h*(ymax - showContour[i+1][1])/(ymax - ymin))
-            c.create_line(xp1, yp1, xp2, yp2, fill='red')
-
+            for i in range(len(showContour) - 1):
+                xp1 = padding + int(
+                    w * (showContour[i][0] - xmin) / (xmax - xmin)
+                )
+                yp1 = padding + int(
+                    h * (ymax - showContour[i][1]) / (ymax - ymin)
+                )
+                xp2 = padding + int(
+                    w * (showContour[i + 1][0] - xmin) / (xmax - xmin)
+                )
+                yp2 = padding + int(
+                    h * (ymax - showContour[i + 1][1]) / (ymax - ymin)
+                )
+                c.create_line(xp1, yp1, xp2, yp2, fill="red")
 
         tkinter.mainloop()

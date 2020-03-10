@@ -15,10 +15,10 @@ CoordExtent = namedtuple("CoordExtent", "x_min y_min x_max y_max")
 
 # Pyimzml dtype specification
 DTYPE_DICT = {
-    'f': np.float32,
-    'd': np.float64,
-    'i': np.int32,
-    'l': np.int64,
+    "f": np.float32,
+    "d": np.float64,
+    "i": np.int32,
+    "l": np.int64,
 }
 
 
