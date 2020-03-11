@@ -35,10 +35,10 @@ main() {
     then
         echo 'CI: Skip push to AWS and GCS'
     else
-        aws s3 cp --exclude "$OUTPUT/*.ome.tif*" --exclude "$OUTPUT/*.zarr/*" --recursive "$OUTPUT" s3://"$CLOUD_TARGET"
-        gsutil -m cp -r "$OUTPUT/spraggins/spraggins.images" "gs://$CLOUD_TARGET/spraggins/spraggins.images"
-        gsutil -m cp -r "$OUTPUT/spraggins/spraggins.ims.zarr" "gs://$CLOUD_TARGET/spraggins/spraggins.ims.zarr"
-        gsutil -m cp -r "$OUTPUT/linnarsson/linnarsson.images.zarr" "gs://$CLOUD_TARGET/linnarsson/linnarsson.images.zarr"
+        # All .json & .png extensions are synced to aws
+        # All non .json & .png extentions (i.e. .zarr / .ome.tiff) are pushed to google cloud storage
+        aws s3 cp --recursive --exclude "*" --include "*.png" --include "*.json" $OUTPUT s3://"$CLOUD_TARGET"
+        gsutil -m rsync -r -x ".*\.png$|.*\.json$" $OUTPUT gs://"$CLOUD_TARGET"
     fi
 }
 

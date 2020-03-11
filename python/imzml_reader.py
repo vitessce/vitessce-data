@@ -15,10 +15,10 @@ CoordExtent = namedtuple("CoordExtent", "x_min y_min x_max y_max")
 
 # Pyimzml dtype specification
 DTYPE_DICT = {
-    'f': np.float32,
-    'd': np.float64,
-    'i': np.int32,
-    'l': np.int64,
+    "f": np.float32,
+    "d": np.float64,
+    "i": np.int32,
+    "l": np.int64,
 }
 
 
@@ -154,27 +154,26 @@ class IMSDataset:
         # write array with metadata
         z_arr[:, :, :] = arr
         self.domain = [int(np.min(z_arr)), int(np.max(z_arr))]
-        self.translate = [
-            int(extent.y_min * self.ims_px_in_micro),
-            int(extent.x_min * self.ims_px_in_micro),
-        ]
-        z_arr.attrs["domain"] = self.domain
-        z_arr.attrs["transform"] = {
-            "translate": self.translate,
+        self.transform = {
+            "translate": [
+                int(extent.y_min * self.ims_px_in_micro),
+                int(extent.x_min * self.ims_px_in_micro),
+            ],
             "scale": self.ims_px_in_micro,
         }
-
+        z_arr.attrs["domain"] = self.domain
+        z_arr.attrs["transform"] = self.transform
         z_arr.attrs["mz"] = self._format_mzs().tolist()
 
 
 def write_metadata_json(
-    json_file, zarr_store_url, zarr_path, domain, scale, translate
+    json_file, zarr_store_url, zarr_path, domain, transform
 ):
     json_out = {
         "dimensions": ["mz", "y", "x"],
         "zarrConfig": {"store": zarr_store_url, "path": zarr_path},
         "domain": domain,
-        "transform": {"scale": scale, "translate": translate},
+        "transform": transform,
     }
     json.dump(json_out, json_file, indent=2)
 
@@ -221,6 +220,5 @@ if __name__ == "__main__":
         args.zarr_store_url,
         Path(args.ims_zarr).name,
         dataset.domain,
-        dataset.ims_px_in_micro,
-        dataset.translate,
+        dataset.transform,
     )

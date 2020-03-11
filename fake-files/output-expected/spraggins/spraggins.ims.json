@@ -13,10 +13,10 @@
     1
   ],
   "transform": {
-    "scale": 20.0,
     "translate": [
       1000,
       20
-    ]
+    ],
+    "scale": 20.0
   }
 }
