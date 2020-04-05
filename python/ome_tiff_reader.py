@@ -131,9 +131,9 @@ if __name__ == "__main__":
     if is_pyramid_base:
         tile_zarr(str(zarr_path / "0"))
     write_raster_json(
-        args.raster_json,
-        destination_url,
-        args.raster_name,
-        reader.get_raster_dimensions(),
-        is_pyramid_base,
+        json_file=args.raster_json,
+        url=destination_url,
+        name=args.raster_name,
+        dimensions=reader.get_raster_dimensions(),
+        is_pyramid=is_pyramid_base,
     )
