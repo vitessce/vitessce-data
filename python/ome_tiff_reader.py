@@ -133,6 +133,10 @@ if __name__ == "__main__":
 
     if is_pyramid_base:
         tile_zarr(str(zarr_path / "0"))
+        # Consolidate zarr metadata for easy access to array/group heirachy
+        # https://zarr.readthedocs.io/en/stable/tutorial.html#consolidating-metadata
+        z_group = zarr.open(str(zarr_path))
+        zarr.consolidate_metadata(z_group.store)
 
     write_raster_json(
         json_file=args.raster_json,

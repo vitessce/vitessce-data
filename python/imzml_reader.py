@@ -229,10 +229,12 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    zarr_path = Path(args.ims_zarr)
     reader = ImzMLReader(
         args.imzml_file, args.ibd_file, micro_res=0.5, ims_res=10
     )
-    reader.to_zarr(args.ims_zarr, compressor=Zlib(level=1))
+    reader.to_zarr(str(zarr_path), compressor=Zlib(level=1))
+
     destination_url = urllib.parse.urljoin(
         args.server_url, Path(args.ims_zarr).name
     )
