@@ -1,0 +1,22 @@
+{
+    "dimensions": [
+        {
+            "field": "channel",
+            "type": "nominal",
+            "values": [
+                "polyT",
+                "nuclei"
+            ]
+        },
+        {
+            "field": "y",
+            "type": "quantitative",
+            "values": null
+        },
+        {
+            "field": "x",
+            "type": "quantitative",
+            "values": null
+        }
+    ]
+}
