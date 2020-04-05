@@ -1,18 +1,31 @@
 {
-    "domain": [
-        0,
-        1
+    "dimensions": [
+        {
+            "field": "mz",
+            "type": "ordinal",
+            "values": [
+                "675.5366",
+                "756.5534",
+                "784.5841"
+            ]
+        },
+        {
+            "field": "y",
+            "type": "quantitative",
+            "values": null
+        },
+        {
+            "field": "x",
+            "type": "quantitative",
+            "values": null
+        }
     ],
-    "mz": [
-        "675.5366",
-        "756.5534",
-        "784.5841"
-    ],
+    "domain": null,
     "transform": {
         "scale": 20.0,
-        "translate": [
-            1000,
-            20
-        ]
+        "translate": {
+            "x": 20,
+            "y": 1000
+        }
     }
 }

@@ -1,22 +1,41 @@
 {
-  "dimensions": [
-    "mz",
-    "y",
-    "x"
-  ],
-  "zarrConfig": {
-    "store": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/spraggins",
-    "path": "spraggins.ims.zarr"
-  },
-  "domain": [
-    0,
-    1
-  ],
-  "transform": {
-    "translate": [
-      1000,
-      20
-    ],
-    "scale": 20.0
-  }
+  "version": "0.0.1",
+  "images": [
+    {
+      "name": "Spraggins IMS",
+      "url": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/spraggins/spraggins.ims.zarr",
+      "type": "zarr",
+      "metadata": {
+        "dimensions": [
+          {
+            "field": "mz",
+            "type": "ordinal",
+            "values": [
+              "675.5366",
+              "756.5534",
+              "784.5841"
+            ]
+          },
+          {
+            "field": "y",
+            "type": "quantitative",
+            "values": null
+          },
+          {
+            "field": "x",
+            "type": "quantitative",
+            "values": null
+          }
+        ],
+        "is_pyramid": false,
+        "transform": {
+          "scale": 20.0,
+          "translate": {
+            "y": 1000,
+            "x": 20
+          }
+        }
+      }
+    }
+  ]
 }
