@@ -11,10 +11,10 @@ import argparse
 def tile_zarr(
     zarr_pyramid_base, max_level=None, compressor=None, dtype=None,
 ):
-    TILE_SIZE = 512
     img = da.from_zarr(zarr_pyramid_base)
     pyramid_path = Path(zarr_pyramid_base).parent
     chunks = img.chunksize
+    tile_size = int(img.chunksize[-1])
 
     if dtype is None:
         dtype = img.dtype
@@ -37,22 +37,22 @@ def tile_zarr(
         # is smaller than the tile size, `da.to_zarr` will change the
         # chunking and not pad with zeros. We need sometimes need to pad
         # for the smallest tiles because x and y might not be square.
-        if img.shape[1] < TILE_SIZE:
+        if img.shape[1] < tile_size:
             img = da.pad(
                 img,
-                ((0, 0), (0, TILE_SIZE - img.shape[1]), (0, 0)),
+                ((0, 0), (0, tile_size - img.shape[1]), (0, 0)),
                 "constant",
             )
 
-        if img.shape[2] < TILE_SIZE:
+        if img.shape[2] < tile_size:
             img = da.pad(
                 img,
-                ((0, 0), (0, 0), (0, TILE_SIZE - img.shape[2])),
+                ((0, 0), (0, 0), (0, tile_size - img.shape[2])),
                 "constant",
             )
 
         # Define pyramid level path
-        out_path = str(pyramid_path / str(i).zfill(2))
+        out_path = str(pyramid_path / str(i))
 
         # Write to zarr store
         img.astype(dtype).rechunk(chunks).to_zarr(
