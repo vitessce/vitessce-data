@@ -69,7 +69,7 @@ class OmeTiffReader:
 
 
 def write_raster_json(
-    json_file, server_url, raster_name, dimensions, is_pyramid, transform=None
+    json_file, url, name, dimensions, is_pyramid, transform=None
 ):
     if not transform:
         transform = {"translate": {"y": 0, "x": 0}, "scale": 1}
@@ -77,8 +77,8 @@ def write_raster_json(
         "version": "0.0.1",
         "images": [
             {
-                "name": raster_name,
-                "url": server_url,
+                "name": name,
+                "url": url,
                 "type": "zarr",
                 "metadata": {
                     "dimensions": dimensions,
@@ -126,10 +126,14 @@ if __name__ == "__main__":
     destination_url = urllib.parse.urljoin(args.server_url, zarr_path.name)
 
     reader = OmeTiffReader(img_path)
+
     is_pyramid_base = should_be_pyramid(reader.shape)
+
     reader.to_zarr(zarr_path, args.tile_size, is_pyramid_base)
+
     if is_pyramid_base:
         tile_zarr(str(zarr_path / "0"))
+
     write_raster_json(
         json_file=args.raster_json,
         url=destination_url,
