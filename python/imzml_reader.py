@@ -176,7 +176,7 @@ class ImzMLReader:
 
 def write_raster_json(json_file, url, name, transform, dimensions):
     raster_json = {
-        "version": "0.0.1",
+        "schema_version": "0.0.1",
         "images": [
             {
                 "name": name,
@@ -223,7 +223,7 @@ if __name__ == "__main__":
         "--raster_name", required=True, help="Image name for metadata.",
     )
     parser.add_argument(
-        "--server_url",
+        "--dest_url",
         required=True,
         help="Destination for zarr output in cloud.",
     )
@@ -235,13 +235,13 @@ if __name__ == "__main__":
     )
     reader.to_zarr(str(zarr_path), compressor=Zlib(level=1))
 
-    destination_url = urllib.parse.urljoin(
-        args.server_url, Path(args.ims_zarr).name
+    full_dest_url = urllib.parse.urljoin(
+        args.dest_url, zarr_path.name
     )
     write_raster_json(
-        args.raster_json,
-        destination_url,
-        args.raster_name,
-        reader.transform,
-        reader.get_raster_dimensions(),
+        json_file=args.raster_json,
+        url=full_dest_url,
+        name=args.raster_name,
+        transform=reader.transform,
+        dimensions=reader.get_raster_dimensions(),
     )

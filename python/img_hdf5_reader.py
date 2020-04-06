@@ -136,12 +136,15 @@ class ImgHdf5Reader:
 
 
 def write_raster_json(
-    json_file, url, name, channel_names, is_pyramid=False, transform=None
+    json_file,
+    url,
+    name,
+    channel_names,
+    is_pyramid=False,
+    transform={"translate": {"y": 0, "x": 0}, "scale": 1}
 ):
-    if not transform:
-        transform = {"translate": {"y": 0, "x": 0}, "scale": 1}
     raster_json = {
-        "version": "0.0.1",
+        "schema_version": "0.0.1",
         "images": [
             {
                 "name": name,
@@ -171,7 +174,7 @@ if __name__ == '__main__':
         '--channels', required=True,
         help='List of channels to include in zarr image.')
     parser.add_argument(
-        '--server_url', required=True,
+        '--dest_url', required=True,
         help='Output URL to zarr store.')
     parser.add_argument(
         '--sample', default=1, type=int,
@@ -196,8 +199,8 @@ if __name__ == '__main__':
     zarr_path = Path(args.zarr_file)
     channels = [c for c in args.channels.split(',')]
     is_pyramid = args.as_pyramid
-    destination_url = urllib.parse.urljoin(
-        args.server_url, zarr_path.name
+    full_dest_url = urllib.parse.urljoin(
+        args.dest_url, zarr_path.name
     )
 
     reader.to_zarr(
@@ -217,7 +220,7 @@ if __name__ == '__main__':
 
     write_raster_json(
         json_file=args.raster_json,
-        url=destination_url,
+        url=full_dest_url,
         name=args.raster_name,
         channel_names=channels,
         is_pyramid=is_pyramid,
