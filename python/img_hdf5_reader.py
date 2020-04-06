@@ -190,7 +190,9 @@ if __name__ == '__main__':
         "--raster_name", required=True, help="Image name for metadata.",
     )
     parser.add_argument(
-        "--as_pyramid", default=True, help="Whether to generate image pyramid."
+        "--as_pyramid",
+        action="store_false",
+        help="Whether to generate image pyramid."
     )
     args = parser.parse_args()
 
