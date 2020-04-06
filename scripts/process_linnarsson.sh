@@ -88,6 +88,9 @@ process_linnarson_images() {
     ZARR_OUT="$OUTPUT/linnarsson.images.zarr"
     RASTER_NAME="Linnarsson"
 
+    RELEASE=${CLOUD_TARGET//vitessce-data\//}
+    DEST_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/"
+
     if [ -e "$JSON_OUT" ]
     then
         echo "Skipping big image generation -- output already exists: $JSON_OUT"
@@ -97,9 +100,6 @@ process_linnarson_images() {
         [ -e "$HDF5_IN" ] || \
             wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
-        RELEASE=${CLOUD_TARGET//vitessce-data\//}
-        SERVER_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/"
-
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN
             --zarr_file $ZARR_OUT
@@ -107,7 +107,7 @@ process_linnarson_images() {
             --channels polyT,nuclei
             --raster_json $JSON_OUT
             --raster_name '$RASTER_NAME'
-            --server_url $SERVER_URL"
+            --dest_url $DEST_URL"
         echo "Running: $CMD"
         $CMD
     fi

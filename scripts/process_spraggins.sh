@@ -28,7 +28,7 @@ main() {
 
     # CLOUD TARGET
     RELEASE=${CLOUD_TARGET//vitessce-data\//}
-    SERVER_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/spraggins/"
+    DEST_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/spraggins/"
 
     echo "Download and process IMS data..."
 
@@ -48,7 +48,7 @@ main() {
             --ims_zarr $IMS_ZARR_OUT
             --raster_json $IMS_JSON_OUT
             --raster_name '$IMS_RASTER_NAME'
-            --server_url $SERVER_URL"
+            --dest_url $DEST_URL"
         echo "Running: $CMD"
         eval $CMD
     fi
@@ -69,7 +69,7 @@ main() {
             --output_zarr $MXIF_ZARR_OUT
             --raster_json $MXIF_JSON_OUT
             --raster_name '$MXIF_RASTER_NAME'
-            --server_url $SERVER_URL"
+            --dest_url $DEST_URL"
         echo "Running: $CMD"
         eval $CMD
     fi
