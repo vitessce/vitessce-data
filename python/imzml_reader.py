@@ -10,6 +10,7 @@ import argparse
 import json
 from collections import namedtuple
 from pathlib import Path
+import urllib
 
 CoordExtent = namedtuple("CoordExtent", "x_min y_min x_max y_max")
 
@@ -22,7 +23,7 @@ DTYPE_DICT = {
 }
 
 
-class IMSDataset:
+class ImzMLReader:
     """Converts IMS data stored as imzML into columnar or ndarray formats
 
     :param imzml_file: path to `.imzML` file.
@@ -87,7 +88,7 @@ class IMSDataset:
 
         return coords_df.join(intensities_df)
 
-    def to_array(self):
+    def asarray(self):
         extent = self._get_min_max_coords()
 
         # Pre-allocate memory for 3D array of known dimensions (mz, x, y).
@@ -124,8 +125,16 @@ class IMSDataset:
 
         return arr
 
-    def write_zarr(self, path, dtype=None, compressor=None, chunks=None):
-        arr = self.to_array()
+    def get_raster_dimensions(self):
+        mzs = self._format_mzs().tolist()
+        return [
+            {"field": "mz", "type": "ordinal", "values": mzs},
+            {"field": "y", "type": "quantitative", "values": None},
+            {"field": "x", "type": "quantitative", "values": None},
+        ]
+
+    def to_zarr(self, path, dtype=None, compressor=None, chunks=None):
+        arr = self.asarray()
         extent = self._get_min_max_coords()
 
         if chunks is None:
@@ -153,29 +162,35 @@ class IMSDataset:
         )
         # write array with metadata
         z_arr[:, :, :] = arr
-        self.domain = [int(np.min(z_arr)), int(np.max(z_arr))]
         self.transform = {
-            "translate": [
-                int(extent.y_min * self.ims_px_in_micro),
-                int(extent.x_min * self.ims_px_in_micro),
-            ],
             "scale": self.ims_px_in_micro,
+            "translate": {
+                "y": int(extent.y_min * self.ims_px_in_micro),
+                "x": int(extent.x_min * self.ims_px_in_micro),
+            },
         }
         z_arr.attrs["domain"] = self.domain
         z_arr.attrs["transform"] = self.transform
-        z_arr.attrs["mz"] = self._format_mzs().tolist()
+        z_arr.attrs["dimensions"] = self.get_raster_dimensions()
 
 
-def write_metadata_json(
-    json_file, zarr_store_url, zarr_path, domain, transform
-):
-    json_out = {
-        "dimensions": ["mz", "y", "x"],
-        "zarrConfig": {"store": zarr_store_url, "path": zarr_path},
-        "domain": domain,
-        "transform": transform,
+def write_raster_json(json_file, url, name, transform, dimensions):
+    raster_json = {
+        "schema_version": "0.0.1",
+        "images": [
+            {
+                "name": name,
+                "url": url,
+                "type": "zarr",
+                "metadata": {
+                    "dimensions": dimensions,
+                    "is_pyramid": False,
+                    "transform": transform,
+                },
+            }
+        ],
     }
-    json.dump(json_out, json_file, indent=2)
+    json.dump(raster_json, json_file, indent=2)
 
 
 if __name__ == "__main__":
@@ -199,26 +214,34 @@ if __name__ == "__main__":
     )
     # FileType('x'): exclusive file creation, fails if file already exits.
     parser.add_argument(
-        "--ims_metadata",
+        "--raster_json",
         type=argparse.FileType("x"),
         required=True,
         help="Write the metadata about the IMS zarr store on S3.",
     )
     parser.add_argument(
-        "--zarr_store_url",
+        "--raster_name", required=True, help="Image name for metadata.",
+    )
+    parser.add_argument(
+        "--dest_url",
         required=True,
         help="Destination for zarr output in cloud.",
     )
     args = parser.parse_args()
 
-    dataset = IMSDataset(
+    zarr_path = Path(args.ims_zarr)
+    reader = ImzMLReader(
         args.imzml_file, args.ibd_file, micro_res=0.5, ims_res=10
     )
-    dataset.write_zarr(args.ims_zarr, compressor=Zlib(level=1))
-    write_metadata_json(
-        args.ims_metadata,
-        args.zarr_store_url,
-        Path(args.ims_zarr).name,
-        dataset.domain,
-        dataset.transform,
+    reader.to_zarr(str(zarr_path), compressor=Zlib(level=1))
+
+    full_dest_url = urllib.parse.urljoin(
+        args.dest_url, zarr_path.name
+    )
+    write_raster_json(
+        json_file=args.raster_json,
+        url=full_dest_url,
+        name=args.raster_name,
+        transform=reader.transform,
+        dimensions=reader.get_raster_dimensions(),
     )

@@ -85,8 +85,11 @@ process_linnarson_images() {
     PKLAB_URL='http://pklab.med.harvard.edu/viktor/data/spatial/linnarson'
     HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
     JSON_OUT="$OUTPUT/linnarsson.raster.json"
-    ZARR_STORE="linnarsson.images.zarr"
-    ZARR_OUT="$OUTPUT/$ZARR_STORE"
+    ZARR_OUT="$OUTPUT/linnarsson.images.zarr"
+    RASTER_NAME="Linnarsson"
+
+    RELEASE=${CLOUD_TARGET//vitessce-data\//}
+    DEST_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/"
 
     if [ -e "$JSON_OUT" ]
     then
@@ -97,27 +100,14 @@ process_linnarson_images() {
         [ -e "$HDF5_IN" ] || \
             wget "$PKLAB_URL/Nuclei_polyT.int16.sf.hdf5" -O "$HDF5_IN"
 
-        RELEASE=${CLOUD_TARGET//vitessce-data\//}
-        TILES_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/$ZARR_STORE"
-
         CMD="$BASE/python/img_hdf5_reader.py
             --hdf5 $HDF5_IN
+            --zarr_file $ZARR_OUT
             --sample 1
             --channels polyT,nuclei
-            --json_file $JSON_OUT
-            --zarr_file $ZARR_OUT
-            --tiles_url $TILES_URL"
-        echo "Running: $CMD"
-        $CMD
-    fi
-
-    TILES_PATH="$ZARR_OUT/pyramid"
-    if [ -e "$TILES_PATH/01" ]
-    then
-        echo "Skipping tiling -- output already exists: $TILES_PATH"
-    else
-        CMD="$BASE/python/tile_zarr_base.py
-            --zarr_pyramid_base $TILES_PATH/00"
+            --raster_json $JSON_OUT
+            --raster_name $RASTER_NAME
+            --dest_url $DEST_URL"
         echo "Running: $CMD"
         $CMD
     fi

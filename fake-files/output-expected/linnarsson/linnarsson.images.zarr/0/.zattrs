@@ -1,12 +1,11 @@
 {
     "dimensions": [
         {
-            "field": "mz",
-            "type": "ordinal",
+            "field": "channel",
+            "type": "nominal",
             "values": [
-                "675.5366",
-                "756.5534",
-                "784.5841"
+                "polyT",
+                "nuclei"
             ]
         },
         {
@@ -19,13 +18,5 @@
             "type": "quantitative",
             "values": null
         }
-    ],
-    "domain": null,
-    "transform": {
-        "scale": 20.0,
-        "translate": {
-            "x": 20,
-            "y": 1000
-        }
-    }
+    ]
 }

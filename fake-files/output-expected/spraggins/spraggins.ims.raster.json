@@ -2,17 +2,18 @@
   "schema_version": "0.0.1",
   "images": [
     {
-      "name": "Linnarsson",
-      "url": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/linnarsson/linnarsson.images.zarr",
+      "name": "Spraggins IMS",
+      "url": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/spraggins/spraggins.ims.zarr",
       "type": "zarr",
       "metadata": {
         "dimensions": [
           {
-            "field": "channel",
-            "type": "nominal",
+            "field": "mz",
+            "type": "ordinal",
             "values": [
-              "polyT",
-              "nuclei"
+              "675.5366",
+              "756.5534",
+              "784.5841"
             ]
           },
           {
@@ -26,13 +27,13 @@
             "values": null
           }
         ],
-        "is_pyramid": true,
+        "is_pyramid": false,
         "transform": {
+          "scale": 20.0,
           "translate": {
-            "y": 0,
-            "x": 0
-          },
-          "scale": 1
+            "y": 1000,
+            "x": 20
+          }
         }
       }
     }

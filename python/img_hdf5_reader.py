@@ -1,16 +1,26 @@
 #!/usr/bin/env python3
 
 from h5py import File
-from apeer_ometiff_library import io, omexmlClass
-import dask.array as da
-import dask
 from numcodecs import Zlib
 import zarr
-import xml.etree.ElementTree as et
-import datetime
-import numpy as np
+
 import argparse
 import json
+import urllib
+from pathlib import Path
+
+from tile_zarr_base import tile_zarr
+
+DEFAULT_COMPRESSOR = Zlib(level=1)
+DEFAULT_TILE_SIZE = 512
+
+
+def create_dimensions(channel_names):
+    return [
+        {"field": "channel", "type": "nominal", "values": channel_names},
+        {"field": "y", "type": "quantitative", "values": None},
+        {"field": "x", "type": "quantitative", "values": None},
+    ]
 
 
 class ImgHdf5Reader:
@@ -41,12 +51,7 @@ class ImgHdf5Reader:
         (25, 25)
 
         '''
-        data = (
-            self.data[channel]
-            if not use_dask
-            else da.array(self.data[channel])
-        )
-        return data[::sample, ::sample]
+        return self.data[channel][::sample, ::sample]
 
     def scale_sample(self, channel, sample, max_allowed, clip, use_dask=False):
         '''
@@ -66,149 +71,44 @@ class ImgHdf5Reader:
         [0.0, 127.0, 254.0, 254.0, 254.0]
 
         '''
-        sampled = self.sample_image(channel, sample, use_dask).clip(0, clip)
+        sampled = self.sample_image(channel, sample).clip(0, clip)
         # 255 displays as black... color table issue?
         return sampled / clip * (max_allowed - 1)
 
-    def get_omexml(self, pixel_array, channels, name, pixel_type):
-        omexml = omexmlClass.OMEXML()
-        image = omexml.image()
-        image.Name = name
-        image.AcquisitionDate = datetime.datetime.now().isoformat()
-
-        pixels = image.Pixels
-        pixels.SizeX = pixel_array.shape[4]
-        pixels.SizeY = pixel_array.shape[3]
-        pixels.SizeC = pixel_array.shape[2]
-        pixels.SizeZ = pixel_array.shape[1]
-        pixels.SizeT = pixel_array.shape[0]
-        pixels.PixelType = pixel_type
-
-        channel_count = len(channels)
-        pixels.channel_count = channel_count
-        for i in range(channel_count):
-            pixels.Channel(i).ID = "Channel:0:{}".format(i)
-            pixels.Channel(i).Name = channels[i]
-
-        root = et.XML(str(omexml))
-        ome = "{http://www.openmicroscopy.org/Schemas/OME/2016-06}"
-        pixels_elem = root.find("{}Image/{}Pixels".format(ome, ome))
-
-        # Repeat for-loop because XML parsing must have channel adjustments
-        for i in range(channel_count):
-            et.SubElement(
-                pixels_elem,
-                '{}TiffData'.format(ome),
-                FirstC=str(i),
-                FirstT="0",
-                FirstZ="0",
-                IFD="0",
-                PlaneCount="1"
-            )
-
-        return omexmlClass.OMEXML(et.tostring(root))
-
-    def to_ometiff(self, channel_clips, sample, json_file):
-        channel_data = {}
-        channels = []
-        images = []
-        ometif_path = '{}.ome.tif'.format(
-            json_file.name.replace('.json', '')
-        )
-        cloud_target = open('cloud_target.txt').read().strip()
-        for (channel, clip) in channel_clips:
-            channel_data[channel] = {
-                'sample': sample,
-                'tileSource': (
-                    f"https://s3.amazonaws.com/{cloud_target}/linnarsson/"
-                    f"linnarsson.tiles/linnarsson.images.{channel}/"
-                    f"{channel}.dzi"
-                )
-            }
-
-            channels.append(channel)
-            array = self.scale_sample(
-                channel=channel,
-                sample=sample,
-                max_allowed=256,
-                clip=float(clip)
-            ).astype(np.uint8)
-
-            images.append(array)
-
-        json.dump(channel_data, json_file, indent=2)
-
-        image = np.transpose(np.dstack(tuple(images)))
-        image = np.expand_dims(image, axis=0)
-        image = np.expand_dims(image, axis=0)
-
-        channels = [tup[0] for tup in channel_clips]
-        omexml = self.get_omexml(
-            pixel_array=image,
-            channels=channels,
-            name='linnarsson',
-            pixel_type='uint8'
-        )
-
-        io.write_ometiff(ometif_path, image, str(omexml))
-
-    def to_zarr(self, channels, sample, json_file, zarr_file, tiles_url):
-        # zarr default BLOSC not supported in browser
-        COMPRESSOR = Zlib(level=1)
-        TILE_SIZE = 512
-        PYRAMID_GROUP = "pyramid"
-
+    def to_zarr(
+        self,
+        output_path,
+        channels,
+        sample,
+        tile_size,
+        is_pyramid_base=False,
+        compressor=DEFAULT_COMPRESSOR
+    ):
         data_shape, data_dtype = self._get_shape_and_dtype(channels)
+        out_shape = (len(channels), *data_shape[::-1])
+        arr_kwargs = {
+            "chunks": (1, tile_size, tile_size),
+            "compressor": compressor,
+            "shape": out_shape,
+            "dtype": data_dtype,
+        }
 
-        # Create mutable store
-        store = zarr.DirectoryStore(zarr_file)
-        root = zarr.group(store=store, overwrite=True)
-        pyramid_root = root.create_group(PYRAMID_GROUP, overwrite=True)
-
-        # Determine number of levels for pyramid
-        s_height, s_width = [dim // sample for dim in data_shape]
-        if s_height < TILE_SIZE and s_width < TILE_SIZE:
-            max_level = 0
+        if is_pyramid_base:
+            group = zarr.open(str(output_path))
+            z = group.create("0", **arr_kwargs)
         else:
-            # create all levels up to 512 x 512
-            max_level = (
-                int(np.ceil(np.log2(np.maximum(s_height, s_width)))) - 9
-            )
-            max_level -= 1  # zero indexed
+            z = zarr.open(str(output_path), **arr_kwargs)
 
-        channel_data = {}
-        images = []
         for idx, channel in enumerate(channels):
 
-            array = self.sample_image(
+            img = self.sample_image(
                 channel=channel,
                 sample=sample,
-                use_dask=True,
             ).astype(data_dtype)
 
-            min_val, max_val = dask.compute(array.min(), array.max())
+            z[idx] = img.T
 
-            channel_data[channel] = {
-                "sample": sample,
-                "tileSource": f"{tiles_url}/{PYRAMID_GROUP}/",
-                "minZoom": -max_level,  # deck.gl is flipped
-                "domain": [int(min_val), int(max_val)]
-            }
-
-            images.append(array.T)
-
-        # Stack arrays using dask and rechunk to tile sizes (i.e. (2, 512, 512)
-        chunks = (len(channels), TILE_SIZE, TILE_SIZE)
-        da.array(images).rechunk(chunks).to_zarr(
-            zarr_file,
-            component=f"{PYRAMID_GROUP}/00",
-            compressor=COMPRESSOR
-        )
-        json.dump(channel_data, json_file, indent=2)
-
-        # Add metadata
-        z = pyramid_root.get("00")
-        z.attrs["channels"] = channels
+            z.attrs['dimensions'] = create_dimensions(channels)
 
     def _get_shape_and_dtype(self, channels):
         shapes, dtypes = zip(
@@ -235,6 +135,32 @@ class ImgHdf5Reader:
         return shape, first_dtype
 
 
+def write_raster_json(
+    json_file,
+    url,
+    name,
+    channel_names,
+    is_pyramid=False,
+    transform={"translate": {"y": 0, "x": 0}, "scale": 1}
+):
+    raster_json = {
+        "schema_version": "0.0.1",
+        "images": [
+            {
+                "name": name,
+                "url": url,
+                "type": "zarr",
+                "metadata": {
+                    "dimensions": create_dimensions(channel_names),
+                    "is_pyramid": is_pyramid,
+                    "transform": transform,
+                },
+            }
+        ],
+    }
+    json.dump(raster_json, json_file, indent=2)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Create PNG files and one JSON file with metadata')
@@ -242,29 +168,62 @@ if __name__ == '__main__':
         '--hdf5', required=True,
         help='HDF5 file with raster data')
     parser.add_argument(
-        '--json_file', required=True, type=argparse.FileType('x'),
-        help='JSON file which will include image dimensions and location')
-    parser.add_argument(
         '--zarr_file', required=True,
         help='Directory to write zarr output to.')
     parser.add_argument(
         '--channels', required=True,
         help='List of channels to include in zarr image.')
     parser.add_argument(
-        '--tiles_url', required=True,
+        '--dest_url', required=True,
         help='Output URL to zarr store.')
     parser.add_argument(
         '--sample', default=1, type=int,
         help='Sample 1 pixel out of N')
+    parser.add_argument(
+        '--tile_size', default=DEFAULT_TILE_SIZE,
+        type=int, help='Size of zarr image tiles.'
+    )
+    parser.add_argument(
+        '--raster_json', required=True, type=argparse.FileType('x'),
+        help='JSON file which will include image dimensions and location')
+    parser.add_argument(
+        "--raster_name", required=True, help="Image name for metadata.",
+    )
+    parser.add_argument(
+        "--as_pyramid",
+        action="store_false",
+        help="Whether to generate image pyramid."
+    )
     args = parser.parse_args()
 
     reader = ImgHdf5Reader(args.hdf5)
 
+    zarr_path = Path(args.zarr_file)
     channels = [c for c in args.channels.split(',')]
+    is_pyramid = args.as_pyramid
+    full_dest_url = urllib.parse.urljoin(
+        args.dest_url, zarr_path.name
+    )
+
     reader.to_zarr(
+        output_path=zarr_path,
         channels=channels,
         sample=args.sample,
-        json_file=args.json_file,
-        tiles_url=args.tiles_url,
-        zarr_file=args.zarr_file,
+        tile_size=args.tile_size,
+        is_pyramid_base=is_pyramid,
+    )
+
+    if is_pyramid:
+        tile_zarr(str(zarr_path / "0"))
+        # Consolidate metadata into single .zmetadata for pyramid
+        # https://zarr.readthedocs.io/en/stable/tutorial.html#consolidating-metadata
+        z_group = zarr.open(str(zarr_path))
+        zarr.consolidate_metadata(z_group.store)
+
+    write_raster_json(
+        json_file=args.raster_json,
+        url=full_dest_url,
+        name=args.raster_name,
+        channel_names=channels,
+        is_pyramid=is_pyramid,
     )
