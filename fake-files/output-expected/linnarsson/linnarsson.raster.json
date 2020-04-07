@@ -2,7 +2,7 @@
   "schema_version": "0.0.1",
   "images": [
     {
-      "name": "'Linnarsson'",
+      "name": "Linnarsson",
       "url": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/linnarsson/linnarsson.images.zarr",
       "type": "zarr",
       "metadata": {

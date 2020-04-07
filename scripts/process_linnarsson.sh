@@ -106,7 +106,7 @@ process_linnarson_images() {
             --sample 1
             --channels polyT,nuclei
             --raster_json $JSON_OUT
-            --raster_name '$RASTER_NAME'
+            --raster_name $RASTER_NAME
             --dest_url $DEST_URL"
         echo "Running: $CMD"
         $CMD
