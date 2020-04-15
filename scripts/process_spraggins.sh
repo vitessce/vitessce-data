@@ -13,14 +13,16 @@ main() {
     IMS_IMZML_IN="$INPUT/spraggins.ims.imzml"
     IMS_IBD_IN="$INPUT/spraggins.ims.ibd"
     IMS_ZARR_OUT="$OUTPUT/spraggins.ims.zarr"
-    IMS_JSON_OUT="$OUTPUT/spraggins.ims.raster.json"
-    IMS_RASTER_NAME="Spraggins IMS"
+    IMS_JSON_OUT="$OUTPUT/spraggins.ims.image.json"
+    IMS_IMAGE_NAME="Spraggins IMS"
 
     # MXIF data
     MXIF_TIFF_IN="$INPUT/spraggins.mxif.ome.tif"
     MXIF_ZARR_OUT="$OUTPUT/spraggins.mxif.zarr"
-    MXIF_JSON_OUT="$OUTPUT/spraggins.mxif.raster.json"
-    MXIF_RASTER_NAME="Spraggins MxIF"
+    MXIF_JSON_OUT="$OUTPUT/spraggins.mxif.image.json"
+    MXIF_IMAGE_NAME="Spraggins MxIF"
+
+    RASTER_JSON="$OUTPUT/spraggins.raster.json"
 
 
     # CLOUD SOURCE
@@ -46,8 +48,8 @@ main() {
             --imzml_file $IMS_IMZML_IN
             --ibd_file $IMS_IBD_IN
             --ims_zarr $IMS_ZARR_OUT
-            --raster_json $IMS_JSON_OUT
-            --raster_name '$IMS_RASTER_NAME'
+            --image_json $IMS_JSON_OUT
+            --image_name '$IMS_IMAGE_NAME'
             --dest_url $DEST_URL"
         echo "Running: $CMD"
         eval $CMD
@@ -67,12 +69,18 @@ main() {
         CMD="$BASE/python/ome_tiff_reader.py
             --input_tiff $MXIF_TIFF_IN
             --output_zarr $MXIF_ZARR_OUT
-            --raster_json $MXIF_JSON_OUT
-            --raster_name '$MXIF_RASTER_NAME'
+            --image_json $MXIF_JSON_OUT
+            --image_name '$MXIF_IMAGE_NAME'
             --dest_url $DEST_URL"
         echo "Running: $CMD"
         eval $CMD
     fi
+
+    CMD="$BASE/python/write_raster_metadata.py
+        --raster_json $RASTER_JSON
+        --image_metadata_dir $OUTPUT/"
+    echo "Running: $CMD"
+    eval $CMD
 }
 
 ### Main

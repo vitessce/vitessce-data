@@ -125,7 +125,7 @@ class ImzMLReader:
 
         return arr
 
-    def get_raster_dimensions(self):
+    def get_image_dimensions(self):
         mzs = self._format_mzs().tolist()
         return [
             {"field": "mz", "type": "ordinal", "values": mzs},
@@ -171,26 +171,21 @@ class ImzMLReader:
         }
         z_arr.attrs["domain"] = self.domain
         z_arr.attrs["transform"] = self.transform
-        z_arr.attrs["dimensions"] = self.get_raster_dimensions()
+        z_arr.attrs["dimensions"] = self.get_image_dimensions()
 
 
 def write_raster_json(json_file, url, name, transform, dimensions):
-    raster_json = {
-        "schema_version": "0.0.1",
-        "images": [
-            {
-                "name": name,
-                "url": url,
-                "type": "zarr",
-                "metadata": {
-                    "dimensions": dimensions,
-                    "is_pyramid": False,
-                    "transform": transform,
-                },
-            }
-        ],
+    image_json = {
+        "name": name,
+        "url": url,
+        "type": "zarr",
+        "metadata": {
+            "dimensions": dimensions,
+            "is_pyramid": False,
+            "transform": transform,
+        },
     }
-    json.dump(raster_json, json_file, indent=2)
+    json.dump(image_json, json_file, indent=2)
 
 
 if __name__ == "__main__":
@@ -214,13 +209,13 @@ if __name__ == "__main__":
     )
     # FileType('x'): exclusive file creation, fails if file already exits.
     parser.add_argument(
-        "--raster_json",
+        "--image_json",
         type=argparse.FileType("x"),
         required=True,
         help="Write the metadata about the IMS zarr store on S3.",
     )
     parser.add_argument(
-        "--raster_name", required=True, help="Image name for metadata.",
+        "--image_name", required=True, help="Image name for metadata.",
     )
     parser.add_argument(
         "--dest_url",
@@ -239,9 +234,9 @@ if __name__ == "__main__":
         args.dest_url, zarr_path.name
     )
     write_raster_json(
-        json_file=args.raster_json,
+        json_file=args.image_json,
         url=full_dest_url,
-        name=args.raster_name,
+        name=args.image_name,
         transform=reader.transform,
-        dimensions=reader.get_raster_dimensions(),
+        dimensions=reader.get_image_dimensions(),
     )

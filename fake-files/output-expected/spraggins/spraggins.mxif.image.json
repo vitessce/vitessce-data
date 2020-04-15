@@ -1,0 +1,37 @@
+{
+  "name": "Spraggins MxIF",
+  "url": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/spraggins/spraggins.mxif.zarr",
+  "type": "zarr",
+  "metadata": {
+    "dimensions": [
+      {
+        "field": "channel",
+        "type": "nominal",
+        "values": [
+          "DAPI - Hoescht (nuclei)",
+          "FITC - Laminin (basement membrane)",
+          "Cy3 - Synaptopodin (glomerular)",
+          "Cy5 - THP (thick limb)"
+        ]
+      },
+      {
+        "field": "y",
+        "type": "quantitative",
+        "values": null
+      },
+      {
+        "field": "x",
+        "type": "quantitative",
+        "values": null
+      }
+    ],
+    "is_pyramid": false,
+    "transform": {
+      "translate": {
+        "y": 0,
+        "x": 0
+      },
+      "scale": 1
+    }
+  }
+}
