@@ -81,6 +81,8 @@ main() {
         --image_metadata_dir $OUTPUT/"
     echo "Running: $CMD"
     eval $CMD
+
+    rm "$OUTPUT/"*.image.json
 }
 
 ### Main
