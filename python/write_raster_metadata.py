@@ -5,6 +5,14 @@ import argparse
 from pathlib import Path
 
 
+def _dir_path(string):
+    path = Path(string)
+    if path.is_dir():
+        return path
+    else:
+        raise Exception(f'"{string}" is not a directory')
+
+
 def gather_image_metadata(image_dir):
     images = []
     for fp in image_dir.glob('*.image.json'):
@@ -37,5 +45,6 @@ if __name__ == "__main__":
         help="Path to directory with image metadata",
     )
     args = parser.parse_args()
-    image_metadata = gather_image_metadata(Path(args.image_metadata_dir))
+    img_dir = _dir_path(args.image_metadata_dir)
+    image_metadata = gather_image_metadata(img_dir)
     write_metadata(args.raster_json, image_metadata)
