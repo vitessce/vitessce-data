@@ -76,22 +76,17 @@ def write_raster_json(
     is_pyramid,
     transform={"translate": {"y": 0, "x": 0}, "scale": 1}
 ):
-    raster_json = {
-        "schema_version": "0.0.1",
-        "images": [
-            {
-                "name": name,
-                "url": url,
-                "type": "zarr",
-                "metadata": {
-                    "dimensions": dimensions,
-                    "is_pyramid": is_pyramid,
-                    "transform": transform,
-                },
-            }
-        ],
+    image_json = {
+        "name": name,
+        "url": url,
+        "type": "zarr",
+        "metadata": {
+            "dimensions": dimensions,
+            "is_pyramid": is_pyramid,
+            "transform": transform,
+        },
     }
-    json.dump(raster_json, json_file, indent=2)
+    json.dump(image_json, json_file, indent=2)
 
 
 if __name__ == "__main__":
@@ -105,13 +100,13 @@ if __name__ == "__main__":
         "--output_zarr", required=True, help="Path or zarr output"
     )
     parser.add_argument(
-        "--raster_json",
+        "--image_json",
         type=argparse.FileType("x"),
         required=True,
         help="Write the metadata about the IMS zarr store on S3.",
     )
     parser.add_argument(
-        "--raster_name", required=True, help="Image name for metadata.",
+        "--image_name", required=True, help="Image name for metadata.",
     )
     parser.add_argument(
         "--dest_url",
@@ -142,9 +137,9 @@ if __name__ == "__main__":
         zarr.consolidate_metadata(z_group.store)
 
     write_raster_json(
-        json_file=args.raster_json,
+        json_file=args.image_json,
         url=full_dest_url,
-        name=args.raster_name,
+        name=args.image_name,
         dimensions=reader.get_raster_dimensions(),
         is_pyramid=is_pyramid_base,
     )
