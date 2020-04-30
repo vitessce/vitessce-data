@@ -7,8 +7,8 @@ main() {
     get_CLI_args "$@"
 
     process_linnarson_cells
-    process_linnarson_molecules
-    process_linnarson_images
+    #process_linnarson_molecules
+    #process_linnarson_images
 }
 
 ### Globals
@@ -30,6 +30,7 @@ process_linnarson_cells() {
 
     CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
     add_CLI_ARGS 'cells' 'linnarsson'
+    add_CLI_ARGS 'cell_sets' 'linnarsson'
     add_CLI_ARGS 'clusters' 'linnarsson'
     add_CLI_ARGS 'genes' 'linnarsson'
     add_CLI_ARGS 'neighborhoods' 'linnarsson'

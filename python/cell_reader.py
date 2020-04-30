@@ -194,6 +194,40 @@ def get_factors(metadata):
             factor_data['cells'][cell_id] = factor_index
     return factors
 
+def get_cell_sets(metadata, lookup):
+    '''
+    >>> metadata = {
+    ...   "Santa's Little Helper": {'factors':{'eng': 'dog', 'sci': 'canine'}},
+    ...   "Snowball II": {'factors':{'eng': 'cat', 'sci': 'feline'}}
+    ... }
+    >>> cell_sets = get_cell_sets(metadata)
+    >>> list(cell_sets.keys())
+    ['version', 'datatype', 'tree']
+    >>> cell_sets['datatype']
+    'cell'
+    >>> list(cell_sets['tree'][0].keys())
+    ['name', 'children']
+
+    '''
+    cell_sets = {
+        'version': '0.1.0',
+        'datatype': 'cell',
+        'tree': []
+    }
+    hierarchy = dict([ (c, dict([(sc, [])
+        for sc, sc_c in lookup.items() if sc_c == c])) 
+        for c in lookup.values()]
+    )
+
+    cell_sets['tree'] = [ {
+            'name': c,
+            'children': [
+                { 'name': sc, 'set': sc_data }
+                for sc, sc_data in c_data.items()
+            ]
+    } for c, c_data in hierarchy.items() ]
+    
+    return cell_sets
 
 def genes_to_samples_by_features(metadata):
     '''
@@ -267,6 +301,9 @@ if __name__ == '__main__':
         '--cells_file', type=argparse.FileType('x'),
         help='Write the cleaned cell data to this file.')
     parser.add_argument(
+        '--cell_sets_file', type=argparse.FileType('x'),
+        help='Write the cleaned cell sets data to this file.')
+    parser.add_argument(
         '--genes_file', type=argparse.FileType('x'),
         help='Write a list of genes to this file.'),
     parser.add_argument(
@@ -310,6 +347,11 @@ if __name__ == '__main__':
 
     if args.cells_file:
         json.dump(metadata, args.cells_file, indent=1)
+
+    if args.cell_sets_file:
+        cell_sets = get_cell_sets(metadata, LOOKUP)
+        cell_sets_json = json.dumps(cell_sets)
+        print(cell_sets_json, file=args.cell_sets_file)
 
     if args.clusters_file:
         clusters = get_clusters(metadata)
