@@ -194,27 +194,36 @@ def get_factors(metadata):
             factor_data['cells'][cell_id] = factor_index
     return factors
 
-def get_cell_sets(metadata, lookup):
+def get_cell_sets(clusters, lookup):
     '''
-    >>> metadata = {
-    ...   "Santa's Little Helper": {'factors':{'eng': 'dog', 'sci': 'canine'}},
-    ...   "Snowball II": {'factors':{'eng': 'cat', 'sci': 'feline'}}
+    >>> Cluster = namedtuple('Cluster', ['name', 'cell_ids'])
+    >>> clusters = [
+    ...   Cluster('pyramidal L4', ['104', '110', '111']),
+    ...   Cluster('vascular smooth muscle', ['1', '2', '3'])
+    ... ]
+    >>> lookup = {
+    ...   'vascular smooth muscle': 'vasculature',
+    ...   'pyramidal L4': 'excitatory neurons'
     ... }
-    >>> cell_sets = get_cell_sets(metadata)
+    >>> cell_sets = get_cell_sets(clusters, lookup)
     >>> list(cell_sets.keys())
     ['version', 'datatype', 'tree']
     >>> cell_sets['datatype']
     'cell'
     >>> list(cell_sets['tree'][0].keys())
     ['name', 'children']
-
+    >>> set([ n['name'] for n in cell_sets['tree'] ])
+    {'vasculature', 'excitatory neurons'}
     '''
+
+    cluster_name_to_cell_ids = dict((c.name, c.cell_ids) for c in clusters)
+    
     cell_sets = {
         'version': '0.1.0',
         'datatype': 'cell',
         'tree': []
     }
-    hierarchy = dict([ (c, dict([(sc, [])
+    hierarchy = dict([ (c, dict([(sc, cluster_name_to_cell_ids[sc])
         for sc, sc_c in lookup.items() if sc_c == c])) 
         for c in lookup.values()]
     )
@@ -317,7 +326,8 @@ if __name__ == '__main__':
         help='Convert all numbers to integers.')
     args = parser.parse_args()
 
-    metadata = LoomReader(args.loom).data()
+    lr = LoomReader(args.loom)
+    metadata = lr.data()
     add_pca(metadata)
 
     for cell in metadata.values():
@@ -349,7 +359,8 @@ if __name__ == '__main__':
         json.dump(metadata, args.cells_file, indent=1)
 
     if args.cell_sets_file:
-        cell_sets = get_cell_sets(metadata, LOOKUP)
+        clusters = lr.clusters()
+        cell_sets = get_cell_sets(clusters, LOOKUP)
         cell_sets_json = json.dumps(cell_sets)
         print(cell_sets_json, file=args.cell_sets_file)
 
