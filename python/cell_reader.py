@@ -216,7 +216,7 @@ def get_cell_sets(clusters, lookup):
     {'vasculature', 'excitatory neurons'}
     '''
 
-    cluster_name_to_cell_ids = dict((c.name, c.cell_ids) for c in clusters)
+    cluster_name_to_cell_ids = dict((c.name, c.cell_ids) for c in clusters.values())
     
     cell_sets = {
         'version': '0.1.0',
