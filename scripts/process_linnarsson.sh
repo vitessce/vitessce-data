@@ -7,8 +7,8 @@ main() {
     get_CLI_args "$@"
 
     process_linnarson_cells
-    #process_linnarson_molecules
-    #process_linnarson_images
+    process_linnarson_molecules
+    process_linnarson_images
 }
 
 ### Globals
