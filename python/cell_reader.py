@@ -213,8 +213,10 @@ def get_cell_sets(clusters, lookup):
     'cell'
     >>> list(cell_sets['tree'][0].keys())
     ['name', 'children']
-    >>> set([ n['name'] for n in cell_sets['tree'] ])
-    {'excitatory neurons', 'vasculature'}
+    >>> cell_sets['tree'][0]['name']
+    'Cell Type Annotations'
+    >>> sorted([ n['name'] for n in cell_sets['tree'][0]['children'] ])
+    ['excitatory neurons', 'vasculature']
     '''
 
     cluster_name_to_cell_ids = dict((c.name, c.cell_ids) for c in clusters.values())
@@ -223,19 +225,28 @@ def get_cell_sets(clusters, lookup):
         for sc, sc_c in lookup.items() if sc_c == c])) 
         for c in lookup.values()]
     )
+
+    cluster_nodes = []
+    for cluster_name in sorted(hierarchy.keys()):
+        cluster_dict = hierarchy[cluster_name]
+        subcluster_nodes = []
+        for subcluster_name in sorted(cluster_dict.keys()):
+            subcluster = cluster_dict[subcluster_name]
+            subcluster_nodes.append({
+                'name': subcluster_name,
+                'set': subcluster
+            })
+        cluster_nodes.append({
+            'name': cluster_name,
+            'children': subcluster_nodes,
+        })
     
     cell_sets = {
         'version': '0.1.2',
         'datatype': 'cell',
         'tree': [{
             'name': 'Cell Type Annotations',
-            'children': [ {
-                    'name': c,
-                    'children': [
-                        { 'name': sc, 'set': sc_data }
-                        for sc, sc_data in c_data.items()
-                    ]
-            } for c, c_data in hierarchy.items() ]
+            'children': cluster_nodes
         }]
     }
     
