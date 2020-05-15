@@ -47,6 +47,7 @@ def cells_json(data):
 
     return cell_dict
 
+
 def cell_sets_json(data):
     '''
     >>> data = {
@@ -72,7 +73,6 @@ def cell_sets_json(data):
     >>> sorted([ n['name'] for n in cell_sets['tree'] ])
     ['Leiden Clustering', 'k-means Clustering']
     '''
-    cell_dict = {}
     clustering_dict = {
         'pleiden_clus': {},
         'kmeans': {}
@@ -94,7 +94,7 @@ def cell_sets_json(data):
                 clustering_dict[factor_type][factor_cluster].append(cell_id)
             else:
                 clustering_dict[factor_type][factor_cluster] = [cell_id]
-    
+
     # Construct the tree
     cell_sets = {
         'version': '0.1.2',
@@ -113,7 +113,7 @@ def cell_sets_json(data):
             'name': nice_names[factor_type],
             'children': factor_type_children
         })
-    
+
     return cell_sets
 
 

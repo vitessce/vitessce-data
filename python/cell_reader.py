@@ -4,7 +4,7 @@ import json
 import argparse
 import pickle
 from collections import defaultdict
-from collections import namedtuple
+from collections import namedtuple  # noqa: F401
 
 import numpy as np
 import pandas
@@ -195,6 +195,7 @@ def get_factors(metadata):
             factor_data['cells'][cell_id] = factor_index
     return factors
 
+
 def get_cell_sets(clusters, lookup):
     '''
     >>> Cluster = namedtuple('Cluster', ['name', 'cell_ids'])
@@ -219,12 +220,17 @@ def get_cell_sets(clusters, lookup):
     ['excitatory neurons', 'vasculature']
     '''
 
-    cluster_name_to_cell_ids = dict((c.name, c.cell_ids) for c in clusters.values())
-
-    hierarchy = dict([ (c, dict([(sc, cluster_name_to_cell_ids[sc])
-        for sc, sc_c in lookup.items() if sc_c == c])) 
-        for c in lookup.values()]
+    cluster_name_to_cell_ids = dict(
+        (c.name, c.cell_ids) for c in clusters.values()
     )
+
+    hierarchy = dict([
+        (c, dict([
+            (sc, cluster_name_to_cell_ids[sc])
+            for sc, sc_c in lookup.items() if sc_c == c
+        ]))
+        for c in lookup.values()
+    ])
 
     cluster_nodes = []
     for cluster_name in sorted(hierarchy.keys()):
@@ -240,7 +246,7 @@ def get_cell_sets(clusters, lookup):
             'name': cluster_name,
             'children': subcluster_nodes,
         })
-    
+
     cell_sets = {
         'version': '0.1.2',
         'datatype': 'cell',
@@ -249,8 +255,9 @@ def get_cell_sets(clusters, lookup):
             'children': cluster_nodes
         }]
     }
-    
+
     return cell_sets
+
 
 def genes_to_samples_by_features(metadata):
     '''
