@@ -218,24 +218,26 @@ def get_cell_sets(clusters, lookup):
     '''
 
     cluster_name_to_cell_ids = dict((c.name, c.cell_ids) for c in clusters.values())
-    
-    cell_sets = {
-        'version': '0.1.2',
-        'datatype': 'cell',
-        'tree': []
-    }
+
     hierarchy = dict([ (c, dict([(sc, cluster_name_to_cell_ids[sc])
         for sc, sc_c in lookup.items() if sc_c == c])) 
         for c in lookup.values()]
     )
-
-    cell_sets['tree'] = [ {
-            'name': c,
-            'children': [
-                { 'name': sc, 'set': sc_data }
-                for sc, sc_data in c_data.items()
-            ]
-    } for c, c_data in hierarchy.items() ]
+    
+    cell_sets = {
+        'version': '0.1.2',
+        'datatype': 'cell',
+        'tree': [{
+            'name': 'Cell Type Annotations',
+            'children': [ {
+                    'name': c,
+                    'children': [
+                        { 'name': sc, 'set': sc_data }
+                        for sc, sc_data in c_data.items()
+                    ]
+            } for c, c_data in hierarchy.items() ]
+        }]
+    }
     
     return cell_sets
 
