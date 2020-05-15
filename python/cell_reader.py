@@ -4,6 +4,7 @@ import json
 import argparse
 import pickle
 from collections import defaultdict
+from collections import namedtuple
 
 import numpy as np
 import pandas
@@ -197,10 +198,10 @@ def get_factors(metadata):
 def get_cell_sets(clusters, lookup):
     '''
     >>> Cluster = namedtuple('Cluster', ['name', 'cell_ids'])
-    >>> clusters = [
-    ...   Cluster('pyramidal L4', ['104', '110', '111']),
-    ...   Cluster('vascular smooth muscle', ['1', '2', '3'])
-    ... ]
+    >>> clusters = {
+    ...   1: Cluster('pyramidal L4', ['104', '110', '111']),
+    ...   3: Cluster('vascular smooth muscle', ['1', '2', '3'])
+    ... }
     >>> lookup = {
     ...   'vascular smooth muscle': 'vasculature',
     ...   'pyramidal L4': 'excitatory neurons'
@@ -213,13 +214,13 @@ def get_cell_sets(clusters, lookup):
     >>> list(cell_sets['tree'][0].keys())
     ['name', 'children']
     >>> set([ n['name'] for n in cell_sets['tree'] ])
-    {'vasculature', 'excitatory neurons'}
+    {'excitatory neurons', 'vasculature'}
     '''
 
     cluster_name_to_cell_ids = dict((c.name, c.cell_ids) for c in clusters.values())
     
     cell_sets = {
-        'version': '0.1.0',
+        'version': '0.1.2',
         'datatype': 'cell',
         'tree': []
     }
