@@ -4,7 +4,6 @@ import json
 import argparse
 import pickle
 from collections import defaultdict
-from collections import namedtuple  # noqa: F401
 
 import numpy as np
 import pandas
@@ -198,6 +197,7 @@ def get_factors(metadata):
 
 def get_cell_sets(clusters, lookup):
     '''
+    >>> from collections import namedtuple
     >>> Cluster = namedtuple('Cluster', ['name', 'cell_ids'])
     >>> clusters = {
     ...   1: Cluster('pyramidal L4', ['104', '110', '111']),
@@ -220,18 +220,28 @@ def get_cell_sets(clusters, lookup):
     ['excitatory neurons', 'vasculature']
     '''
 
-    cluster_name_to_cell_ids = dict(
-        (c.name, c.cell_ids) for c in clusters.values()
-    )
+    # The parameter `lookup` is a dict mapping
+    # subclusters to clusters: `{ Subcluster Name: Cluster Name }`
+    # This `lookup` mapping can be used to fill in an intermediate
+    # dict `hierarchy`, closer to the data structure we want to output.
+    # ```
+    # {
+    #   Cluster A: {
+    #     Subcluster A: [1, 2],
+    #     Subcluster B: [3, 4]
+    #   },
+    #   Cluster B: {...}
+    # }
+    # ```
+    hierarchy = {cluster_name: {} for cluster_name in lookup.values()}
+    for c in clusters.values():
+        subcluster = {c.name: c.cell_ids}
+        cluster_name = lookup.get(c.name)
+        cluster_dict = hierarchy.get(cluster_name)
+        cluster_dict.update(subcluster)
 
-    hierarchy = dict([
-        (c, dict([
-            (sc, cluster_name_to_cell_ids[sc])
-            for sc, sc_c in lookup.items() if sc_c == c
-        ]))
-        for c in lookup.values()
-    ])
-
+    # Use the `hierarchy` dict to fill in an object
+    # conforming to the `cell_sets.json` schema.
     cluster_nodes = []
     for cluster_name in sorted(hierarchy.keys()):
         cluster_dict = hierarchy[cluster_name]
