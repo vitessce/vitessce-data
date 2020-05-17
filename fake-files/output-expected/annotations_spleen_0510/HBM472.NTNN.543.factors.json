@@ -1,0 +1,13 @@
+{
+ "Cell Type Annotations": {
+  "map": [
+   "plasmablast",
+   "B cell"
+  ],
+  "cells": {
+   "CCTAAGACAGAACTCT": 0,
+   "GTTCATTCACTCATAG": 0,
+   "GAGGGATCAATTCACG": 1
+  }
+ }
+}

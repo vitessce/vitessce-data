@@ -1,0 +1,20 @@
+{
+ "Cell Type Annotations": {
+  "map": [
+   "hematopoietic stem cell",
+   "plasma cell",
+   "B cell",
+   "plasmablast"
+  ],
+  "cells": {
+   "ACTTTGTTCTTTGCAT": 0,
+   "CATGCTCTCGAGAAGC": 1,
+   "TCTACATTCCCAAGCG": 1,
+   "TGGAGGACACGCGTGT": 0,
+   "TTGCATTCAATGTTGC": 2,
+   "AGCCAGCTCCACCTCA": 3,
+   "AAGCAGTGGTATCAAC": 2,
+   "CTCAGTCTCGATTTCT": 0
+  }
+ }
+}

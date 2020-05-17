@@ -1,0 +1,20 @@
+{
+ "Cell Type Annotations": {
+  "map": [
+   "CD141-positive myeloid dendritic cell",
+   "plasma cell",
+   "CD14-positive monocyte",
+   "B cell"
+  ],
+  "cells": {
+   "ACGCACGGTGTTTACG": 0,
+   "CATCGGGAGTCCCAGC": 1,
+   "AAAGAACAGCTACAAA": 2,
+   "TTCTTGATCTAACACG": 3,
+   "AGGGAGTCAGCCCACA": 3,
+   "ATGGTTGTCACTGGGC": 1,
+   "AACTTCTGTCTACGAT": 1,
+   "CTGCATCTCTTCGCTG": 1
+  }
+ }
+}
