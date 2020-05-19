@@ -58,7 +58,7 @@ def factors_json(df, dataset_id):
         lambda val: annotation_values.index(val)
     )
 
-    # Construct the factors dict, which will be saved as a JSON object.
+    # Construct the factors dict.
     factors = {
         "Cell Type Annotations": {
             "map": annotation_values,
