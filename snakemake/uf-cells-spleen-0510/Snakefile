@@ -2,29 +2,23 @@ from os.path import join
 
 configfile: 'config.yml'
 
-# The Globus IDs for the datasets corresponding to the annotation file.
-GLOBUS_IDS = config['annotations_spleen_0510']
-
-# Directory / file constants
 SRC_DIR = "src"
 DATA_DIR = "data"
 RAW_DIR = join(DATA_DIR, "raw")
 PROCESSED_DIR = join(DATA_DIR, "processed")
 
-# URL constants
+GLOBUS_IDS = config['annotations_spleen_0510']
+
 CELL_ANNOTATIONS_URL = "https://vitessce-data.s3.amazonaws.com/source-data/annotations_spleen_0510/annotations_spleen_0510.csv"
 CELLS_URL = "https://giygas.compbio.cs.cmu.edu/uf-processed.tar.xz"
 CL_OBO_URL = "https://raw.githubusercontent.com/obophenotype/cell-ontology/master/cl.obo"
 
-# Rules
 rule all:
     input:
         expand(join(PROCESSED_DIR, "{globus_id}.cells.json"), globus_id=GLOBUS_IDS),
         expand(join(PROCESSED_DIR, "{globus_id}.factors.json"), globus_id=GLOBUS_IDS),
-        expand(join(PROCESSED_DIR, "{globus_id}.flat.cell_sets.json"), globus_id=GLOBUS_IDS),
-        expand(join(PROCESSED_DIR, "{globus_id}.hierarchical.cell_sets.json"), globus_id=GLOBUS_IDS),
+        expand(join(PROCESSED_DIR, "{globus_id}.cell_sets.json"), globus_id=GLOBUS_IDS),
 
-# Generate JSON files for each dataset.
 rule process_dataset:
     input:
         cells_arrow=join(RAW_DIR, "uf_processed", "{globus_id}", "cluster_marker_genes.arrow"),
@@ -33,8 +27,7 @@ rule process_dataset:
     output:
         cells_json=join(PROCESSED_DIR, "{globus_id}.cells.json"),
         factors_json=join(PROCESSED_DIR, "{globus_id}.factors.json"),
-        flat_cell_sets_json=join(PROCESSED_DIR, "{globus_id}.flat.cell_sets.json"),
-        hierarchical_cell_sets_json=join(PROCESSED_DIR, "{globus_id}.hierarchical.cell_sets.json")
+        cell_sets_json=join(PROCESSED_DIR, "{globus_id}.cell_sets.json")
     params:
         script=join(SRC_DIR, "process_dataset.py")
     shell:
@@ -45,11 +38,9 @@ rule process_dataset:
             -ico {input.cl_obo} \
             -oc {output.cells_json} \
             -of {output.factors_json} \
-            -ofcs {output.flat_cell_sets_json} \
-            -ohcs {output.hierarchical_cell_sets_json}
+            -ocs {output.cell_sets_json}
         '''
 
-# Split the cell type annotation CSV by dataset (via Globus ID).
 rule split_annotation_csv:
     input:
         join(RAW_DIR, "annotations_spleen_0510.csv")
@@ -65,7 +56,6 @@ rule split_annotation_csv:
             -gid {wildcards.globus_id}
         '''
 
-# Convert the h5ad file containing clustering results to an intermediate arrow file.
 rule convert_h5ad_to_arrow:
     input:
         join(RAW_DIR, "uf_processed", "{globus_id}", "cluster_marker_genes.h5ad")
@@ -118,7 +108,6 @@ rule download_cells_data:
         curl -L -o {output} {params.file_url}
         '''
 
-# Download OBO file containing EBI cell ontology.
 rule download_cl_obo:
     output:
         join(RAW_DIR, "cl.obo")

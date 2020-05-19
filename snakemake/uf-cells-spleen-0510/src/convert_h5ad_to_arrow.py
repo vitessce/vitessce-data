@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 
 from anndata import read_h5ad
@@ -21,18 +23,22 @@ def h5ad_to_arrow(h5ad_file, arrow_file):
     writer.write(table)
     writer.close()
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input_file',
+    parser.add_argument(
+        '-i',
+        '--input_file',
         type=str,
         required=True,
         help='Input h5ad file'
     )
-    parser.add_argument('-o', '--output_file',
+    parser.add_argument(
+        '-o',
+        '--output_file',
         type=str,
         required=True,
         help='Output Arrow file'
     )
-    
     args = parser.parse_args()
     h5ad_to_arrow(args.input_file, args.output_file)
