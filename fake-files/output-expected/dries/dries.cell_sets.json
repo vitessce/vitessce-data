@@ -1,0 +1,30 @@
+{
+ "version": "0.1.2",
+ "datatype": "cell",
+ "tree": [
+  {
+   "name": "Leiden Clustering",
+   "children": [
+    {
+     "name": "Cluster 3",
+     "set": [
+      "cell_1",
+      "cell_2"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "k-means Clustering",
+   "children": [
+    {
+     "name": "Cluster 8",
+     "set": [
+      "cell_1",
+      "cell_2"
+     ]
+    }
+   ]
+  }
+ ]
+}
