@@ -195,6 +195,82 @@ def get_factors(metadata):
     return factors
 
 
+def get_cell_sets(clusters, lookup):
+    '''
+    >>> from collections import namedtuple
+    >>> Cluster = namedtuple('Cluster', ['name', 'cell_ids'])
+    >>> clusters = {
+    ...   1: Cluster('pyramidal L4', ['104', '110', '111']),
+    ...   3: Cluster('vascular smooth muscle', ['1', '2', '3'])
+    ... }
+    >>> lookup = {
+    ...   'vascular smooth muscle': 'vasculature',
+    ...   'pyramidal L4': 'excitatory neurons'
+    ... }
+    >>> cell_sets = get_cell_sets(clusters, lookup)
+    >>> list(cell_sets.keys())
+    ['version', 'datatype', 'tree']
+    >>> cell_sets['datatype']
+    'cell'
+    >>> list(cell_sets['tree'][0].keys())
+    ['name', 'children']
+    >>> cell_sets['tree'][0]['name']
+    'Cell Type Annotations'
+    >>> sorted([ n['name'] for n in cell_sets['tree'][0]['children'] ])
+    ['excitatory neurons', 'vasculature']
+    '''
+
+    # The parameter `lookup` is a dict mapping
+    # subclusters to clusters: `{ Subcluster Name: Cluster Name }`
+    # This `lookup` mapping can be used to fill in an intermediate
+    # dict `hierarchy`, closer to the data structure we want to output.
+    # ```
+    # {
+    #   Cluster A: {
+    #     Subcluster A: [1, 2],
+    #     Subcluster B: [3, 4]
+    #   },
+    #   Cluster B: {...}
+    # }
+    # ```
+    hierarchy = {cluster_name: {} for cluster_name in lookup.values()}
+    for c in clusters.values():
+        subcluster = {c.name: c.cell_ids}
+        cluster_name = lookup.get(c.name)
+        cluster_dict = hierarchy.get(cluster_name)
+        cluster_dict.update(subcluster)
+
+    # Use the `hierarchy` dict to fill in an object
+    # conforming to the `cell_sets.json` schema.
+    cluster_nodes = []
+    for cluster_name in sorted(hierarchy.keys()):
+        cluster_dict = hierarchy[cluster_name]
+        subcluster_nodes = []
+        for subcluster_name in sorted(cluster_dict.keys()):
+            subcluster = cluster_dict[subcluster_name]
+            subcluster_nodes.append({
+                'name': subcluster_name,
+                'set': subcluster
+            })
+        cluster_nodes.append({
+            'name': cluster_name,
+            'children': subcluster_nodes,
+        })
+
+    # Construct the tree, according to the following schema:
+    # https://github.com/hubmapconsortium/vitessce/blob/d5f63aa1d08aa61f6b20f6ad6bbfba5fceb6b5ef/src/schemas/cell_sets.schema.json
+    cell_sets = {
+        'version': '0.1.2',
+        'datatype': 'cell',
+        'tree': [{
+            'name': 'Cell Type Annotations',
+            'children': cluster_nodes
+        }]
+    }
+
+    return cell_sets
+
+
 def genes_to_samples_by_features(metadata):
     '''
     >>> metadata = {
@@ -267,6 +343,9 @@ if __name__ == '__main__':
         '--cells_file', type=argparse.FileType('x'),
         help='Write the cleaned cell data to this file.')
     parser.add_argument(
+        '--cell_sets_file', type=argparse.FileType('x'),
+        help='Write the cleaned cell sets data to this file.')
+    parser.add_argument(
         '--genes_file', type=argparse.FileType('x'),
         help='Write a list of genes to this file.'),
     parser.add_argument(
@@ -280,7 +359,8 @@ if __name__ == '__main__':
         help='Convert all numbers to integers.')
     args = parser.parse_args()
 
-    metadata = LoomReader(args.loom).data()
+    lr = LoomReader(args.loom)
+    metadata = lr.data()
     add_pca(metadata)
 
     for cell in metadata.values():
@@ -310,6 +390,11 @@ if __name__ == '__main__':
 
     if args.cells_file:
         json.dump(metadata, args.cells_file, indent=1)
+
+    if args.cell_sets_file:
+        clusters = lr.clusters()
+        cell_sets = get_cell_sets(clusters, LOOKUP)
+        json.dump(cell_sets, args.cell_sets_file, indent=1)
 
     if args.clusters_file:
         clusters = get_clusters(metadata)

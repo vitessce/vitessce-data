@@ -2,6 +2,7 @@
 
 import json
 import argparse
+from collections import defaultdict
 
 
 def cells_json(data):
@@ -46,6 +47,73 @@ def cells_json(data):
         }
 
     return cell_dict
+
+
+def cell_sets_json(data):
+    '''
+    >>> data = {
+    ...     "cell_1": {
+    ...         "locations": [1632.02, -1305.7],
+    ...         "factors": {
+    ...             "pleiden_clus": [3],
+    ...             "kmeans": [8]
+    ...         },
+    ...         "mappings": {
+    ...             "tsne": [-11.0776, 6.0311],
+    ...             "umap": [-6.858, 15.7691]
+    ...         }
+    ...     }
+    ... }
+    >>> cell_sets = cell_sets_json(data)
+    >>> list(cell_sets.keys())
+    ['version', 'datatype', 'tree']
+    >>> cell_sets['datatype']
+    'cell'
+    >>> len(cell_sets['tree'])
+    2
+    >>> sorted([ n['name'] for n in cell_sets['tree'] ])
+    ['Leiden Clustering', 'k-means Clustering']
+    '''
+    clustering_dict = {
+        'pleiden_clus': defaultdict(list),
+        'kmeans': defaultdict(list),
+    }
+    nice_names = {
+        'pleiden_clus': 'Leiden Clustering',
+        'kmeans': 'k-means Clustering'
+    }
+    for cell_id in data.keys():
+        factors = data[cell_id]['factors']
+        factors_dict = {
+            'pleiden_clus': 'Cluster {}'.format(factors['pleiden_clus'][0]),
+            'kmeans': 'Cluster {}'.format(factors['kmeans'][0])
+        }
+        # For each cluster assignment, append this cell ID to the
+        # appropriate clustering_dict list.
+        for factor_type, factor_cluster in factors_dict.items():
+            clustering_dict[factor_type][factor_cluster].append(cell_id)
+
+    # Construct the tree, according to the following schema:
+    # https://github.com/hubmapconsortium/vitessce/blob/d5f63aa1d08aa61f6b20f6ad6bbfba5fceb6b5ef/src/schemas/cell_sets.schema.json
+    cell_sets = {
+        'version': '0.1.2',
+        'datatype': 'cell',
+        'tree': []
+    }
+
+    for factor_type, factor_clusters in clustering_dict.items():
+        factor_type_children = []
+        for cluster_name in sorted(factor_clusters.keys()):
+            factor_type_children.append({
+                'name': cluster_name,
+                'set': factor_clusters[cluster_name]
+            })
+        cell_sets['tree'].append({
+            'name': nice_names[factor_type],
+            'children': factor_type_children
+        })
+
+    return cell_sets
 
 
 def factors_json(data):
@@ -116,6 +184,9 @@ if __name__ == '__main__':
         '--cells_file', type=argparse.FileType('x'),
         help='Write the cell data to this file.')
     parser.add_argument(
+        '--cell_sets_file', type=argparse.FileType('x'),
+        help='Write the cell sets data to this file.')
+    parser.add_argument(
         '--factors_file', type=argparse.FileType('x'),
         help='Write the cell factors to this file.')
     args = parser.parse_args()
@@ -125,5 +196,7 @@ if __name__ == '__main__':
 
     if args.cells_file:
         json.dump(cells_json(data), args.cells_file, indent=1)
+    if args.cell_sets_file:
+        json.dump(cell_sets_json(data), args.cell_sets_file, indent=1)
     if args.factors_file:
         json.dump(factors_json(data), args.factors_file, indent=1)
