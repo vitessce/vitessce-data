@@ -7,12 +7,16 @@ import pyarrow as pa
 import pandas as pd
 
 from constants import COLUMNS
-from generate_cell_sets import generate_flat_cell_sets, generate_hierarchical_cell_sets
+from generate_cell_sets import (
+    generate_flat_cell_sets,
+    generate_hierarchical_cell_sets
+)
 
 
 def generate_json_files(
     input_cells_arrow_file, input_annotations_csv_file, input_cl_obo_file,
-    output_cells_json_file, output_factors_json_file, output_cell_sets_json_file
+    output_cells_json_file, output_factors_json_file,
+    output_cell_sets_json_file
 ):
     cells_df = pa.ipc.open_file(input_cells_arrow_file).read_pandas()
     annotation_df = pd.read_csv(input_annotations_csv_file)
@@ -35,7 +39,7 @@ def generate_json_files(
                 "Cell Type Annotation": v[COLUMNS.ANNOTATION.value]
             }
         }
-        for (k,v) in cells_df_items
+        for (k, v) in cells_df_items
     }
     with open(output_cells_json_file, 'w') as f:
         json.dump(cells_json, f)
@@ -48,14 +52,14 @@ def generate_json_files(
             "map": leiden_clusters,
             "cells": {
                 k: leiden_clusters.index(v['leiden'])
-                for (k,v) in cells_df_items
+                for (k, v) in cells_df_items
             }
         },
         "Cell Type Annotation": {
             "map": leiden_clusters,
             "cells": {
                 k: cell_types.index(v[COLUMNS.ANNOTATION.value])
-                for (k,v) in cells_df_items
+                for (k, v) in cells_df_items
             }
         }
     }
@@ -67,7 +71,10 @@ def generate_json_files(
     flat_cell_sets_json = generate_flat_cell_sets(df)
 
     # Generate .hierarchical.cell_sets.json
-    hierarchical_cell_sets_json = generate_hierarchical_cell_sets(df, input_cl_obo_file)
+    hierarchical_cell_sets_json = generate_hierarchical_cell_sets(
+        df,
+        input_cl_obo_file
+    )
 
     cell_sets_json = flat_cell_sets_json
     cell_sets_json["tree"].append(hierarchical_cell_sets_json["tree"][0])

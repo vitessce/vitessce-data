@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
-import pandas as pd
-import numpy as np
-import json
-from pprint import pprint
+import networkx
 
 from constants import COLUMNS, CL_ROOT_ID
 from utils import init_tree, load_cl_obo_graph
@@ -51,18 +48,24 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
         try:
             node_id = name_to_id[cell_type]
         except KeyError:
-            print(f"ERROR: annotation '{cell_type}' does not match any node in the cell ontology.")
+            print((
+                f"ERROR: annotation '{cell_type}' does "
+                "not match any node in the cell ontology."
+            ))
 
         # Get ancestors of the cell type
-        ancestor_term_set = networkx.descendants(graph, node_id) # counterintuitive
+        # (counterintuitive that the function is called descendants)
+        ancestor_term_set = networkx.descendants(graph, node_id)
 
-        # Make sure the cell type has an ancestor with the 'cell' root ID
+        # Make sure the cell type has an ancestor
+        # with the 'cell' root ID
         assert(CL_ROOT_ID in ancestor_term_set)
 
         # Initialize the current node ID to the cell type of interest
         curr_node_id = node_id
 
-        # Construct a list of ancestors, inclusive. [node_id, parent_id, grandparent_id, ...]
+        # Construct a list of ancestors, inclusive.
+        # [node_id, parent_id, grandparent_id, ...]
         ancestors = [curr_node_id]
 
         # Get the parents of the current node.
@@ -70,7 +73,10 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
 
         # Warn if the current node has multiple parents.
         if len(curr_node_parents) > 1:
-            print(f"WARN: {curr_node_id} has {len(curr_node_parents)} parents.")
+            print((
+                f"WARN: {curr_node_id} has "
+                f"{len(curr_node_parents)} parents."
+            ))
 
         # Select the first (hopefully only) parent node.
         _, curr_parent_id, relationship = curr_node_parents[0]
@@ -82,17 +88,21 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
 
             # Warn if the current node has multiple parents.
             if len(curr_node_parents) > 1:
-                print(f"WARN: {curr_node_id} has {len(curr_node_parents)} parents.")
+                print((
+                    f"WARN: {curr_node_id} has "
+                    f"{len(curr_node_parents)} parents."
+                ))
 
             # Select the first (hopefully only) parent node.
             _, curr_parent_id, relationship = curr_node_parents[0]
             assert(relationship == "is_a")
             ancestors.append(curr_parent_id)
 
-            # Set the current node to its parent to prepare for the next iteration.
+            # Set the current node to its parent to
+            # prepare for the next iteration.
             curr_node_id = curr_parent_id
 
-        named_ancestors = [ id_to_name[a] for a in ancestors ]
+        named_ancestors = [id_to_name[a] for a in ancestors]
         named_ancestors_reversed = list(reversed(named_ancestors))
         print(named_ancestors_reversed)
 
@@ -103,9 +113,8 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
 
     # Pop off all ancestors that are the same for all cell types.
     # e.g. 'cell', 'native cell', ...
-    ancestor_list_lens = [ len(x[0]) for x in ancestors_and_sets ]
+    ancestor_list_lens = [len(x[0]) for x in ancestors_and_sets]
     min_ancestor_list_len = min(ancestor_list_lens)
-    max_ancestor_list_len = min(ancestor_list_lens)
     assert(min_ancestor_list_len >= 1)
     for level in range(min_ancestor_list_len - 1):
         unique_level_cell_types = set()
@@ -120,7 +129,7 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
             break
 
     # Construct a hierarchy of cell types.
-    def find_parent(d, keys, child):
+    def find_or_create_parent(d, keys, child):
         key = keys[0]
 
         if key in d and isinstance(d[key], dict):
@@ -134,11 +143,11 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
         else:
             new_keys = keys.copy()
             new_keys.pop(0)
-            return find_parent(result, new_keys, child)
+            return find_or_create_parent(result, new_keys, child)
 
     h = dict()
     for ancestors, cell_set in ancestors_and_sets:
-        leaf_parent = find_parent(h, ancestors, cell_set)    
+        find_or_create_parent(h, ancestors, cell_set)
 
     def to_tree(name, value):
         if isinstance(value, dict):
@@ -155,5 +164,7 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
                 "set": value
             }
 
-    tree["tree"] = [ to_tree("Cell Type Annotations (hierarchical)", h) ]
+    tree["tree"] = [
+        to_tree("Cell Type Annotations (hierarchical)", h)
+    ]
     return tree

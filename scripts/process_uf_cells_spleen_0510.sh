@@ -1,12 +1,26 @@
 #!/usr/bin/env bash
 set -o errexit
 
-source activate vitessce-data-uf-cells-spleen-0510
+. ./scripts/utils.sh
 
-pwd
+DATASET='uf_cells_spleen_0510'
 
-snakemake \
-    --cores 2 \
-    --snakefile snakemake/uf-cells-spleen-0510/Snakefile \
-    --directory snakemake/uf-cells-spleen-0510
+main() {
+    get_CLI_args "$@"
 
+    # The variables $BASE, $INPUT, $OUTPUT, $CLOUD_TARGET
+    # come from running the get_CLI_args line above.
+
+    SNAKEMAKE_CMD="snakemake
+        --cores 1
+        --snakefile $BASE/snakemake/$DATASET/Snakefile
+        --directory $BASE/snakemake/$DATASET
+        --config INPUT=$INPUT OUTPUT=$OUTPUT CLOUD_TARGET=$CLOUD_TARGET"
+    
+    eval $SNAKEMAKE_CMD --dryrun
+    eval $SNAKEMAKE_CMD
+}
+
+### Main
+
+main "$@"

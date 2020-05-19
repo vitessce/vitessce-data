@@ -18,7 +18,7 @@ For example: The mRNA HDF5 is 30M, but as JSON it is still only 37M.
 ```
 conda create python=3.6 -n vitessce-data
 # Confirm install, then:
-source activate vitessce-data
+conda activate vitessce-data
 ```
 Then install dependencies with `pip`:
 ```
