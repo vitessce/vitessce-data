@@ -2,6 +2,7 @@
 
 import json
 import argparse
+from collections import defaultdict
 
 
 def cells_json(data):
@@ -74,8 +75,8 @@ def cell_sets_json(data):
     ['Leiden Clustering', 'k-means Clustering']
     '''
     clustering_dict = {
-        'pleiden_clus': {},
-        'kmeans': {}
+        'pleiden_clus': defaultdict(list),
+        'kmeans': defaultdict(list),
     }
     nice_names = {
         'pleiden_clus': 'Leiden Clustering',
@@ -90,12 +91,10 @@ def cell_sets_json(data):
         # For each cluster assignment, append this cell ID to the
         # appropriate clustering_dict list.
         for factor_type, factor_cluster in factors_dict.items():
-            if factor_cluster in clustering_dict[factor_type]:
-                clustering_dict[factor_type][factor_cluster].append(cell_id)
-            else:
-                clustering_dict[factor_type][factor_cluster] = [cell_id]
+            clustering_dict[factor_type][factor_cluster].append(cell_id)
 
-    # Construct the tree
+    # Construct the tree, according to the following schema:
+    # https://github.com/hubmapconsortium/vitessce/blob/d5f63aa1d08aa61f6b20f6ad6bbfba5fceb6b5ef/src/schemas/cell_sets.schema.json
     cell_sets = {
         'version': '0.1.2',
         'datatype': 'cell',

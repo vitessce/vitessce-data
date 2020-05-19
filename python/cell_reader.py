@@ -257,6 +257,8 @@ def get_cell_sets(clusters, lookup):
             'children': subcluster_nodes,
         })
 
+    # Construct the tree, according to the following schema:
+    # https://github.com/hubmapconsortium/vitessce/blob/d5f63aa1d08aa61f6b20f6ad6bbfba5fceb6b5ef/src/schemas/cell_sets.schema.json
     cell_sets = {
         'version': '0.1.2',
         'datatype': 'cell',
@@ -392,8 +394,7 @@ if __name__ == '__main__':
     if args.cell_sets_file:
         clusters = lr.clusters()
         cell_sets = get_cell_sets(clusters, LOOKUP)
-        cell_sets_json = json.dumps(cell_sets)
-        print(cell_sets_json, file=args.cell_sets_file)
+        json.dump(cell_sets, args.cell_sets_file, indent=1)
 
     if args.clusters_file:
         clusters = get_clusters(metadata)
