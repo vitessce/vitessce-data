@@ -7,22 +7,6 @@ Columns of the annotation CSV:
 - `dataset_id`: Links to the dataset IDs from the Loaded Dataset Information HuBMAP google sheet. An example entry is HBM336.FWTN.636
 - `globus_id`: corresponds to the directory on Globus where the original input data was uploaded
 
-
-## Setup
-
-```sh
-conda env create -f environment.yml
-conda activate vitessce-data-uf-cells-spleen-0510
-```
-
-## Run
-
-```sh
-snakemake --cores 1
-```
-
-
-
 ## EBI Cell Ontology API
 
 To find the ancestors of `B cell`, for example:
