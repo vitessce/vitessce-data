@@ -42,7 +42,7 @@ def generate_json_files(
         for (k, v) in cells_df_items
     }
     with open(output_cells_json_file, 'w') as f:
-        json.dump(cells_json, f)
+        json.dump(cells_json, f, indent=1)
 
     # Generate .factors.json
     leiden_clusters = sorted(df['leiden'].unique().tolist())
@@ -64,7 +64,7 @@ def generate_json_files(
         }
     }
     with open(output_factors_json_file, 'w') as f:
-        json.dump(factors_json, f)
+        json.dump(factors_json, f, indent=1)
 
     # Generate .flat.cell_sets.json
     df = df.reset_index()
@@ -80,7 +80,7 @@ def generate_json_files(
     cell_sets_json["tree"].append(hierarchical_cell_sets_json["tree"][0])
 
     with open(output_cell_sets_json_file, 'w') as f:
-        json.dump(cell_sets_json, f)
+        json.dump(cell_sets_json, f, indent=1)
 
 
 if __name__ == '__main__':

@@ -1,1 +1,156 @@
-{"datatype": "cell", "version": "0.1.2", "tree": [{"name": "Leiden Clustering", "children": [{"name": "Cluster 05", "set": ["AGACACTGTCTCAGAT", "TCATGCCAGTTGAATG", "CATCAAGCAGATCCTA", "TCATCCGTCGTCTAAG", "GTCATTTCAGATCCTA", "TAACACGTCATCGCCT", "TACCCGTCACGGTGCT", "GGGCGTTCAAATGAAC", "TCTGCCATCACGGGCT", "GTTTGGAAGTTACGAA", "CAACCAAGTTTAGAGA", "ACCAACATCGTAGCCG", "AGATGCTGTGTGGACA", "AGACACTCACTTCCTG", "TCATCCGCACGAAAGC", "GCATCGGGTCTGTGGC", "TCTTAGTCAACGATTC", "TTGGTTTGTACGAGCA", "TCATTGTCACACTGGC"]}, {"name": "Cluster 18", "set": ["TTTGACTCAGAGGACT", "TCATTACTCGATCCAA", "TGATTTCCAAGCGAAC", "GCAGCTGCATACTTTC", "GTTAGTGGTCCCTGTT", "CGCATGGCACTTGACA"]}]}, {"name": "Cell Type Annotations (flat)", "children": [{"name": "plasma cell", "set": ["AGACACTGTCTCAGAT", "TCATGCCAGTTGAATG", "CATCAAGCAGATCCTA", "TCATCCGTCGTCTAAG", "GTCATTTCAGATCCTA", "TAACACGTCATCGCCT", "TACCCGTCACGGTGCT", "GGGCGTTCAAATGAAC", "TCTGCCATCACGGGCT", "GTTTGGAAGTTACGAA", "CAACCAAGTTTAGAGA", "ACCAACATCGTAGCCG", "AGATGCTGTGTGGACA", "AGACACTCACTTCCTG", "TCATCCGCACGAAAGC", "GCATCGGGTCTGTGGC", "TCTTAGTCAACGATTC", "TTGGTTTGTACGAGCA", "TCATTGTCACACTGGC"]}, {"name": "plasmablast", "set": ["TTTGACTCAGAGGACT", "TCATTACTCGATCCAA", "TGATTTCCAAGCGAAC", "GCAGCTGCATACTTTC", "GTTAGTGGTCCCTGTT", "CGCATGGCACTTGACA"]}]}, {"name": "Cell Type Annotations (hierarchical)", "children": [{"name": "antibody secreting cell", "children": [{"name": "plasma cell", "children": [{"name": "any", "set": ["AGACACTGTCTCAGAT", "TCATGCCAGTTGAATG", "CATCAAGCAGATCCTA", "TCATCCGTCGTCTAAG", "GTCATTTCAGATCCTA", "TAACACGTCATCGCCT", "TACCCGTCACGGTGCT", "GGGCGTTCAAATGAAC", "TCTGCCATCACGGGCT", "GTTTGGAAGTTACGAA", "CAACCAAGTTTAGAGA", "ACCAACATCGTAGCCG", "AGATGCTGTGTGGACA", "AGACACTCACTTCCTG", "TCATCCGCACGAAAGC", "GCATCGGGTCTGTGGC", "TCTTAGTCAACGATTC", "TTGGTTTGTACGAGCA", "TCATTGTCACACTGGC"]}]}]}, {"name": "B cell", "children": [{"name": "B cell, CD19-positive", "children": [{"name": "mature B cell", "children": [{"name": "plasmablast", "children": [{"name": "any", "set": ["TTTGACTCAGAGGACT", "TCATTACTCGATCCAA", "TGATTTCCAAGCGAAC", "GCAGCTGCATACTTTC", "GTTAGTGGTCCCTGTT", "CGCATGGCACTTGACA"]}]}]}]}]}]}]}
+{
+ "datatype": "cell",
+ "version": "0.1.2",
+ "tree": [
+  {
+   "name": "Leiden Clustering",
+   "children": [
+    {
+     "name": "Cluster 05",
+     "set": [
+      "AGACACTGTCTCAGAT",
+      "TCATGCCAGTTGAATG",
+      "CATCAAGCAGATCCTA",
+      "TCATCCGTCGTCTAAG",
+      "GTCATTTCAGATCCTA",
+      "TAACACGTCATCGCCT",
+      "TACCCGTCACGGTGCT",
+      "GGGCGTTCAAATGAAC",
+      "TCTGCCATCACGGGCT",
+      "GTTTGGAAGTTACGAA",
+      "CAACCAAGTTTAGAGA",
+      "ACCAACATCGTAGCCG",
+      "AGATGCTGTGTGGACA",
+      "AGACACTCACTTCCTG",
+      "TCATCCGCACGAAAGC",
+      "GCATCGGGTCTGTGGC",
+      "TCTTAGTCAACGATTC",
+      "TTGGTTTGTACGAGCA",
+      "TCATTGTCACACTGGC"
+     ]
+    },
+    {
+     "name": "Cluster 18",
+     "set": [
+      "TTTGACTCAGAGGACT",
+      "TCATTACTCGATCCAA",
+      "TGATTTCCAAGCGAAC",
+      "GCAGCTGCATACTTTC",
+      "GTTAGTGGTCCCTGTT",
+      "CGCATGGCACTTGACA"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cell Type Annotations (flat)",
+   "children": [
+    {
+     "name": "plasma cell",
+     "set": [
+      "AGACACTGTCTCAGAT",
+      "TCATGCCAGTTGAATG",
+      "CATCAAGCAGATCCTA",
+      "TCATCCGTCGTCTAAG",
+      "GTCATTTCAGATCCTA",
+      "TAACACGTCATCGCCT",
+      "TACCCGTCACGGTGCT",
+      "GGGCGTTCAAATGAAC",
+      "TCTGCCATCACGGGCT",
+      "GTTTGGAAGTTACGAA",
+      "CAACCAAGTTTAGAGA",
+      "ACCAACATCGTAGCCG",
+      "AGATGCTGTGTGGACA",
+      "AGACACTCACTTCCTG",
+      "TCATCCGCACGAAAGC",
+      "GCATCGGGTCTGTGGC",
+      "TCTTAGTCAACGATTC",
+      "TTGGTTTGTACGAGCA",
+      "TCATTGTCACACTGGC"
+     ]
+    },
+    {
+     "name": "plasmablast",
+     "set": [
+      "TTTGACTCAGAGGACT",
+      "TCATTACTCGATCCAA",
+      "TGATTTCCAAGCGAAC",
+      "GCAGCTGCATACTTTC",
+      "GTTAGTGGTCCCTGTT",
+      "CGCATGGCACTTGACA"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cell Type Annotations (hierarchical)",
+   "children": [
+    {
+     "name": "antibody secreting cell",
+     "children": [
+      {
+       "name": "plasma cell",
+       "children": [
+        {
+         "name": "any",
+         "set": [
+          "AGACACTGTCTCAGAT",
+          "TCATGCCAGTTGAATG",
+          "CATCAAGCAGATCCTA",
+          "TCATCCGTCGTCTAAG",
+          "GTCATTTCAGATCCTA",
+          "TAACACGTCATCGCCT",
+          "TACCCGTCACGGTGCT",
+          "GGGCGTTCAAATGAAC",
+          "TCTGCCATCACGGGCT",
+          "GTTTGGAAGTTACGAA",
+          "CAACCAAGTTTAGAGA",
+          "ACCAACATCGTAGCCG",
+          "AGATGCTGTGTGGACA",
+          "AGACACTCACTTCCTG",
+          "TCATCCGCACGAAAGC",
+          "GCATCGGGTCTGTGGC",
+          "TCTTAGTCAACGATTC",
+          "TTGGTTTGTACGAGCA",
+          "TCATTGTCACACTGGC"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "B cell",
+     "children": [
+      {
+       "name": "B cell, CD19-positive",
+       "children": [
+        {
+         "name": "mature B cell",
+         "children": [
+          {
+           "name": "plasmablast",
+           "children": [
+            {
+             "name": "any",
+             "set": [
+              "TTTGACTCAGAGGACT",
+              "TCATTACTCGATCCAA",
+              "TGATTTCCAAGCGAAC",
+              "GCAGCTGCATACTTTC",
+              "GTTAGTGGTCCCTGTT",
+              "CGCATGGCACTTGACA"
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

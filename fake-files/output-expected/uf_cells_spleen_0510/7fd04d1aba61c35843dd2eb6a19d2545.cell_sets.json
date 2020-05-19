@@ -1,1 +1,296 @@
-{"datatype": "cell", "version": "0.1.2", "tree": [{"name": "Leiden Clustering", "children": [{"name": "Cluster 01", "set": ["AGGGTCCCACATACGT", "CACGTTCCAGAACCGA", "TCAAGTGCATCGAACT", "GGTCACGGTGGGATTG", "TAGACTGTCCTCACGT", "GCCCGAACAAAGCAAT"]}, {"name": "Cluster 02", "set": ["ACAGAAACAGATCCAT"]}, {"name": "Cluster 03", "set": ["TGCCGAGTCAGACTGT", "ATCAGGTTCAAGCCGC"]}, {"name": "Cluster 04", "set": ["AATTCCTAGCATACTC", "ATTCCCGAGTCACTCA", "CACCGTTCAACAAAGT"]}, {"name": "Cluster 08", "set": ["AGACCATAGTTCGCAT", "CGCATAAAGCGAGTAC", "GCATTAGCAAGCTACT", "AGCGCCATCCGGCAAC", "TCATTACAGGCGATAC"]}, {"name": "Cluster 09", "set": ["TCAGGGCCATGGGATG", "ACTTATCGTCCAATCA", "AAGCCATCATCCGAAT", "CCGAACGGTCTGTCCT", "TCACAAGGTGTTCGAT", "ATTACCTCAACACGTT", "ACCAAACGTGTGTGTT", "ATTCAGGGTCAGACTT"]}]}, {"name": "Cell Type Annotations (flat)", "children": [{"name": "B cell", "set": ["AAGCCATCATCCGAAT", "TGCCGAGTCAGACTGT", "AGGGTCCCACATACGT", "CACGTTCCAGAACCGA", "CCGAACGGTCTGTCCT", "ATCAGGTTCAAGCCGC", "TCAAGTGCATCGAACT", "AGCGCCATCCGGCAAC", "TCACAAGGTGTTCGAT", "GGTCACGGTGGGATTG", "TAGACTGTCCTCACGT", "GCCCGAACAAAGCAAT", "ACCAAACGTGTGTGTT"]}, {"name": "CD14-positive monocyte", "set": ["AATTCCTAGCATACTC", "ATTCCCGAGTCACTCA", "CGCATAAAGCGAGTAC", "CACCGTTCAACAAAGT", "TCATTACAGGCGATAC"]}, {"name": "CD1c-positive myeloid dendritic cell", "set": ["AGACCATAGTTCGCAT"]}, {"name": "alpha-beta T cell", "set": ["ACAGAAACAGATCCAT"]}, {"name": "hematopoietic stem cell", "set": ["TCAGGGCCATGGGATG", "ACTTATCGTCCAATCA", "GCATTAGCAAGCTACT"]}, {"name": "plasmablast", "set": ["ATTACCTCAACACGTT", "ATTCAGGGTCAGACTT"]}]}, {"name": "Cell Type Annotations (hierarchical)", "children": [{"name": "nucleate cell", "children": [{"name": "single nucleate cell", "children": [{"name": "mononuclear cell", "children": [{"name": "lymphocyte", "children": [{"name": "lymphocyte of B lineage", "children": [{"name": "B cell", "children": [{"name": "any", "set": ["AAGCCATCATCCGAAT", "TGCCGAGTCAGACTGT", "AGGGTCCCACATACGT", "CACGTTCCAGAACCGA", "CCGAACGGTCTGTCCT", "ATCAGGTTCAAGCCGC", "TCAAGTGCATCGAACT", "AGCGCCATCCGGCAAC", "TCACAAGGTGTTCGAT", "GGTCACGGTGGGATTG", "TAGACTGTCCTCACGT", "GCCCGAACAAAGCAAT", "ACCAAACGTGTGTGTT"]}, {"name": "B cell, CD19-positive", "children": [{"name": "mature B cell", "children": [{"name": "plasmablast", "children": [{"name": "any", "set": ["ATTACCTCAACACGTT", "ATTCAGGGTCAGACTT"]}]}]}]}]}]}, {"name": "T cell", "children": [{"name": "alpha-beta T cell", "children": [{"name": "any", "set": ["ACAGAAACAGATCCAT"]}]}]}]}]}]}]}, {"name": "motile cell", "children": [{"name": "leukocyte", "children": [{"name": "myeloid leukocyte", "children": [{"name": "monocyte", "children": [{"name": "CD14-positive monocyte", "children": [{"name": "any", "set": ["AATTCCTAGCATACTC", "ATTCCCGAGTCACTCA", "CGCATAAAGCGAGTAC", "CACCGTTCAACAAAGT", "TCATTACAGGCGATAC"]}]}]}, {"name": "myeloid dendritic cell", "children": [{"name": "CD1c-positive myeloid dendritic cell", "children": [{"name": "any", "set": ["AGACCATAGTTCGCAT"]}]}]}]}]}]}, {"name": "precursor cell", "children": [{"name": "stem cell", "children": [{"name": "somatic stem cell", "children": [{"name": "hematopoietic stem cell", "children": [{"name": "any", "set": ["TCAGGGCCATGGGATG", "ACTTATCGTCCAATCA", "GCATTAGCAAGCTACT"]}]}]}]}]}]}]}
+{
+ "datatype": "cell",
+ "version": "0.1.2",
+ "tree": [
+  {
+   "name": "Leiden Clustering",
+   "children": [
+    {
+     "name": "Cluster 01",
+     "set": [
+      "AGGGTCCCACATACGT",
+      "CACGTTCCAGAACCGA",
+      "TCAAGTGCATCGAACT",
+      "GGTCACGGTGGGATTG",
+      "TAGACTGTCCTCACGT",
+      "GCCCGAACAAAGCAAT"
+     ]
+    },
+    {
+     "name": "Cluster 02",
+     "set": [
+      "ACAGAAACAGATCCAT"
+     ]
+    },
+    {
+     "name": "Cluster 03",
+     "set": [
+      "TGCCGAGTCAGACTGT",
+      "ATCAGGTTCAAGCCGC"
+     ]
+    },
+    {
+     "name": "Cluster 04",
+     "set": [
+      "AATTCCTAGCATACTC",
+      "ATTCCCGAGTCACTCA",
+      "CACCGTTCAACAAAGT"
+     ]
+    },
+    {
+     "name": "Cluster 08",
+     "set": [
+      "AGACCATAGTTCGCAT",
+      "CGCATAAAGCGAGTAC",
+      "GCATTAGCAAGCTACT",
+      "AGCGCCATCCGGCAAC",
+      "TCATTACAGGCGATAC"
+     ]
+    },
+    {
+     "name": "Cluster 09",
+     "set": [
+      "TCAGGGCCATGGGATG",
+      "ACTTATCGTCCAATCA",
+      "AAGCCATCATCCGAAT",
+      "CCGAACGGTCTGTCCT",
+      "TCACAAGGTGTTCGAT",
+      "ATTACCTCAACACGTT",
+      "ACCAAACGTGTGTGTT",
+      "ATTCAGGGTCAGACTT"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cell Type Annotations (flat)",
+   "children": [
+    {
+     "name": "B cell",
+     "set": [
+      "AAGCCATCATCCGAAT",
+      "TGCCGAGTCAGACTGT",
+      "AGGGTCCCACATACGT",
+      "CACGTTCCAGAACCGA",
+      "CCGAACGGTCTGTCCT",
+      "ATCAGGTTCAAGCCGC",
+      "TCAAGTGCATCGAACT",
+      "AGCGCCATCCGGCAAC",
+      "TCACAAGGTGTTCGAT",
+      "GGTCACGGTGGGATTG",
+      "TAGACTGTCCTCACGT",
+      "GCCCGAACAAAGCAAT",
+      "ACCAAACGTGTGTGTT"
+     ]
+    },
+    {
+     "name": "CD14-positive monocyte",
+     "set": [
+      "AATTCCTAGCATACTC",
+      "ATTCCCGAGTCACTCA",
+      "CGCATAAAGCGAGTAC",
+      "CACCGTTCAACAAAGT",
+      "TCATTACAGGCGATAC"
+     ]
+    },
+    {
+     "name": "CD1c-positive myeloid dendritic cell",
+     "set": [
+      "AGACCATAGTTCGCAT"
+     ]
+    },
+    {
+     "name": "alpha-beta T cell",
+     "set": [
+      "ACAGAAACAGATCCAT"
+     ]
+    },
+    {
+     "name": "hematopoietic stem cell",
+     "set": [
+      "TCAGGGCCATGGGATG",
+      "ACTTATCGTCCAATCA",
+      "GCATTAGCAAGCTACT"
+     ]
+    },
+    {
+     "name": "plasmablast",
+     "set": [
+      "ATTACCTCAACACGTT",
+      "ATTCAGGGTCAGACTT"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cell Type Annotations (hierarchical)",
+   "children": [
+    {
+     "name": "nucleate cell",
+     "children": [
+      {
+       "name": "single nucleate cell",
+       "children": [
+        {
+         "name": "mononuclear cell",
+         "children": [
+          {
+           "name": "lymphocyte",
+           "children": [
+            {
+             "name": "lymphocyte of B lineage",
+             "children": [
+              {
+               "name": "B cell",
+               "children": [
+                {
+                 "name": "any",
+                 "set": [
+                  "AAGCCATCATCCGAAT",
+                  "TGCCGAGTCAGACTGT",
+                  "AGGGTCCCACATACGT",
+                  "CACGTTCCAGAACCGA",
+                  "CCGAACGGTCTGTCCT",
+                  "ATCAGGTTCAAGCCGC",
+                  "TCAAGTGCATCGAACT",
+                  "AGCGCCATCCGGCAAC",
+                  "TCACAAGGTGTTCGAT",
+                  "GGTCACGGTGGGATTG",
+                  "TAGACTGTCCTCACGT",
+                  "GCCCGAACAAAGCAAT",
+                  "ACCAAACGTGTGTGTT"
+                 ]
+                },
+                {
+                 "name": "B cell, CD19-positive",
+                 "children": [
+                  {
+                   "name": "mature B cell",
+                   "children": [
+                    {
+                     "name": "plasmablast",
+                     "children": [
+                      {
+                       "name": "any",
+                       "set": [
+                        "ATTACCTCAACACGTT",
+                        "ATTCAGGGTCAGACTT"
+                       ]
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            },
+            {
+             "name": "T cell",
+             "children": [
+              {
+               "name": "alpha-beta T cell",
+               "children": [
+                {
+                 "name": "any",
+                 "set": [
+                  "ACAGAAACAGATCCAT"
+                 ]
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "motile cell",
+     "children": [
+      {
+       "name": "leukocyte",
+       "children": [
+        {
+         "name": "myeloid leukocyte",
+         "children": [
+          {
+           "name": "monocyte",
+           "children": [
+            {
+             "name": "CD14-positive monocyte",
+             "children": [
+              {
+               "name": "any",
+               "set": [
+                "AATTCCTAGCATACTC",
+                "ATTCCCGAGTCACTCA",
+                "CGCATAAAGCGAGTAC",
+                "CACCGTTCAACAAAGT",
+                "TCATTACAGGCGATAC"
+               ]
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "myeloid dendritic cell",
+           "children": [
+            {
+             "name": "CD1c-positive myeloid dendritic cell",
+             "children": [
+              {
+               "name": "any",
+               "set": [
+                "AGACCATAGTTCGCAT"
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "precursor cell",
+     "children": [
+      {
+       "name": "stem cell",
+       "children": [
+        {
+         "name": "somatic stem cell",
+         "children": [
+          {
+           "name": "hematopoietic stem cell",
+           "children": [
+            {
+             "name": "any",
+             "set": [
+              "TCAGGGCCATGGGATG",
+              "ACTTATCGTCCAATCA",
+              "GCATTAGCAAGCTACT"
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
