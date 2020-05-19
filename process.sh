@@ -15,7 +15,7 @@ main() {
     INPUT="$FILES/input"
     OUTPUT="$FILES/output"
 
-    for DATASET in cytokit linnarsson dries wang cao spraggins; do
+    for DATASET in cytokit linnarsson dries wang cao spraggins uf_cells_spleen_0510; do
         INPUT_SET="$INPUT/$DATASET"
         OUTPUT_SET="$OUTPUT/$DATASET"
         [ -d "$INPUT_SET" ] || mkdir -p "$INPUT_SET"
