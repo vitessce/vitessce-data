@@ -23,6 +23,8 @@ def load_cl_obo_graph(cl_obo_file):
 
 
 def init_tree():
+    # Construct the tree, according to the following schema:
+    # https://github.com/hubmapconsortium/vitessce/blob/d5f63aa1d08aa61f6b20f6ad6bbfba5fceb6b5ef/src/schemas/cell_sets.schema.json
     return {
         "datatype": "cell",
         "version": "0.1.2",
