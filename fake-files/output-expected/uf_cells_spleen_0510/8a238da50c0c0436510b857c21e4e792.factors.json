@@ -37,11 +37,11 @@
  },
  "Cell Type Annotation": {
   "map": [
-   "Cluster 00",
-   "Cluster 04",
-   "Cluster 05",
-   "Cluster 12",
-   "Cluster 14"
+   "B cell",
+   "CD14-positive monocyte",
+   "hematopoietic stem cell",
+   "plasma cell",
+   "splenic endothelial cell"
   ],
   "cells": {
    "CAACGATTCGGTCTAA": 1,

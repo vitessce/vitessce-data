@@ -38,12 +38,12 @@
  },
  "Cell Type Annotation": {
   "map": [
-   "Cluster 01",
-   "Cluster 02",
-   "Cluster 03",
-   "Cluster 04",
-   "Cluster 08",
-   "Cluster 09"
+   "B cell",
+   "CD14-positive monocyte",
+   "CD1c-positive myeloid dendritic cell",
+   "alpha-beta T cell",
+   "hematopoietic stem cell",
+   "plasmablast"
   ],
   "cells": {
    "AATTCCTAGCATACTC": 1,

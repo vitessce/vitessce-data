@@ -36,10 +36,12 @@
  },
  "Cell Type Annotation": {
   "map": [
-   "Cluster 05",
-   "Cluster 07",
-   "Cluster 08",
-   "Cluster 09"
+   "B cell",
+   "CD14-positive monocyte",
+   "CD141-positive myeloid dendritic cell",
+   "hematopoietic stem cell",
+   "plasma cell",
+   "plasmablast"
   ],
   "cells": {
    "CCTAAGACAGAACTCT": 5,
