@@ -31,7 +31,7 @@ def generate_json_files(
     cells_df_items = df.T.to_dict().items()
 
     # Generate .cells.json
-    cells_json = {
+    cells = {
         k: {
             "mappings": {"UMAP": [v['umap_x'], v['umap_y']]},
             "factors": {
@@ -42,45 +42,40 @@ def generate_json_files(
         for (k, v) in cells_df_items
     }
     with open(output_cells_json_file, 'w') as f:
-        json.dump(cells_json, f, indent=1)
+        json.dump(cells, f, indent=1)
 
     # Generate .factors.json
-    leiden_clusters = sorted(df['leiden'].unique().tolist())
-    cell_types = sorted(df[COLUMNS.ANNOTATION.value].unique().tolist())
-    factors_json = {
-        "Leiden Clustering": {
-            "map": leiden_clusters,
+    def get_factors(col_name, nice_name):
+        unique_values = sorted(df[col_name].unique().tolist())
+        return {
+            "map": unique_values,
             "cells": {
-                k: leiden_clusters.index(v['leiden'])
-                for (k, v) in cells_df_items
-            }
-        },
-        "Cell Type Annotation": {
-            "map": leiden_clusters,
-            "cells": {
-                k: cell_types.index(v[COLUMNS.ANNOTATION.value])
+                k: unique_values.index(v[col_name])
                 for (k, v) in cells_df_items
             }
         }
+    factors = {
+        "Leiden Clustering": get_factors('leiden'),
+        "Cell Type Annotation": get_factors(COLUMNS.ANNOTATION.value)
     }
     with open(output_factors_json_file, 'w') as f:
-        json.dump(factors_json, f, indent=1)
+        json.dump(factors, f, indent=1)
 
     # Generate .flat.cell_sets.json
     df = df.reset_index()
-    flat_cell_sets_json = generate_flat_cell_sets(df)
+    flat_cell_sets = generate_flat_cell_sets(df)
 
     # Generate .hierarchical.cell_sets.json
-    hierarchical_cell_sets_json = generate_hierarchical_cell_sets(
+    hierarchical_cell_sets = generate_hierarchical_cell_sets(
         df,
         input_cl_obo_file
     )
 
-    cell_sets_json = flat_cell_sets_json
-    cell_sets_json["tree"].append(hierarchical_cell_sets_json["tree"][0])
+    cell_sets = flat_cell_sets
+    cell_sets["tree"].append(hierarchical_cell_sets["tree"][0])
 
     with open(output_cell_sets_json_file, 'w') as f:
-        json.dump(cell_sets_json, f, indent=1)
+        json.dump(cell_sets, f, indent=1)
 
 
 if __name__ == '__main__':
