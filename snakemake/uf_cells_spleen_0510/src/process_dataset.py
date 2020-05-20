@@ -45,7 +45,7 @@ def generate_json_files(
         json.dump(cells, f, indent=1)
 
     # Generate .factors.json
-    def get_factors(col_name, nice_name):
+    def get_factors(col_name):
         unique_values = sorted(df[col_name].unique().tolist())
         return {
             "map": unique_values,
