@@ -1,4 +1,3 @@
-
 language: python
 python:
   - "3.6"
@@ -12,7 +11,7 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-  
+
   - conda env create -f environment.yml
   - source activate vitessce-data
 script:
