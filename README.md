@@ -14,19 +14,16 @@ For example: The mRNA HDF5 is 30M, but as JSON it is still only 37M.
 
 ## Install
 
-`vitessce-data` requires Python 3. First, set up a clean environment. If you are using conda:
-```
-conda create python=3.6 -n vitessce-data
-# Confirm install, then:
-source activate vitessce-data
-```
-Then install dependencies with `pip`:
-```
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-```
+Set up the python environment using conda:
 
+```sh
+conda env create -f environment.yml
+```
 ## Develop and run
+
+```sh
+conda activate vitessce-data
+```
 
 - `test.sh` exercises all the scripts, using the fixtures in `fake-files/`,
 and errors if the output is not what is expected.
@@ -35,3 +32,27 @@ processes them, caches the output in `big-files/output`, and pushes to S3.
 
 `process.sh` only performs the work necessary. To regenerate just a portion of the data,
 delete the files in `big-files/output` that need to be replaced.
+
+### Configure AWS and Google Cloud CLIs
+
+Install `aws` CLI and add to your PATH ([reference](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html))
+
+Install `gcloud` and `gsutil` and add to your PATH ([reference](https://cloud.google.com/storage/docs/gsutil_install#linux))
+
+Set AWS environment variables ([reference](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html))
+
+```sh
+export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+export AWS_DEFAULT_REGION=us-east-1
+```
+
+Log in to Google Cloud
+
+```sh
+gcloud auth login
+```
+
+### Creating a new release
+
+Update the contents of `cloud_target.txt` to bump the version number.
