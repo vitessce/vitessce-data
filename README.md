@@ -14,7 +14,7 @@ For example: The mRNA HDF5 is 30M, but as JSON it is still only 37M.
 
 ## Install
 
-Set up the python environment using conda:
+Set up the `vitessce-data` environment using conda:
 
 ```sh
 conda env create -f environment.yml
@@ -55,4 +55,4 @@ gcloud auth login
 
 ### Creating a new release
 
-Update the contents of `cloud_target.txt` to bump the version number.
+Update the contents of `cloud_target.txt` to bump the version number. Then update the version where it is referenced in test fixtures in the `fake-files/` directory.
