@@ -14,19 +14,16 @@ For example: The mRNA HDF5 is 30M, but as JSON it is still only 37M.
 
 ## Install
 
-`vitessce-data` requires Python 3. First, set up a clean environment. If you are using conda:
-```
-conda create python=3.6 -n vitessce-data
-# Confirm install, then:
-source activate vitessce-data
-```
-Then install dependencies with `pip`:
-```
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-```
+Set up the `vitessce-data` environment using conda:
 
+```sh
+conda env create -f environment.yml
+```
 ## Develop and run
+
+```sh
+conda activate vitessce-data
+```
 
 - `test.sh` exercises all the scripts, using the fixtures in `fake-files/`,
 and errors if the output is not what is expected.
@@ -35,3 +32,18 @@ processes them, caches the output in `big-files/output`, and pushes to S3.
 
 `process.sh` only performs the work necessary. To regenerate just a portion of the data,
 delete the files in `big-files/output` that need to be replaced.
+
+### Configure AWS and Google Cloud CLIs
+
+Install `aws` CLI and add to your PATH ([reference](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)).
+
+Install `gcloud` and `gsutil` and add to your PATH ([reference](https://cloud.google.com/storage/docs/gsutil_install#linux)).
+
+Configure the AWS CLI by setting AWS environment variables ([reference](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)) or running `aws configure`  ([reference](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)).
+
+Configure the Google Cloud CLI by running `gcloud auth login` ([reference](https://cloud.google.com/sdk/gcloud/reference/auth/login)).
+
+
+### Creating a new release
+
+Update the contents of `cloud_target.txt` to bump the version number. Then update the version where it is referenced in test fixtures in the `fake-files/` directory.
