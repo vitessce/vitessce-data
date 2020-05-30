@@ -35,23 +35,15 @@ delete the files in `big-files/output` that need to be replaced.
 
 ### Configure AWS and Google Cloud CLIs
 
-Install `aws` CLI and add to your PATH ([reference](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html))
+Install `aws` CLI and add to your PATH ([reference](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)).
 
-Install `gcloud` and `gsutil` and add to your PATH ([reference](https://cloud.google.com/storage/docs/gsutil_install#linux))
+Install `gcloud` and `gsutil` and add to your PATH ([reference](https://cloud.google.com/storage/docs/gsutil_install#linux)).
 
-Set AWS environment variables ([reference](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html))
+Configure the AWS CLI by setting AWS environment variables ([reference](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)) or running `aws configure`  ([reference](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)).
 
-```sh
-export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-export AWS_DEFAULT_REGION=us-east-1
-```
+Configure the Google Cloud CLI by running `gcloud auth login` ([reference](https://cloud.google.com/sdk/gcloud/reference/auth/login)).
 
-Log in to Google Cloud
 
-```sh
-gcloud auth login
-```
 
 ### Creating a new release
 
