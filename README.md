@@ -44,7 +44,6 @@ Configure the AWS CLI by setting AWS environment variables ([reference](https://
 Configure the Google Cloud CLI by running `gcloud auth login` ([reference](https://cloud.google.com/sdk/gcloud/reference/auth/login)).
 
 
-
 ### Creating a new release
 
 Update the contents of `cloud_target.txt` to bump the version number. Then update the version where it is referenced in test fixtures in the `fake-files/` directory.
