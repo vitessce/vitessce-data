@@ -48,9 +48,11 @@ if __name__ == "__main__":
     parser.add_argument(
         '--render_layers',
         required=True,
-        help="List of names of iamges in the order to be rendered",
+        help="List of names of images in the order to be rendered.",
     )
     args = parser.parse_args()
     img_dir = _dir_path(args.image_metadata_dir)
     image_metadata = gather_image_metadata(img_dir)
-    write_metadata(args.raster_json, image_metadata, args.render_layers.split(','))
+    write_metadata(
+        args.raster_json, image_metadata, args.render_layers.split(',')
+    )
