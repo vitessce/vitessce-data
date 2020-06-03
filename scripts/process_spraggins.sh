@@ -78,7 +78,8 @@ main() {
 
     CMD="$BASE/python/write_raster_metadata.py
         --raster_json $RASTER_JSON
-        --image_metadata_dir $OUTPUT/"
+        --image_metadata_dir $OUTPUT/
+        --render_layers '$MXIF_IMAGE_NAME,$IMS_IMAGE_NAME'"
     echo "Running: $CMD"
     eval $CMD
 

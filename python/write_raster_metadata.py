@@ -21,9 +21,10 @@ def gather_image_metadata(image_dir):
     return images
 
 
-def write_metadata(json_out, image_metadata):
+def write_metadata(json_out, image_metadata, render_layers):
     raster_json = {
         'schema_version': '0.0.1',
+        'render_layers': render_layers,
         'images': image_metadata
     }
     json.dump(raster_json, json_out, indent=2)
@@ -44,7 +45,12 @@ if __name__ == "__main__":
         required=True,
         help="Path to directory with image metadata",
     )
+    parser.add_argument(
+        '--render_layers',
+        required=True,
+        help="List of names of iamges in the order to be rendered",
+    )
     args = parser.parse_args()
     img_dir = _dir_path(args.image_metadata_dir)
     image_metadata = gather_image_metadata(img_dir)
-    write_metadata(args.raster_json, image_metadata)
+    write_metadata(args.raster_json, image_metadata, args.render_layers.split(','))
