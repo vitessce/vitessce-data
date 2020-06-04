@@ -33,14 +33,14 @@ main() {
 
     if [ ! -e "$TSV_TSNE_IN" ]
     then
-        wget "https://cells.ucsc.edu/mouse-organogenesis/tSNE.coords.tsv.gz" -O "$TSV_TSNE_IN.gz"
+        wget "https://cells.ucsc.edu/mouse-organogenesis/tSNE.coords.tsv.gz" -O "$TSV_TSNE_IN.gz" --no-check-certificate
         gunzip -df "$TSV_TSNE_IN"
     fi
 
     META_TSV_IN="$INPUT/cao.meta.tsv"
     if [ ! -e "$META_TSV_IN" ]
     then
-        wget "https://cells.ucsc.edu/mouse-organogenesis/meta.tsv" -O "$META_TSV_IN"
+        wget "https://cells.ucsc.edu/mouse-organogenesis/meta.tsv" -O "$META_TSV_IN" --no-check-certificate
     fi
 
     CELLS_OUT="$OUTPUT/cao.cells.json"
