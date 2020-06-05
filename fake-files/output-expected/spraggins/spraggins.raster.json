@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.0.2",
-  "render_layers": [
+  "schemaVersion": "0.0.2",
+  "renderLayers": [
     "Spraggins MxIF", 
     "Spraggins IMS"
   ],
@@ -32,7 +32,7 @@
             "values": null
           }
         ],
-        "is_pyramid": false,
+        "isPyramid": false,
         "transform": {
           "translate": {
             "y": 0,
@@ -68,7 +68,7 @@
             "values": null
           }
         ],
-        "is_pyramid": false,
+        "isPyramid": false,
         "transform": {
           "scale": 20.0,
           "translate": {

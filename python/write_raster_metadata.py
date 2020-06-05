@@ -23,8 +23,8 @@ def gather_image_metadata(image_dir):
 
 def write_metadata(json_out, image_metadata, render_layers):
     raster_json = {
-        'schema_version': '0.0.2',
-        'render_layers': render_layers,
+        'schemaVersion': '0.0.2',
+        'renderLayers': render_layers,
         'images': image_metadata
     }
     json.dump(raster_json, json_out, indent=2)

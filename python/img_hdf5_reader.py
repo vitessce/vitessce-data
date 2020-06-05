@@ -144,7 +144,7 @@ def write_raster_json(
     transform={"translate": {"y": 0, "x": 0}, "scale": 1}
 ):
     raster_json = {
-        "schema_version": "0.0.1",
+        "schemaVersion": "0.0.2",
         "images": [
             {
                 "name": name,
@@ -152,7 +152,7 @@ def write_raster_json(
                 "type": "zarr",
                 "metadata": {
                     "dimensions": create_dimensions(channel_names),
-                    "is_pyramid": is_pyramid,
+                    "isPyramid": is_pyramid,
                     "transform": transform,
                 },
             }

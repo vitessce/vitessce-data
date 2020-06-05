@@ -181,7 +181,7 @@ def write_raster_json(json_file, url, name, transform, dimensions):
         "type": "zarr",
         "metadata": {
             "dimensions": dimensions,
-            "is_pyramid": False,
+            "isPyramid": False,
             "transform": transform,
         },
     }
