@@ -82,7 +82,7 @@ def write_raster_json(
         "type": "zarr",
         "metadata": {
             "dimensions": dimensions,
-            "is_pyramid": is_pyramid,
+            "isPyramid": is_pyramid,
             "transform": transform,
         },
     }

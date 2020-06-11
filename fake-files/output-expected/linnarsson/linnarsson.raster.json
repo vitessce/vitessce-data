@@ -1,9 +1,9 @@
 {
-  "schema_version": "0.0.1",
+  "schemaVersion": "0.0.2",
   "images": [
     {
       "name": "Linnarsson",
-      "url": "https://vitessce-data.storage.googleapis.com/0.0.26/master_release/linnarsson/linnarsson.images.zarr",
+      "url": "https://vitessce-data.storage.googleapis.com/0.0.27/master_release/linnarsson/linnarsson.images.zarr",
       "type": "zarr",
       "metadata": {
         "dimensions": [
@@ -26,7 +26,7 @@
             "values": null
           }
         ],
-        "is_pyramid": true,
+        "isPyramid": true,
         "transform": {
           "translate": {
             "y": 0,
