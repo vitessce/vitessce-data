@@ -184,7 +184,7 @@ if __name__ == '__main__':
         '--cells_file', type=argparse.FileType('x'),
         help='Write the cell data to this file.')
     parser.add_argument(
-        '--cell_sets_file', type=argparse.FileType('x'),
+        '--cell-sets_file', type=argparse.FileType('x'),
         help='Write the cell sets data to this file.')
     parser.add_argument(
         '--factors_file', type=argparse.FileType('x'),
