@@ -30,7 +30,7 @@ process_linnarson_cells() {
 
     CLI_ARGS="--integers --loom $LOOM_IN --pkl $PKL_IN"
     add_CLI_ARGS 'cells' 'linnarsson'
-    add_CLI_ARGS 'cellSets' 'linnarsson' 'cell_sets'
+    add_CLI_ARGS 'cell-sets' 'linnarsson'
     add_CLI_ARGS 'clusters' 'linnarsson'
     add_CLI_ARGS 'genes' 'linnarsson'
     add_CLI_ARGS 'neighborhoods' 'linnarsson'

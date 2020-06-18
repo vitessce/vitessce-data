@@ -241,7 +241,7 @@ def get_cell_sets(clusters, lookup):
         cluster_dict.update(subcluster)
 
     # Use the `hierarchy` dict to fill in an object
-    # conforming to the `cellSets.json` schema.
+    # conforming to the `cell-sets` schema.
     cluster_nodes = []
     for cluster_name in sorted(hierarchy.keys()):
         cluster_dict = hierarchy[cluster_name]
@@ -343,7 +343,7 @@ if __name__ == '__main__':
         '--cells_file', type=argparse.FileType('x'),
         help='Write the cleaned cell data to this file.')
     parser.add_argument(
-        '--cell_sets_file', type=argparse.FileType('x'),
+        '--cell-sets_file', type=argparse.FileType('x'),
         help='Write the cleaned cell sets data to this file.')
     parser.add_argument(
         '--genes_file', type=argparse.FileType('x'),
