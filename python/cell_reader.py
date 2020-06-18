@@ -241,7 +241,7 @@ def get_cell_sets(clusters, lookup):
         cluster_dict.update(subcluster)
 
     # Use the `hierarchy` dict to fill in an object
-    # conforming to the `cell-sets` schema.
+    # conforming to the `cell-sets.json` schema.
     cluster_nodes = []
     for cluster_name in sorted(hierarchy.keys()):
         cluster_dict = hierarchy[cluster_name]
