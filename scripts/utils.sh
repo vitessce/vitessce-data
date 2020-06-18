@@ -8,12 +8,19 @@ add_CLI_ARGS() {
     FILE_TYPE=$1
     DATA_TITLE=$2
 
+    if [ $# -eq 3 ]
+    then
+        CLI_PREFIX=$3
+    else
+        CLI_PREFIX=$FILE_TYPE
+    fi
+
     FILE="$OUTPUT/$DATA_TITLE.$FILE_TYPE.json"
     if [ -e "$FILE" ]
     then
         echo "$FILE_TYPE output already exists: $FILE"
     else
-        CLI_ARGS="$CLI_ARGS --${FILE_TYPE}_file $FILE"
+        CLI_ARGS="$CLI_ARGS --${CLI_PREFIX}_file $FILE"
     fi
 }
 
