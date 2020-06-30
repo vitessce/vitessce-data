@@ -47,7 +47,7 @@ def generate_json_files(
     with open(output_cells_json_file, 'w') as f:
         json.dump(cells, f, indent=1)
 
-    # Generate .factors.json
+    # Generate data for .factors.json
     def get_factors(col_name):
         unique_values = sorted(df[col_name].unique().tolist())
         return {
@@ -67,7 +67,7 @@ def generate_json_files(
     # Remove annotations with NaN prediction scores
     df = df.dropna(subset=[COLUMNS.PREDICTION_SCORE.value], axis=0)
 
-    # Generate .cell_sets.json
+    # Generate data for .cell_sets.json
     df = df.reset_index()
 
     leiden_cell_sets = generate_leiden_cluster_cell_sets(df)

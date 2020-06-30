@@ -6,7 +6,7 @@ def load_cl_obo_graph(cl_obo_file):
     graph = obonet.read_obo(cl_obo_file)
 
     # Make sure there are no cycles.
-    assert(networkx.is_directed_acyclic_graph(graph))
+    assert networkx.is_directed_acyclic_graph(graph)
 
     id_to_name = {
         id_: data.get('name')
@@ -32,7 +32,7 @@ def init_cell_sets_tree():
 
 # Merge multiple cell sets trees.
 def merge_cell_sets_trees(*args):
-    assert(len(args) > 1)
+    assert len(args) > 1
 
     result = args[0]
     for arg in args[1:]:

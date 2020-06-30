@@ -1,16 +1,16 @@
-from os.path import join
+from pathlib import Path
 
 configfile: 'config.yml'
 
-assert('INPUT' in config)
-assert('OUTPUT' in config)
-assert('CLOUD_TARGET' in config)
-assert('annotations_spleen_0510' in config)
+assert 'INPUT' in config
+assert 'OUTPUT' in config
+assert 'CLOUD_TARGET' in config
+assert 'annotations_spleen_0510' in config
 
 # Directory / file constants
-SRC_DIR = "src"
-RAW_DIR = config['INPUT']
-PROCESSED_DIR = config['OUTPUT']
+SRC_DIR = Path(".") / "src"
+RAW_DIR = Path(config['INPUT'])
+PROCESSED_DIR = Path(config['OUTPUT'])
 
 # Cloud constants
 CLOUD_TARGET = config['CLOUD_TARGET']
@@ -26,21 +26,21 @@ GLOBUS_IDS = config['annotations_spleen_0510']
 # Rules
 rule all:
     input:
-        expand(join(PROCESSED_DIR, "{globus_id}.cells.json"), globus_id=GLOBUS_IDS),
-        expand(join(PROCESSED_DIR, "{globus_id}.factors.json"), globus_id=GLOBUS_IDS),
-        expand(join(PROCESSED_DIR, "{globus_id}.cell_sets.json"), globus_id=GLOBUS_IDS),
+        expand(str(PROCESSED_DIR / "{globus_id}.cells.json"), globus_id=GLOBUS_IDS),
+        expand(str(PROCESSED_DIR / "{globus_id}.factors.json"), globus_id=GLOBUS_IDS),
+        expand(str(PROCESSED_DIR / "{globus_id}.cell_sets.json"), globus_id=GLOBUS_IDS),
 
 rule process_dataset:
     input:
-        cells_arrow=join(RAW_DIR, "uf_processed", "{globus_id}", "cluster_marker_genes.arrow"),
-        annotations_csv=join(RAW_DIR, "annotations_spleen_0510", "{globus_id}.csv"),
-        cl_obo=join(RAW_DIR, "cl.obo")
+        cells_arrow=(RAW_DIR / "uf-processed" / "{globus_id}" / "cluster_marker_genes.arrow"),
+        annotations_csv=(RAW_DIR / "annotations_spleen_0510" / "{globus_id}.csv"),
+        cl_obo=(RAW_DIR / "cl.obo")
     output:
-        cells_json=join(PROCESSED_DIR, "{globus_id}.cells.json"),
-        factors_json=join(PROCESSED_DIR, "{globus_id}.factors.json"),
-        cell_sets_json=join(PROCESSED_DIR, "{globus_id}.cell_sets.json")
+        cells_json=(PROCESSED_DIR / "{globus_id}.cells.json"),
+        factors_json=(PROCESSED_DIR / "{globus_id}.factors.json"),
+        cell_sets_json=(PROCESSED_DIR / "{globus_id}.cell_sets.json")
     params:
-        script=join(SRC_DIR, "process_dataset.py")
+        script=(SRC_DIR / "process_dataset.py")
     shell:
         '''
         python {params.script} \
@@ -54,11 +54,11 @@ rule process_dataset:
 
 rule split_annotation_csv:
     input:
-        join(RAW_DIR, "annotations_spleen_0510.csv")
+        (RAW_DIR / "annotations_spleen_0510.csv")
     output:
-        join(RAW_DIR, "annotations_spleen_0510", "{globus_id}.csv")
+        (RAW_DIR / "annotations_spleen_0510" / "{globus_id}.csv")
     params:
-        script=join(SRC_DIR, "split_annotation_csv.py")
+        script=(SRC_DIR / "split_annotation_csv.py")
     shell:
         '''
         python {params.script} \
@@ -69,11 +69,11 @@ rule split_annotation_csv:
 
 rule convert_h5ad_to_arrow:
     input:
-        join(RAW_DIR, "uf_processed", "{globus_id}", "cluster_marker_genes.h5ad")
+        (RAW_DIR / "uf-processed" / "{globus_id}" / "cluster_marker_genes.h5ad")
     output:
-        join(RAW_DIR, "uf_processed", "{globus_id}", "cluster_marker_genes.arrow")
+        (RAW_DIR / "uf-processed" / "{globus_id}" / "cluster_marker_genes.arrow")
     params:
-        script=join(SRC_DIR, "convert_h5ad_to_arrow.py")
+        script=(SRC_DIR / "convert_h5ad_to_arrow.py")
     shell:
         '''
         python {params.script} \
@@ -84,7 +84,7 @@ rule convert_h5ad_to_arrow:
 # Download CSV file containing cell type annotations.
 rule download_cell_annotations_data:
     output:
-        join(RAW_DIR, "annotations_spleen_0510.csv")
+        (RAW_DIR / "annotations_spleen_0510.csv")
     params:
         file_url=CELL_ANNOTATIONS_URL
     shell:
@@ -95,23 +95,21 @@ rule download_cell_annotations_data:
 # Extract contents of the TAR file.
 rule untar_cells_data:
     input:
-        join(RAW_DIR, "uf-processed.tar.xz")
+        (RAW_DIR / "uf-processed.tar.xz")
     output:
         expand(
-            join(RAW_DIR, "uf_processed", "{globus_id}", "cluster_marker_genes.h5ad"),
+            str(RAW_DIR / "uf-processed" / "{globus_id}" / "cluster_marker_genes.h5ad"),
             globus_id=GLOBUS_IDS
         )
     shell:
         '''
-        tar -xvzf {input} -C {RAW_DIR} \
-        && rm -r {RAW_DIR}/uf_processed \
-        && mv {RAW_DIR}/uf-processed {RAW_DIR}/uf_processed
+        tar -xvzf {input} -C {RAW_DIR}
         '''
 
 # Download TAR file containing UMAP clustering data.
 rule download_cells_data:
     output:
-        join(RAW_DIR, "uf-processed.tar.xz")
+        (RAW_DIR / "uf-processed.tar.xz")
     params:
         file_url=CELLS_URL
     shell:
@@ -121,7 +119,7 @@ rule download_cells_data:
 
 rule download_cl_obo:
     output:
-        join(RAW_DIR, "cl.obo")
+        (RAW_DIR / "cl.obo")
     params:
         file_url=CL_OBO_URL
     shell:

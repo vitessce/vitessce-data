@@ -83,7 +83,7 @@ def generate_cell_type_cell_sets(df, cl_obo_file):
 
         # Make sure the cell type has an ancestor
         # with the 'cell' root ID.
-        assert(CL_ROOT_ID in ancestor_term_set)
+        assert CL_ROOT_ID in ancestor_term_set
 
         # Get the parents of the current node.
         node_parents = list(graph.out_edges(node_id, keys=True))
@@ -146,7 +146,7 @@ def generate_cell_type_cell_sets(df, cl_obo_file):
     # e.g. 'cell', 'native cell', ...
     ancestor_list_lens = [len(x[0]) for x in ancestors_and_sets]
     min_ancestor_list_len = min(ancestor_list_lens)
-    assert(min_ancestor_list_len >= 1)
+    assert min_ancestor_list_len >= 1
     for level in range(min_ancestor_list_len - 1):
         unique_level_cell_types = set()
         for ancestors, cell_set in ancestors_and_sets:
