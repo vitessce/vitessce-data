@@ -179,32 +179,6 @@ def generate_cell_type_cell_sets(df, cl_obo_file):
     for ancestors, cell_set in ancestors_and_sets:
         find_or_create_parent(h, ancestors, cell_set)
 
-    # Try removing the extra hierarchy level for the "any" set,
-    # if it is an "only-child"
-    def try_remove_any_level(v):
-        if type(v) is dict:
-            keys = list(v.keys())
-            if len(keys) == 1 and keys[0] == "any":
-                # Return the value associated with the "any" property,
-                # since "any" has no siblings.
-                return v["any"]
-            else:
-                # This is a dict with multiple values, so recursively
-                # try this function on all of its values.
-                return dict(
-                    zip(
-                        keys,
-                        list(map(try_remove_any_level, v.values()))
-                    )
-                )
-        else:
-            # This is not a dict, so just return as-is.
-            return v
-
-    # Try removing all of the single-child "any" levels
-    # now that the hierarchy has been created as a dict.
-    h = try_remove_any_level(h)
-
     tree["tree"] = [
         dict_to_tree("Cell Type Annotations", h)
     ]
