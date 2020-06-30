@@ -118,18 +118,13 @@ def generate_cell_type_cell_sets(df, cl_obo_file):
             for path_nodes in paths_up
         ]
         print((
-            f"{id_to_name[node_id]} has {len(paths_up)} paths"
-            f" up to {CL_ROOT_ID} ({id_to_name[CL_ROOT_ID]}):"
+            f"WARNING: {id_to_name[node_id]} has {len(paths_up)} paths"
+            f" up to {CL_ROOT_ID} ({id_to_name[CL_ROOT_ID]})."
         ))
 
         # Sort potential paths "up the hierarchy" by our preferences,
         # to avoid "functional" parent nodes like "motile cell"
         sorted_named_paths_up = sort_paths_up_cell_ontology(named_paths_up)
-
-        # Print each path for debugging purposes.
-        for named_path_nodes in sorted_named_paths_up:
-            print(named_path_nodes)
-        print()
 
         named_ancestors = sorted_named_paths_up[0]
         named_ancestors_reversed = list(reversed(named_ancestors))
