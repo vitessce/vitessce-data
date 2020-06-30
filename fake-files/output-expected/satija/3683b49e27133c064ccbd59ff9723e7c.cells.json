@@ -9,7 +9,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "plasmablast",
-   "Cell Type Annotation Prediction Score": "0.602587822401498"
+   "Cell Type Annotation Prediction Score": "0.6"
   }
  },
  "GTTCATTCACTCATAG": {
@@ -22,7 +22,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "plasmablast",
-   "Cell Type Annotation Prediction Score": "0.7092986019126999"
+   "Cell Type Annotation Prediction Score": "0.71"
   }
  },
  "GAGGGATCAATTCACG": {
@@ -35,7 +35,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "B cell",
-   "Cell Type Annotation Prediction Score": "0.7908523032899499"
+   "Cell Type Annotation Prediction Score": "0.79"
   }
  },
  "AACAGGGCATGACTTG": {
@@ -48,7 +48,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 07",
    "Cell Type Annotation": "hematopoietic stem cell",
-   "Cell Type Annotation Prediction Score": "0.7309207332200821"
+   "Cell Type Annotation Prediction Score": "0.73"
   }
  },
  "CCTCCAAGTGCCCGTA": {
@@ -61,7 +61,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "plasmablast",
-   "Cell Type Annotation Prediction Score": "0.7114575684600641"
+   "Cell Type Annotation Prediction Score": "0.71"
   }
  },
  "CCATCACGTACCTATG": {
@@ -74,7 +74,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "B cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "GCGATCGGTGATTGGG": {
@@ -87,7 +87,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 07",
    "Cell Type Annotation": "hematopoietic stem cell",
-   "Cell Type Annotation Prediction Score": "0.943308401723698"
+   "Cell Type Annotation Prediction Score": "0.94"
   }
  },
  "AGTACCAGTAGTAAGT": {
@@ -100,7 +100,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "plasmablast",
-   "Cell Type Annotation Prediction Score": "0.751685257508346"
+   "Cell Type Annotation Prediction Score": "0.75"
   }
  },
  "TCTACATCACAGAGAC": {
@@ -113,7 +113,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "plasmablast",
-   "Cell Type Annotation Prediction Score": "0.700644881185326"
+   "Cell Type Annotation Prediction Score": "0.7"
   }
  },
  "CCACTTGGTACTCCGG": {
@@ -126,7 +126,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 09",
    "Cell Type Annotation": "plasma cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "ACTTTGTTCTTTGCAT": {
@@ -139,7 +139,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 07",
    "Cell Type Annotation": "hematopoietic stem cell",
-   "Cell Type Annotation Prediction Score": "0.939858407541739"
+   "Cell Type Annotation Prediction Score": "0.94"
   }
  },
  "CATGCTCTCGAGAAGC": {
@@ -152,7 +152,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 09",
    "Cell Type Annotation": "plasma cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "TCTACATTCCCAAGCG": {
@@ -165,7 +165,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 09",
    "Cell Type Annotation": "plasma cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "TGGAGGACACGCGTGT": {
@@ -178,7 +178,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 08",
    "Cell Type Annotation": "hematopoietic stem cell",
-   "Cell Type Annotation Prediction Score": "0.330550439372868"
+   "Cell Type Annotation Prediction Score": "0.33"
   }
  },
  "TTGCATTCAATGTTGC": {
@@ -191,7 +191,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "B cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "AGCCAGCTCCACCTCA": {
@@ -204,7 +204,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "plasmablast",
-   "Cell Type Annotation Prediction Score": "0.44273656191849897"
+   "Cell Type Annotation Prediction Score": "0.44"
   }
  },
  "AAGCAGTGGTATCAAC": {
@@ -217,7 +217,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "B cell",
-   "Cell Type Annotation Prediction Score": "0.589099533194315"
+   "Cell Type Annotation Prediction Score": "0.59"
   }
  },
  "CTCAGTCTCGATTTCT": {
@@ -230,7 +230,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "hematopoietic stem cell",
-   "Cell Type Annotation Prediction Score": "0.536018395648272"
+   "Cell Type Annotation Prediction Score": "0.54"
   }
  },
  "ACGCACGGTGTTTACG": {
@@ -243,7 +243,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 08",
    "Cell Type Annotation": "CD141-positive myeloid dendritic cell",
-   "Cell Type Annotation Prediction Score": "0.841034599582662"
+   "Cell Type Annotation Prediction Score": "0.84"
   }
  },
  "CATCGGGAGTCCCAGC": {
@@ -256,7 +256,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 09",
    "Cell Type Annotation": "plasma cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "AAAGAACAGCTACAAA": {
@@ -269,7 +269,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 08",
    "Cell Type Annotation": "CD14-positive monocyte",
-   "Cell Type Annotation Prediction Score": "0.503802173799851"
+   "Cell Type Annotation Prediction Score": "0.5"
   }
  },
  "TTCTTGATCTAACACG": {
@@ -282,7 +282,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "B cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "AGGGAGTCAGCCCACA": {
@@ -295,7 +295,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 05",
    "Cell Type Annotation": "B cell",
-   "Cell Type Annotation Prediction Score": "0.501192121675334"
+   "Cell Type Annotation Prediction Score": "0.5"
   }
  },
  "ATGGTTGTCACTGGGC": {
@@ -308,7 +308,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 09",
    "Cell Type Annotation": "plasma cell",
-   "Cell Type Annotation Prediction Score": "1.0"
+   "Cell Type Annotation Prediction Score": "1"
   }
  },
  "AACTTCTGTCTACGAT": {
@@ -321,7 +321,7 @@
   "factors": {
    "Leiden Clustering": "Cluster 09",
    "Cell Type Annotation": "plasma cell",
-   "Cell Type Annotation Prediction Score": "0.997361990442739"
+   "Cell Type Annotation Prediction Score": "1"
   }
  }
 }

@@ -39,7 +39,7 @@ def generate_json_files(
                 "Leiden Clustering": v['leiden'],
                 "Cell Type Annotation": v[COLUMNS.ANNOTATION.value],
                 "Cell Type Annotation Prediction Score":
-                    str(v[COLUMNS.PREDICTION_SCORE.value])
+                    '{:.2g}'.format(v[COLUMNS.PREDICTION_SCORE.value])
             }
         }
         for (k, v) in cells_df_items
