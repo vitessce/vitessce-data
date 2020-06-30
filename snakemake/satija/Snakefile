@@ -28,7 +28,7 @@ rule all:
     input:
         expand(str(PROCESSED_DIR / "{globus_id}.cells.json"), globus_id=GLOBUS_IDS),
         expand(str(PROCESSED_DIR / "{globus_id}.factors.json"), globus_id=GLOBUS_IDS),
-        expand(str(PROCESSED_DIR / "{globus_id}.cell_sets.json"), globus_id=GLOBUS_IDS),
+        expand(str(PROCESSED_DIR / "{globus_id}.cell-sets.json"), globus_id=GLOBUS_IDS),
 
 rule process_dataset:
     input:
@@ -38,7 +38,7 @@ rule process_dataset:
     output:
         cells_json=(PROCESSED_DIR / "{globus_id}.cells.json"),
         factors_json=(PROCESSED_DIR / "{globus_id}.factors.json"),
-        cell_sets_json=(PROCESSED_DIR / "{globus_id}.cell_sets.json")
+        cell_sets_json=(PROCESSED_DIR / "{globus_id}.cell-sets.json")
     params:
         script=(SRC_DIR / "process_dataset.py")
     shell:
