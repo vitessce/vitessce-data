@@ -15,7 +15,7 @@ main() {
 
     CLI_ARGS="--json_file $JSON_IN"
     add_CLI_ARGS 'cells' 'dries'
-    add_CLI_ARGS 'cell_sets' 'dries'
+    add_CLI_ARGS 'cell-sets' 'dries'
     add_CLI_ARGS 'factors' 'dries'
 
     echo "Download and process cells..."

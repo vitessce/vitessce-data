@@ -1,9 +1,13 @@
 {
-  "schema_version": "0.0.1",
+  "schemaVersion": "0.0.2",
+  "renderLayers": [
+    "Spraggins MxIF", 
+    "Spraggins IMS"
+  ],
   "images": [
     {
       "name": "Spraggins MxIF",
-      "url": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/spraggins/spraggins.mxif.zarr",
+      "url": "https://vitessce-data.storage.googleapis.com/0.0.28/master_release/spraggins/spraggins.mxif.zarr",
       "type": "zarr",
       "metadata": {
         "dimensions": [
@@ -28,7 +32,7 @@
             "values": null
           }
         ],
-        "is_pyramid": false,
+        "isPyramid": false,
         "transform": {
           "translate": {
             "y": 0,
@@ -40,7 +44,7 @@
     },
     {
       "name": "Spraggins IMS",
-      "url": "https://vitessce-data.storage.googleapis.com/0.0.24/master_release/spraggins/spraggins.ims.zarr",
+      "url": "https://vitessce-data.storage.googleapis.com/0.0.28/master_release/spraggins/spraggins.ims.zarr",
       "type": "zarr",
       "metadata": {
         "dimensions": [
@@ -64,7 +68,7 @@
             "values": null
           }
         ],
-        "is_pyramid": false,
+        "isPyramid": false,
         "transform": {
           "scale": 20.0,
           "translate": {
