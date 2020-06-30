@@ -22,12 +22,23 @@ def load_cl_obo_graph(cl_obo_file):
 
 # Construct the tree, according to the following schema:
 # https://github.com/hubmapconsortium/vitessce/blob/d5f63aa1d08aa61f6b20f6ad6bbfba5fceb6b5ef/src/schemas/cell_sets.schema.json
-def init_tree():
+def init_cell_sets_tree():
     return {
         "datatype": "cell",
         "version": "0.1.3",
         "tree": []
     }
+
+
+# Merge multiple cell sets trees.
+def merge_cell_sets_trees(*args):
+    assert(len(args) > 1)
+
+    result = args[0]
+    for arg in args[1:]:
+        for level_zero_node in arg["tree"]:
+            result["tree"].append(level_zero_node)
+    return result
 
 
 # Recursively convert a nested dict to the tree schema.

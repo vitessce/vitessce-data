@@ -6,8 +6,11 @@ import pandas as pd
 
 from constants import COLUMNS
 from generate_cell_sets import (
-    generate_flat_cell_sets,
-    generate_hierarchical_cell_sets
+    generate_leiden_cluster_cell_sets,
+    generate_cell_type_cell_sets
+)
+from utils import (
+    merge_cell_sets_trees
 )
 
 
@@ -64,18 +67,20 @@ def generate_json_files(
     # Remove annotations with NaN prediction scores
     df = df.dropna(subset=[COLUMNS.PREDICTION_SCORE.value], axis=0)
 
-    # Generate .flat.cell_sets.json
+    # Generate .cell_sets.json
     df = df.reset_index()
-    flat_cell_sets = generate_flat_cell_sets(df)
 
-    # Generate .hierarchical.cell_sets.json
-    hierarchical_cell_sets = generate_hierarchical_cell_sets(
+    leiden_cell_sets = generate_leiden_cluster_cell_sets(df)
+    cell_type_cell_sets = generate_cell_type_cell_sets(
         df,
         input_cl_obo_file
     )
 
-    cell_sets = flat_cell_sets
-    cell_sets["tree"].append(hierarchical_cell_sets["tree"][0])
+    # Merge the Leiden Cluster and Cell Type Annotation cell sets.
+    cell_sets = merge_cell_sets_trees(
+        leiden_cell_sets,
+        cell_type_cell_sets
+    )
 
     with open(output_cell_sets_json_file, 'w') as f:
         json.dump(cell_sets, f, indent=1)

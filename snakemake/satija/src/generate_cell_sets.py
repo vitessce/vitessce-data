@@ -2,12 +2,18 @@ import networkx
 
 from constants import COLUMNS, CL_ROOT_ID
 from utils import (
-    init_tree, dict_to_tree, load_cl_obo_graph, sort_paths_up_cell_ontology
+    load_cl_obo_graph,
+    init_cell_sets_tree,
+    dict_to_tree,
+    sort_paths_up_cell_ontology
 )
 
 
-def generate_flat_cell_sets(df):
-    tree = init_tree()
+# Generate a tree of cell sets representing
+# the clusters from the Leiden clustering
+# algorithm.
+def generate_leiden_cluster_cell_sets(df):
+    tree = init_cell_sets_tree()
 
     leiden_clusters_children = []
     for cluster_name, cluster_df in df.groupby("leiden"):
@@ -24,6 +30,15 @@ def generate_flat_cell_sets(df):
         "children": leiden_clusters_children
     })
 
+    return tree
+
+
+# Generate a tree of cell sets
+# representing the cell type annotations,
+# arranged on one level (not heirarchical).
+def generate_cell_type_flat_cell_sets(df):
+    tree = init_cell_sets_tree()
+
     cell_type_annotation_children = []
     for cell_type, cell_type_df in df.groupby(COLUMNS.ANNOTATION.value):
         set_cell_ids = cell_type_df[COLUMNS.CELL_ID.value].values.tolist()
@@ -39,14 +54,16 @@ def generate_flat_cell_sets(df):
         })
 
     tree["tree"].append({
-        "name": "Cell Type Annotations (flat)",
+        "name": "Cell Type Annotations",
         "children": cell_type_annotation_children
     })
     return tree
 
 
-def generate_hierarchical_cell_sets(df, cl_obo_file):
-    tree = init_tree()
+# Generate a tree of cell sets
+# for hierarchical cell type annotations.
+def generate_cell_type_cell_sets(df, cl_obo_file):
+    tree = init_cell_sets_tree()
 
     # Load the cell ontology DAG
     graph, id_to_name, name_to_id = load_cl_obo_graph(cl_obo_file)
@@ -168,6 +185,6 @@ def generate_hierarchical_cell_sets(df, cl_obo_file):
         find_or_create_parent(h, ancestors, cell_set)
 
     tree["tree"] = [
-        dict_to_tree("Cell Type Annotations (hierarchical)", h)
+        dict_to_tree("Cell Type Annotations", h)
     ]
     return tree
