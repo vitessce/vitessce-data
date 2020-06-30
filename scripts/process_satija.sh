@@ -3,7 +3,7 @@ set -o errexit
 
 . ./scripts/utils.sh
 
-DATASET='uf_cells_spleen_0510'
+DATASET='satija'
 
 main() {
     get_CLI_args "$@"

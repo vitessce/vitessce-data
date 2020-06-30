@@ -16,9 +16,9 @@ PROCESSED_DIR = config['OUTPUT']
 CLOUD_TARGET = config['CLOUD_TARGET']
 
 # URL constants
-CELL_ANNOTATIONS_URL = "https://vitessce-data.s3.amazonaws.com/source-data/annotations_spleen_0510/annotations_spleen_0510.csv"
-CELLS_URL = "https://giygas.compbio.cs.cmu.edu/uf-processed.tar.xz"
-CL_OBO_URL = "https://raw.githubusercontent.com/obophenotype/cell-ontology/master/cl.obo"
+CELL_ANNOTATIONS_URL = "https://vitessce-data.s3.amazonaws.com/source-data/satija/annotations_spleen_0510.csv"
+CELLS_URL = "https://vitessce-data.s3.amazonaws.com/source-data/satija/uf-processed.tar.xz"
+CL_OBO_URL = "https://vitessce-data.s3.amazonaws.com/source-data/satija/cl.obo"
 
 # Datasets
 GLOBUS_IDS = config['annotations_spleen_0510']
