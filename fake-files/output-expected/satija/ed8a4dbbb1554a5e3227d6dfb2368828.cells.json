@@ -8,7 +8,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.798400106689949"
   }
  },
  "GCAGCCAAGTACCATC": {
@@ -20,7 +21,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "TGTGATGTCTCGTGGG": {
@@ -32,7 +34,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.860023672929348"
   }
  },
  "TTAGTCTAGCTATCTG": {
@@ -44,7 +47,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "ACTTTGTCATTGCCGG": {
@@ -56,7 +60,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "CTGCCTAGTAACATAG": {
@@ -68,7 +73,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "ACGGTTAAGATCGACG": {
@@ -80,7 +86,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.76411652196793"
   }
  },
  "GTACAGTCAACCGTGC": {
@@ -92,7 +99,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.848119277986123"
   }
  },
  "GCTACAAAGCAGCCTC": {
@@ -104,7 +112,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.9779901717555708"
   }
  },
  "ACTACGACAAAGACGC": {
@@ -116,7 +125,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.929127056209661"
   }
  },
  "CATTGAGAGCTGTTCA": {
@@ -128,7 +138,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "AGCCAATTCGTGTCAA": {
@@ -140,7 +151,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.79949265941318"
   }
  },
  "TACTTACTCACCCATC": {
@@ -152,7 +164,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "CGTGATATCATACGAC": {
@@ -164,7 +177,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "ACATCCCGTAAGATTG": {
@@ -176,7 +190,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.981926490447814"
   }
  },
  "AGCCAGCGTGAGAACC": {
@@ -188,7 +203,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 04",
-   "Cell Type Annotation": "B cell"
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "0.6517792301684571"
   }
  },
  "AGCATCAGTCTGTCCT": {
@@ -200,7 +216,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.799398737855641"
   }
  },
  "GCTACAAAGACATAAC": {
@@ -212,7 +229,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.8805343814532951"
   }
  },
  "TCATTTGCAATTTCCT": {
@@ -224,7 +242,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.9392787101316452"
   }
  },
  "CGTGAATTCCGTTGGG": {
@@ -236,7 +255,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.9513157836878692"
   }
  },
  "GCGAGAACAGGTGACA": {
@@ -248,7 +268,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "TCAATTCTCAGGGTAG": {
@@ -260,7 +281,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1.0"
   }
  },
  "GATTTCTAGCCGCACT": {
@@ -272,7 +294,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.7754726367144971"
   }
  },
  "AACAAAGTCGTTAGAC": {
@@ -284,7 +307,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.9460911908315308"
   }
  },
  "CCAATTTCAATTCTTC": {
@@ -296,7 +320,8 @@
   },
   "factors": {
    "Leiden Clustering": "Cluster 08",
-   "Cell Type Annotation": "plasma cell"
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.713775520536967"
   }
  }
 }

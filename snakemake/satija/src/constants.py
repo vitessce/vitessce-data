@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from enum import Enum
 
 CL_ROOT_ID = 'CL:0000000'

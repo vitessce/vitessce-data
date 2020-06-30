@@ -1,6 +1,6 @@
 {
  "datatype": "cell",
- "version": "0.1.2",
+ "version": "0.1.3",
  "tree": [
   {
    "name": "Leiden Clustering",
@@ -8,56 +8,131 @@
     {
      "name": "Cluster 01",
      "set": [
-      "AGGGTCCCACATACGT",
-      "CACGTTCCAGAACCGA",
-      "TCAAGTGCATCGAACT",
-      "GGTCACGGTGGGATTG",
-      "TAGACTGTCCTCACGT",
-      "GCCCGAACAAAGCAAT"
+      [
+       "AGGGTCCCACATACGT",
+       null
+      ],
+      [
+       "CACGTTCCAGAACCGA",
+       null
+      ],
+      [
+       "TCAAGTGCATCGAACT",
+       null
+      ],
+      [
+       "GGTCACGGTGGGATTG",
+       null
+      ],
+      [
+       "TAGACTGTCCTCACGT",
+       null
+      ],
+      [
+       "GCCCGAACAAAGCAAT",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 02",
      "set": [
-      "ACAGAAACAGATCCAT"
+      [
+       "ACAGAAACAGATCCAT",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 03",
      "set": [
-      "TGCCGAGTCAGACTGT",
-      "ATCAGGTTCAAGCCGC"
+      [
+       "TGCCGAGTCAGACTGT",
+       null
+      ],
+      [
+       "ATCAGGTTCAAGCCGC",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 04",
      "set": [
-      "AATTCCTAGCATACTC",
-      "ATTCCCGAGTCACTCA",
-      "CACCGTTCAACAAAGT"
+      [
+       "AATTCCTAGCATACTC",
+       null
+      ],
+      [
+       "ATTCCCGAGTCACTCA",
+       null
+      ],
+      [
+       "CACCGTTCAACAAAGT",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 08",
      "set": [
-      "AGACCATAGTTCGCAT",
-      "CGCATAAAGCGAGTAC",
-      "GCATTAGCAAGCTACT",
-      "AGCGCCATCCGGCAAC",
-      "TCATTACAGGCGATAC"
+      [
+       "AGACCATAGTTCGCAT",
+       null
+      ],
+      [
+       "CGCATAAAGCGAGTAC",
+       null
+      ],
+      [
+       "GCATTAGCAAGCTACT",
+       null
+      ],
+      [
+       "AGCGCCATCCGGCAAC",
+       null
+      ],
+      [
+       "TCATTACAGGCGATAC",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 09",
      "set": [
-      "TCAGGGCCATGGGATG",
-      "ACTTATCGTCCAATCA",
-      "AAGCCATCATCCGAAT",
-      "CCGAACGGTCTGTCCT",
-      "TCACAAGGTGTTCGAT",
-      "ATTACCTCAACACGTT",
-      "ACCAAACGTGTGTGTT",
-      "ATTCAGGGTCAGACTT"
+      [
+       "TCAGGGCCATGGGATG",
+       null
+      ],
+      [
+       "ACTTATCGTCCAATCA",
+       null
+      ],
+      [
+       "AAGCCATCATCCGAAT",
+       null
+      ],
+      [
+       "CCGAACGGTCTGTCCT",
+       null
+      ],
+      [
+       "TCACAAGGTGTTCGAT",
+       null
+      ],
+      [
+       "ATTACCTCAACACGTT",
+       null
+      ],
+      [
+       "ACCAAACGTGTGTGTT",
+       null
+      ],
+      [
+       "ATTCAGGGTCAGACTT",
+       null
+      ]
      ]
     }
    ]
@@ -68,56 +143,131 @@
     {
      "name": "B cell",
      "set": [
-      "AAGCCATCATCCGAAT",
-      "TGCCGAGTCAGACTGT",
-      "AGGGTCCCACATACGT",
-      "CACGTTCCAGAACCGA",
-      "CCGAACGGTCTGTCCT",
-      "ATCAGGTTCAAGCCGC",
-      "TCAAGTGCATCGAACT",
-      "AGCGCCATCCGGCAAC",
-      "TCACAAGGTGTTCGAT",
-      "GGTCACGGTGGGATTG",
-      "TAGACTGTCCTCACGT",
-      "GCCCGAACAAAGCAAT",
-      "ACCAAACGTGTGTGTT"
+      [
+       "AAGCCATCATCCGAAT",
+       1.0
+      ],
+      [
+       "TGCCGAGTCAGACTGT",
+       0.9916034707196708
+      ],
+      [
+       "AGGGTCCCACATACGT",
+       1.0
+      ],
+      [
+       "CACGTTCCAGAACCGA",
+       1.0
+      ],
+      [
+       "CCGAACGGTCTGTCCT",
+       0.928604540205567
+      ],
+      [
+       "ATCAGGTTCAAGCCGC",
+       1.0
+      ],
+      [
+       "TCAAGTGCATCGAACT",
+       1.0
+      ],
+      [
+       "AGCGCCATCCGGCAAC",
+       0.673623987941405
+      ],
+      [
+       "TCACAAGGTGTTCGAT",
+       0.99450084176935
+      ],
+      [
+       "GGTCACGGTGGGATTG",
+       1.0
+      ],
+      [
+       "TAGACTGTCCTCACGT",
+       1.0
+      ],
+      [
+       "GCCCGAACAAAGCAAT",
+       1.0
+      ],
+      [
+       "ACCAAACGTGTGTGTT",
+       0.5254610579406571
+      ]
      ]
     },
     {
      "name": "CD14-positive monocyte",
      "set": [
-      "AATTCCTAGCATACTC",
-      "ATTCCCGAGTCACTCA",
-      "CGCATAAAGCGAGTAC",
-      "CACCGTTCAACAAAGT",
-      "TCATTACAGGCGATAC"
+      [
+       "AATTCCTAGCATACTC",
+       1.0
+      ],
+      [
+       "ATTCCCGAGTCACTCA",
+       1.0
+      ],
+      [
+       "CGCATAAAGCGAGTAC",
+       0.9770750445403652
+      ],
+      [
+       "CACCGTTCAACAAAGT",
+       1.0
+      ],
+      [
+       "TCATTACAGGCGATAC",
+       0.900647013580642
+      ]
      ]
     },
     {
      "name": "CD1c-positive myeloid dendritic cell",
      "set": [
-      "AGACCATAGTTCGCAT"
+      [
+       "AGACCATAGTTCGCAT",
+       0.6656291150794549
+      ]
      ]
     },
     {
      "name": "alpha-beta T cell",
      "set": [
-      "ACAGAAACAGATCCAT"
+      [
+       "ACAGAAACAGATCCAT",
+       0.8624672991852479
+      ]
      ]
     },
     {
      "name": "hematopoietic stem cell",
      "set": [
-      "TCAGGGCCATGGGATG",
-      "ACTTATCGTCCAATCA",
-      "GCATTAGCAAGCTACT"
+      [
+       "TCAGGGCCATGGGATG",
+       0.642579626565972
+      ],
+      [
+       "ACTTATCGTCCAATCA",
+       0.25016325753812696
+      ],
+      [
+       "GCATTAGCAAGCTACT",
+       0.798423447891237
+      ]
      ]
     },
     {
      "name": "plasmablast",
      "set": [
-      "ATTACCTCAACACGTT",
-      "ATTCAGGGTCAGACTT"
+      [
+       "ATTACCTCAACACGTT",
+       0.571830616952308
+      ],
+      [
+       "ATTCAGGGTCAGACTT",
+       0.671761691006812
+      ]
      ]
     }
    ]
@@ -126,114 +276,98 @@
    "name": "Cell Type Annotations (hierarchical)",
    "children": [
     {
-     "name": "nucleate cell",
+     "name": "leukocyte",
      "children": [
       {
-       "name": "single nucleate cell",
+       "name": "mononuclear cell",
        "children": [
         {
-         "name": "mononuclear cell",
+         "name": "lymphocyte",
          "children": [
           {
-           "name": "lymphocyte",
+           "name": "lymphocyte of B lineage",
            "children": [
             {
-             "name": "lymphocyte of B lineage",
+             "name": "B cell",
              "children": [
               {
-               "name": "B cell",
-               "children": [
-                {
-                 "name": "any",
-                 "set": [
-                  "AAGCCATCATCCGAAT",
-                  "TGCCGAGTCAGACTGT",
-                  "AGGGTCCCACATACGT",
-                  "CACGTTCCAGAACCGA",
-                  "CCGAACGGTCTGTCCT",
-                  "ATCAGGTTCAAGCCGC",
-                  "TCAAGTGCATCGAACT",
-                  "AGCGCCATCCGGCAAC",
-                  "TCACAAGGTGTTCGAT",
-                  "GGTCACGGTGGGATTG",
-                  "TAGACTGTCCTCACGT",
-                  "GCCCGAACAAAGCAAT",
-                  "ACCAAACGTGTGTGTT"
-                 ]
-                },
-                {
-                 "name": "B cell, CD19-positive",
-                 "children": [
-                  {
-                   "name": "mature B cell",
-                   "children": [
-                    {
-                     "name": "plasmablast",
-                     "children": [
-                      {
-                       "name": "any",
-                       "set": [
-                        "ATTACCTCAACACGTT",
-                        "ATTCAGGGTCAGACTT"
-                       ]
-                      }
-                     ]
-                    }
-                   ]
-                  }
-                 ]
-                }
+               "name": "any",
+               "set": [
+                [
+                 "AAGCCATCATCCGAAT",
+                 1.0
+                ],
+                [
+                 "TGCCGAGTCAGACTGT",
+                 0.9916034707196708
+                ],
+                [
+                 "AGGGTCCCACATACGT",
+                 1.0
+                ],
+                [
+                 "CACGTTCCAGAACCGA",
+                 1.0
+                ],
+                [
+                 "CCGAACGGTCTGTCCT",
+                 0.928604540205567
+                ],
+                [
+                 "ATCAGGTTCAAGCCGC",
+                 1.0
+                ],
+                [
+                 "TCAAGTGCATCGAACT",
+                 1.0
+                ],
+                [
+                 "AGCGCCATCCGGCAAC",
+                 0.673623987941405
+                ],
+                [
+                 "TCACAAGGTGTTCGAT",
+                 0.99450084176935
+                ],
+                [
+                 "GGTCACGGTGGGATTG",
+                 1.0
+                ],
+                [
+                 "TAGACTGTCCTCACGT",
+                 1.0
+                ],
+                [
+                 "GCCCGAACAAAGCAAT",
+                 1.0
+                ],
+                [
+                 "ACCAAACGTGTGTGTT",
+                 0.5254610579406571
+                ]
                ]
               }
              ]
             },
             {
-             "name": "T cell",
+             "name": "antibody secreting cell",
              "children": [
               {
-               "name": "alpha-beta T cell",
+               "name": "plasmablast",
                "children": [
                 {
                  "name": "any",
                  "set": [
-                  "ACAGAAACAGATCCAT"
+                  [
+                   "ATTACCTCAACACGTT",
+                   0.571830616952308
+                  ],
+                  [
+                   "ATTCAGGGTCAGACTT",
+                   0.671761691006812
+                  ]
                  ]
                 }
-               ]
-              }
-             ]
-            }
-           ]
-          }
-         ]
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "name": "motile cell",
-     "children": [
-      {
-       "name": "leukocyte",
-       "children": [
-        {
-         "name": "myeloid leukocyte",
-         "children": [
-          {
-           "name": "monocyte",
-           "children": [
-            {
-             "name": "CD14-positive monocyte",
-             "children": [
-              {
-               "name": "any",
-               "set": [
-                "AATTCCTAGCATACTC",
-                "ATTCCCGAGTCACTCA",
-                "CGCATAAAGCGAGTAC",
-                "CACCGTTCAACAAAGT",
-                "TCATTACAGGCGATAC"
                ]
               }
              ]
@@ -241,17 +375,79 @@
            ]
           },
           {
-           "name": "myeloid dendritic cell",
+           "name": "T cell",
            "children": [
             {
-             "name": "CD1c-positive myeloid dendritic cell",
+             "name": "alpha-beta T cell",
              "children": [
               {
                "name": "any",
                "set": [
-                "AGACCATAGTTCGCAT"
+                [
+                 "ACAGAAACAGATCCAT",
+                 0.8624672991852479
+                ]
                ]
               }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "myeloid leukocyte",
+       "children": [
+        {
+         "name": "monocyte",
+         "children": [
+          {
+           "name": "CD14-positive monocyte",
+           "children": [
+            {
+             "name": "any",
+             "set": [
+              [
+               "AATTCCTAGCATACTC",
+               1.0
+              ],
+              [
+               "ATTCCCGAGTCACTCA",
+               1.0
+              ],
+              [
+               "CGCATAAAGCGAGTAC",
+               0.9770750445403652
+              ],
+              [
+               "CACCGTTCAACAAAGT",
+               1.0
+              ],
+              [
+               "TCATTACAGGCGATAC",
+               0.900647013580642
+              ]
+             ]
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "myeloid dendritic cell",
+         "children": [
+          {
+           "name": "CD1c-positive myeloid dendritic cell",
+           "children": [
+            {
+             "name": "any",
+             "set": [
+              [
+               "AGACCATAGTTCGCAT",
+               0.6656291150794549
+              ]
              ]
             }
            ]
@@ -263,27 +459,26 @@
      ]
     },
     {
-     "name": "precursor cell",
+     "name": "hematopoietic precursor cell",
      "children": [
       {
-       "name": "stem cell",
+       "name": "hematopoietic stem cell",
        "children": [
         {
-         "name": "somatic stem cell",
-         "children": [
-          {
-           "name": "hematopoietic stem cell",
-           "children": [
-            {
-             "name": "any",
-             "set": [
-              "TCAGGGCCATGGGATG",
-              "ACTTATCGTCCAATCA",
-              "GCATTAGCAAGCTACT"
-             ]
-            }
-           ]
-          }
+         "name": "any",
+         "set": [
+          [
+           "TCAGGGCCATGGGATG",
+           0.642579626565972
+          ],
+          [
+           "ACTTATCGTCCAATCA",
+           0.25016325753812696
+          ],
+          [
+           "GCATTAGCAAGCTACT",
+           0.798423447891237
+          ]
          ]
         }
        ]

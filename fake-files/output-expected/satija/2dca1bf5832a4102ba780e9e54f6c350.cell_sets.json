@@ -1,6 +1,6 @@
 {
  "datatype": "cell",
- "version": "0.1.2",
+ "version": "0.1.3",
  "tree": [
   {
    "name": "Leiden Clustering",
@@ -8,36 +8,111 @@
     {
      "name": "Cluster 05",
      "set": [
-      "AGACACTGTCTCAGAT",
-      "TCATGCCAGTTGAATG",
-      "CATCAAGCAGATCCTA",
-      "TCATCCGTCGTCTAAG",
-      "GTCATTTCAGATCCTA",
-      "TAACACGTCATCGCCT",
-      "TACCCGTCACGGTGCT",
-      "GGGCGTTCAAATGAAC",
-      "TCTGCCATCACGGGCT",
-      "GTTTGGAAGTTACGAA",
-      "CAACCAAGTTTAGAGA",
-      "ACCAACATCGTAGCCG",
-      "AGATGCTGTGTGGACA",
-      "AGACACTCACTTCCTG",
-      "TCATCCGCACGAAAGC",
-      "GCATCGGGTCTGTGGC",
-      "TCTTAGTCAACGATTC",
-      "TTGGTTTGTACGAGCA",
-      "TCATTGTCACACTGGC"
+      [
+       "AGACACTGTCTCAGAT",
+       null
+      ],
+      [
+       "TCATGCCAGTTGAATG",
+       null
+      ],
+      [
+       "CATCAAGCAGATCCTA",
+       null
+      ],
+      [
+       "TCATCCGTCGTCTAAG",
+       null
+      ],
+      [
+       "GTCATTTCAGATCCTA",
+       null
+      ],
+      [
+       "TAACACGTCATCGCCT",
+       null
+      ],
+      [
+       "TACCCGTCACGGTGCT",
+       null
+      ],
+      [
+       "GGGCGTTCAAATGAAC",
+       null
+      ],
+      [
+       "TCTGCCATCACGGGCT",
+       null
+      ],
+      [
+       "GTTTGGAAGTTACGAA",
+       null
+      ],
+      [
+       "CAACCAAGTTTAGAGA",
+       null
+      ],
+      [
+       "ACCAACATCGTAGCCG",
+       null
+      ],
+      [
+       "AGATGCTGTGTGGACA",
+       null
+      ],
+      [
+       "AGACACTCACTTCCTG",
+       null
+      ],
+      [
+       "TCATCCGCACGAAAGC",
+       null
+      ],
+      [
+       "GCATCGGGTCTGTGGC",
+       null
+      ],
+      [
+       "TCTTAGTCAACGATTC",
+       null
+      ],
+      [
+       "TTGGTTTGTACGAGCA",
+       null
+      ],
+      [
+       "TCATTGTCACACTGGC",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 18",
      "set": [
-      "TTTGACTCAGAGGACT",
-      "TCATTACTCGATCCAA",
-      "TGATTTCCAAGCGAAC",
-      "GCAGCTGCATACTTTC",
-      "GTTAGTGGTCCCTGTT",
-      "CGCATGGCACTTGACA"
+      [
+       "TTTGACTCAGAGGACT",
+       null
+      ],
+      [
+       "TCATTACTCGATCCAA",
+       null
+      ],
+      [
+       "TGATTTCCAAGCGAAC",
+       null
+      ],
+      [
+       "GCAGCTGCATACTTTC",
+       null
+      ],
+      [
+       "GTTAGTGGTCCCTGTT",
+       null
+      ],
+      [
+       "CGCATGGCACTTGACA",
+       null
+      ]
      ]
     }
    ]
@@ -48,36 +123,111 @@
     {
      "name": "plasma cell",
      "set": [
-      "AGACACTGTCTCAGAT",
-      "TCATGCCAGTTGAATG",
-      "CATCAAGCAGATCCTA",
-      "TCATCCGTCGTCTAAG",
-      "GTCATTTCAGATCCTA",
-      "TAACACGTCATCGCCT",
-      "TACCCGTCACGGTGCT",
-      "GGGCGTTCAAATGAAC",
-      "TCTGCCATCACGGGCT",
-      "GTTTGGAAGTTACGAA",
-      "CAACCAAGTTTAGAGA",
-      "ACCAACATCGTAGCCG",
-      "AGATGCTGTGTGGACA",
-      "AGACACTCACTTCCTG",
-      "TCATCCGCACGAAAGC",
-      "GCATCGGGTCTGTGGC",
-      "TCTTAGTCAACGATTC",
-      "TTGGTTTGTACGAGCA",
-      "TCATTGTCACACTGGC"
+      [
+       "AGACACTGTCTCAGAT",
+       1.0
+      ],
+      [
+       "TCATGCCAGTTGAATG",
+       1.0
+      ],
+      [
+       "CATCAAGCAGATCCTA",
+       1.0
+      ],
+      [
+       "TCATCCGTCGTCTAAG",
+       1.0
+      ],
+      [
+       "GTCATTTCAGATCCTA",
+       1.0
+      ],
+      [
+       "TAACACGTCATCGCCT",
+       1.0
+      ],
+      [
+       "TACCCGTCACGGTGCT",
+       1.0
+      ],
+      [
+       "GGGCGTTCAAATGAAC",
+       1.0
+      ],
+      [
+       "TCTGCCATCACGGGCT",
+       1.0
+      ],
+      [
+       "GTTTGGAAGTTACGAA",
+       1.0
+      ],
+      [
+       "CAACCAAGTTTAGAGA",
+       1.0
+      ],
+      [
+       "ACCAACATCGTAGCCG",
+       1.0
+      ],
+      [
+       "AGATGCTGTGTGGACA",
+       1.0
+      ],
+      [
+       "AGACACTCACTTCCTG",
+       1.0
+      ],
+      [
+       "TCATCCGCACGAAAGC",
+       1.0
+      ],
+      [
+       "GCATCGGGTCTGTGGC",
+       1.0
+      ],
+      [
+       "TCTTAGTCAACGATTC",
+       1.0
+      ],
+      [
+       "TTGGTTTGTACGAGCA",
+       1.0
+      ],
+      [
+       "TCATTGTCACACTGGC",
+       1.0
+      ]
      ]
     },
     {
      "name": "plasmablast",
      "set": [
-      "TTTGACTCAGAGGACT",
-      "TCATTACTCGATCCAA",
-      "TGATTTCCAAGCGAAC",
-      "GCAGCTGCATACTTTC",
-      "GTTAGTGGTCCCTGTT",
-      "CGCATGGCACTTGACA"
+      [
+       "TTTGACTCAGAGGACT",
+       1.0
+      ],
+      [
+       "TCATTACTCGATCCAA",
+       1.0
+      ],
+      [
+       "TGATTTCCAAGCGAAC",
+       1.0
+      ],
+      [
+       "GCAGCTGCATACTTTC",
+       1.0
+      ],
+      [
+       "GTTAGTGGTCCCTGTT",
+       1.0
+      ],
+      [
+       "CGCATGGCACTTGACA",
+       1.0
+      ]
      ]
     }
    ]
@@ -86,66 +236,121 @@
    "name": "Cell Type Annotations (hierarchical)",
    "children": [
     {
-     "name": "antibody secreting cell",
+     "name": "plasma cell",
      "children": [
       {
-       "name": "plasma cell",
-       "children": [
-        {
-         "name": "any",
-         "set": [
-          "AGACACTGTCTCAGAT",
-          "TCATGCCAGTTGAATG",
-          "CATCAAGCAGATCCTA",
-          "TCATCCGTCGTCTAAG",
-          "GTCATTTCAGATCCTA",
-          "TAACACGTCATCGCCT",
-          "TACCCGTCACGGTGCT",
-          "GGGCGTTCAAATGAAC",
-          "TCTGCCATCACGGGCT",
-          "GTTTGGAAGTTACGAA",
-          "CAACCAAGTTTAGAGA",
-          "ACCAACATCGTAGCCG",
-          "AGATGCTGTGTGGACA",
-          "AGACACTCACTTCCTG",
-          "TCATCCGCACGAAAGC",
-          "GCATCGGGTCTGTGGC",
-          "TCTTAGTCAACGATTC",
-          "TTGGTTTGTACGAGCA",
-          "TCATTGTCACACTGGC"
-         ]
-        }
+       "name": "any",
+       "set": [
+        [
+         "AGACACTGTCTCAGAT",
+         1.0
+        ],
+        [
+         "TCATGCCAGTTGAATG",
+         1.0
+        ],
+        [
+         "CATCAAGCAGATCCTA",
+         1.0
+        ],
+        [
+         "TCATCCGTCGTCTAAG",
+         1.0
+        ],
+        [
+         "GTCATTTCAGATCCTA",
+         1.0
+        ],
+        [
+         "TAACACGTCATCGCCT",
+         1.0
+        ],
+        [
+         "TACCCGTCACGGTGCT",
+         1.0
+        ],
+        [
+         "GGGCGTTCAAATGAAC",
+         1.0
+        ],
+        [
+         "TCTGCCATCACGGGCT",
+         1.0
+        ],
+        [
+         "GTTTGGAAGTTACGAA",
+         1.0
+        ],
+        [
+         "CAACCAAGTTTAGAGA",
+         1.0
+        ],
+        [
+         "ACCAACATCGTAGCCG",
+         1.0
+        ],
+        [
+         "AGATGCTGTGTGGACA",
+         1.0
+        ],
+        [
+         "AGACACTCACTTCCTG",
+         1.0
+        ],
+        [
+         "TCATCCGCACGAAAGC",
+         1.0
+        ],
+        [
+         "GCATCGGGTCTGTGGC",
+         1.0
+        ],
+        [
+         "TCTTAGTCAACGATTC",
+         1.0
+        ],
+        [
+         "TTGGTTTGTACGAGCA",
+         1.0
+        ],
+        [
+         "TCATTGTCACACTGGC",
+         1.0
+        ]
        ]
       }
      ]
     },
     {
-     "name": "B cell",
+     "name": "plasmablast",
      "children": [
       {
-       "name": "B cell, CD19-positive",
-       "children": [
-        {
-         "name": "mature B cell",
-         "children": [
-          {
-           "name": "plasmablast",
-           "children": [
-            {
-             "name": "any",
-             "set": [
-              "TTTGACTCAGAGGACT",
-              "TCATTACTCGATCCAA",
-              "TGATTTCCAAGCGAAC",
-              "GCAGCTGCATACTTTC",
-              "GTTAGTGGTCCCTGTT",
-              "CGCATGGCACTTGACA"
-             ]
-            }
-           ]
-          }
-         ]
-        }
+       "name": "any",
+       "set": [
+        [
+         "TTTGACTCAGAGGACT",
+         1.0
+        ],
+        [
+         "TCATTACTCGATCCAA",
+         1.0
+        ],
+        [
+         "TGATTTCCAAGCGAAC",
+         1.0
+        ],
+        [
+         "GCAGCTGCATACTTTC",
+         1.0
+        ],
+        [
+         "GTTAGTGGTCCCTGTT",
+         1.0
+        ],
+        [
+         "CGCATGGCACTTGACA",
+         1.0
+        ]
        ]
       }
      ]

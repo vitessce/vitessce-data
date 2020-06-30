@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import argparse
 
 from anndata import read_h5ad

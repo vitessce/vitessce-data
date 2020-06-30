@@ -1,6 +1,6 @@
 {
  "datatype": "cell",
- "version": "0.1.2",
+ "version": "0.1.3",
  "tree": [
   {
    "name": "Leiden Clustering",
@@ -8,51 +8,126 @@
     {
      "name": "Cluster 00",
      "set": [
-      "AGACAAACACTAACCA"
+      [
+       "AGACAAACACTAACCA",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 04",
      "set": [
-      "GTGAGCCAGCTCGTGC",
-      "ATCCCTGCATCGTGGC",
-      "CCTACGTAGCATCTTG",
-      "TCCCAGTCATCGGCCA",
-      "AGCTCAAAGCTATCTG",
-      "CTTGATTCAGCGTAGA",
-      "CGGACACGTCCACACG",
-      "TGCAGATGTCGCTGCA",
-      "CTAAGTGGTTTACGTG",
-      "TGCACGGCATGGCACC",
-      "TATCTTGTCATGTCAG",
-      "ATTCTACGTACAACGG",
-      "ATGACCATCGACCAAT",
-      "GAGTCATGTCCAGCGT",
-      "TAAGTCGGTCCTGGTG",
-      "CGAGGCTGTTCTTAGG",
-      "TCTCACGGTGATTCTG",
-      "CACTGTCGTATACCCA"
+      [
+       "GTGAGCCAGCTCGTGC",
+       null
+      ],
+      [
+       "ATCCCTGCATCGTGGC",
+       null
+      ],
+      [
+       "CCTACGTAGCATCTTG",
+       null
+      ],
+      [
+       "TCCCAGTCATCGGCCA",
+       null
+      ],
+      [
+       "AGCTCAAAGCTATCTG",
+       null
+      ],
+      [
+       "CTTGATTCAGCGTAGA",
+       null
+      ],
+      [
+       "CGGACACGTCCACACG",
+       null
+      ],
+      [
+       "TGCAGATGTCGCTGCA",
+       null
+      ],
+      [
+       "CTAAGTGGTTTACGTG",
+       null
+      ],
+      [
+       "TGCACGGCATGGCACC",
+       null
+      ],
+      [
+       "TATCTTGTCATGTCAG",
+       null
+      ],
+      [
+       "ATTCTACGTACAACGG",
+       null
+      ],
+      [
+       "ATGACCATCGACCAAT",
+       null
+      ],
+      [
+       "GAGTCATGTCCAGCGT",
+       null
+      ],
+      [
+       "TAAGTCGGTCCTGGTG",
+       null
+      ],
+      [
+       "CGAGGCTGTTCTTAGG",
+       null
+      ],
+      [
+       "TCTCACGGTGATTCTG",
+       null
+      ],
+      [
+       "CACTGTCGTATACCCA",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 05",
      "set": [
-      "CAACGATTCGGTCTAA"
+      [
+       "CAACGATTCGGTCTAA",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 12",
      "set": [
-      "TCAGCCTTCGAGCACC",
-      "AAGTACCTCAAGCGTT",
-      "TGGGAGATCCTTCGAC",
-      "TCCAGAATCCGTCCTA"
+      [
+       "TCAGCCTTCGAGCACC",
+       null
+      ],
+      [
+       "AAGTACCTCAAGCGTT",
+       null
+      ],
+      [
+       "TGGGAGATCCTTCGAC",
+       null
+      ],
+      [
+       "TCCAGAATCCGTCCTA",
+       null
+      ]
      ]
     },
     {
      "name": "Cluster 14",
      "set": [
-      "GAGGCCTGTGCACATT"
+      [
+       "GAGGCCTGTGCACATT",
+       null
+      ]
      ]
     }
    ]
@@ -63,51 +138,126 @@
     {
      "name": "B cell",
      "set": [
-      "AGACAAACACTAACCA"
+      [
+       "AGACAAACACTAACCA",
+       1.0
+      ]
      ]
     },
     {
      "name": "CD14-positive monocyte",
      "set": [
-      "CAACGATTCGGTCTAA"
+      [
+       "CAACGATTCGGTCTAA",
+       0.9578128491645358
+      ]
      ]
     },
     {
      "name": "hematopoietic stem cell",
      "set": [
-      "TCAGCCTTCGAGCACC",
-      "AAGTACCTCAAGCGTT",
-      "TGGGAGATCCTTCGAC",
-      "TCCAGAATCCGTCCTA"
+      [
+       "TCAGCCTTCGAGCACC",
+       0.8999168151667829
+      ],
+      [
+       "AAGTACCTCAAGCGTT",
+       0.625182652990198
+      ],
+      [
+       "TGGGAGATCCTTCGAC",
+       0.9657602486516772
+      ],
+      [
+       "TCCAGAATCCGTCCTA",
+       0.9754282423018892
+      ]
      ]
     },
     {
      "name": "plasma cell",
      "set": [
-      "GTGAGCCAGCTCGTGC",
-      "ATCCCTGCATCGTGGC",
-      "CCTACGTAGCATCTTG",
-      "TCCCAGTCATCGGCCA",
-      "AGCTCAAAGCTATCTG",
-      "CTTGATTCAGCGTAGA",
-      "CGGACACGTCCACACG",
-      "TGCAGATGTCGCTGCA",
-      "CTAAGTGGTTTACGTG",
-      "TGCACGGCATGGCACC",
-      "TATCTTGTCATGTCAG",
-      "ATTCTACGTACAACGG",
-      "ATGACCATCGACCAAT",
-      "GAGTCATGTCCAGCGT",
-      "TAAGTCGGTCCTGGTG",
-      "CGAGGCTGTTCTTAGG",
-      "TCTCACGGTGATTCTG",
-      "CACTGTCGTATACCCA"
+      [
+       "GTGAGCCAGCTCGTGC",
+       0.954685116834304
+      ],
+      [
+       "ATCCCTGCATCGTGGC",
+       0.9423901098921
+      ],
+      [
+       "CCTACGTAGCATCTTG",
+       0.984341046923867
+      ],
+      [
+       "TCCCAGTCATCGGCCA",
+       0.977093926768105
+      ],
+      [
+       "AGCTCAAAGCTATCTG",
+       0.8254158465803071
+      ],
+      [
+       "CTTGATTCAGCGTAGA",
+       0.981796447376471
+      ],
+      [
+       "CGGACACGTCCACACG",
+       0.989510343787254
+      ],
+      [
+       "TGCAGATGTCGCTGCA",
+       0.8462148209767959
+      ],
+      [
+       "CTAAGTGGTTTACGTG",
+       0.934214275198265
+      ],
+      [
+       "TGCACGGCATGGCACC",
+       0.935882377413472
+      ],
+      [
+       "TATCTTGTCATGTCAG",
+       0.792478920882938
+      ],
+      [
+       "ATTCTACGTACAACGG",
+       0.9864416146968852
+      ],
+      [
+       "ATGACCATCGACCAAT",
+       0.978761061151326
+      ],
+      [
+       "GAGTCATGTCCAGCGT",
+       1.0
+      ],
+      [
+       "TAAGTCGGTCCTGGTG",
+       0.9641580809446658
+      ],
+      [
+       "CGAGGCTGTTCTTAGG",
+       1.0
+      ],
+      [
+       "TCTCACGGTGATTCTG",
+       0.528945144205175
+      ],
+      [
+       "CACTGTCGTATACCCA",
+       0.964143238132845
+      ]
      ]
     },
     {
      "name": "splenic endothelial cell",
      "set": [
-      "GAGGCCTGTGCACATT"
+      [
+       "GAGGCCTGTGCACATT",
+       0.999993267038973
+      ]
      ]
     }
    ]
@@ -116,10 +266,10 @@
    "name": "Cell Type Annotations (hierarchical)",
    "children": [
     {
-     "name": "nucleate cell",
+     "name": "hematopoietic cell",
      "children": [
       {
-       "name": "single nucleate cell",
+       "name": "leukocyte",
        "children": [
         {
          "name": "mononuclear cell",
@@ -136,7 +286,10 @@
                 {
                  "name": "any",
                  "set": [
-                  "AGACAAACACTAACCA"
+                  [
+                   "AGACAAACACTAACCA",
+                   1.0
+                  ]
                  ]
                 }
                ]
@@ -150,24 +303,78 @@
                   {
                    "name": "any",
                    "set": [
-                    "GTGAGCCAGCTCGTGC",
-                    "ATCCCTGCATCGTGGC",
-                    "CCTACGTAGCATCTTG",
-                    "TCCCAGTCATCGGCCA",
-                    "AGCTCAAAGCTATCTG",
-                    "CTTGATTCAGCGTAGA",
-                    "CGGACACGTCCACACG",
-                    "TGCAGATGTCGCTGCA",
-                    "CTAAGTGGTTTACGTG",
-                    "TGCACGGCATGGCACC",
-                    "TATCTTGTCATGTCAG",
-                    "ATTCTACGTACAACGG",
-                    "ATGACCATCGACCAAT",
-                    "GAGTCATGTCCAGCGT",
-                    "TAAGTCGGTCCTGGTG",
-                    "CGAGGCTGTTCTTAGG",
-                    "TCTCACGGTGATTCTG",
-                    "CACTGTCGTATACCCA"
+                    [
+                     "GTGAGCCAGCTCGTGC",
+                     0.954685116834304
+                    ],
+                    [
+                     "ATCCCTGCATCGTGGC",
+                     0.9423901098921
+                    ],
+                    [
+                     "CCTACGTAGCATCTTG",
+                     0.984341046923867
+                    ],
+                    [
+                     "TCCCAGTCATCGGCCA",
+                     0.977093926768105
+                    ],
+                    [
+                     "AGCTCAAAGCTATCTG",
+                     0.8254158465803071
+                    ],
+                    [
+                     "CTTGATTCAGCGTAGA",
+                     0.981796447376471
+                    ],
+                    [
+                     "CGGACACGTCCACACG",
+                     0.989510343787254
+                    ],
+                    [
+                     "TGCAGATGTCGCTGCA",
+                     0.8462148209767959
+                    ],
+                    [
+                     "CTAAGTGGTTTACGTG",
+                     0.934214275198265
+                    ],
+                    [
+                     "TGCACGGCATGGCACC",
+                     0.935882377413472
+                    ],
+                    [
+                     "TATCTTGTCATGTCAG",
+                     0.792478920882938
+                    ],
+                    [
+                     "ATTCTACGTACAACGG",
+                     0.9864416146968852
+                    ],
+                    [
+                     "ATGACCATCGACCAAT",
+                     0.978761061151326
+                    ],
+                    [
+                     "GAGTCATGTCCAGCGT",
+                     1.0
+                    ],
+                    [
+                     "TAAGTCGGTCCTGGTG",
+                     0.9641580809446658
+                    ],
+                    [
+                     "CGAGGCTGTTCTTAGG",
+                     1.0
+                    ],
+                    [
+                     "TCTCACGGTGATTCTG",
+                     0.528945144205175
+                    ],
+                    [
+                     "CACTGTCGTATACCCA",
+                     0.964143238132845
+                    ]
                    ]
                   }
                  ]
@@ -179,17 +386,7 @@
            ]
           }
          ]
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "name": "motile cell",
-     "children": [
-      {
-       "name": "leukocyte",
-       "children": [
+        },
         {
          "name": "myeloid leukocyte",
          "children": [
@@ -202,7 +399,10 @@
               {
                "name": "any",
                "set": [
-                "CAACGATTCGGTCTAA"
+                [
+                 "CAACGATTCGGTCTAA",
+                 0.9578128491645358
+                ]
                ]
               }
              ]
@@ -212,30 +412,32 @@
          ]
         }
        ]
-      }
-     ]
-    },
-    {
-     "name": "precursor cell",
-     "children": [
+      },
       {
-       "name": "stem cell",
+       "name": "hematopoietic precursor cell",
        "children": [
         {
-         "name": "somatic stem cell",
+         "name": "hematopoietic stem cell",
          "children": [
           {
-           "name": "hematopoietic stem cell",
-           "children": [
-            {
-             "name": "any",
-             "set": [
-              "TCAGCCTTCGAGCACC",
-              "AAGTACCTCAAGCGTT",
-              "TGGGAGATCCTTCGAC",
-              "TCCAGAATCCGTCCTA"
-             ]
-            }
+           "name": "any",
+           "set": [
+            [
+             "TCAGCCTTCGAGCACC",
+             0.8999168151667829
+            ],
+            [
+             "AAGTACCTCAAGCGTT",
+             0.625182652990198
+            ],
+            [
+             "TGGGAGATCCTTCGAC",
+             0.9657602486516772
+            ],
+            [
+             "TCCAGAATCCGTCCTA",
+             0.9754282423018892
+            ]
            ]
           }
          ]
@@ -245,10 +447,10 @@
      ]
     },
     {
-     "name": "barrier cell",
+     "name": "epithelial cell",
      "children": [
       {
-       "name": "lining cell",
+       "name": "meso-epithelial cell",
        "children": [
         {
          "name": "endothelial cell",
@@ -259,7 +461,10 @@
             {
              "name": "any",
              "set": [
-              "GAGGCCTGTGCACATT"
+              [
+               "GAGGCCTGTGCACATT",
+               0.999993267038973
+              ]
              ]
             }
            ]

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import argparse
 
 import json
@@ -36,7 +34,9 @@ def generate_json_files(
             "mappings": {"UMAP": [v['umap_x'], v['umap_y']]},
             "factors": {
                 "Leiden Clustering": v['leiden'],
-                "Cell Type Annotation": v[COLUMNS.ANNOTATION.value]
+                "Cell Type Annotation": v[COLUMNS.ANNOTATION.value],
+                "Cell Type Annotation Prediction Score":
+                    str(v[COLUMNS.PREDICTION_SCORE.value])
             }
         }
         for (k, v) in cells_df_items
@@ -60,6 +60,9 @@ def generate_json_files(
     }
     with open(output_factors_json_file, 'w') as f:
         json.dump(factors, f, indent=1)
+
+    # Remove annotations with NaN prediction scores
+    df = df.dropna(subset=[COLUMNS.PREDICTION_SCORE.value], axis=0)
 
     # Generate .flat.cell_sets.json
     df = df.reset_index()
