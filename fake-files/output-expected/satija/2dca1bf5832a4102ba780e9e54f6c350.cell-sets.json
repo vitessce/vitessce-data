@@ -124,7 +124,7 @@
      "name": "plasma cell",
      "children": [
       {
-       "name": "any",
+       "name": "plasma cell (any)",
        "set": [
         [
          "AGACACTGTCTCAGAT",
@@ -210,7 +210,7 @@
      "name": "plasmablast",
      "children": [
       {
-       "name": "any",
+       "name": "plasmablast (any)",
        "set": [
         [
          "TTTGACTCAGAGGACT",

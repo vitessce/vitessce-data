@@ -124,7 +124,7 @@
      "name": "B cell",
      "children": [
       {
-       "name": "any",
+       "name": "B cell (any)",
        "set": [
         [
          "AGCCAGCGTGAGAACC",
@@ -141,7 +141,7 @@
        "name": "plasma cell",
        "children": [
         {
-         "name": "any",
+         "name": "plasma cell (any)",
          "set": [
           [
            "TCATGGAAGGATATAC",

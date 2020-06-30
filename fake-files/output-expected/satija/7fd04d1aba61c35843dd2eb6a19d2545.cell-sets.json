@@ -156,7 +156,7 @@
              "name": "B cell",
              "children": [
               {
-               "name": "any",
+               "name": "B cell (any)",
                "set": [
                 [
                  "AAGCCATCATCCGAAT",
@@ -221,7 +221,7 @@
                "name": "plasmablast",
                "children": [
                 {
-                 "name": "any",
+                 "name": "plasmablast (any)",
                  "set": [
                   [
                    "ATTACCTCAACACGTT",
@@ -246,7 +246,7 @@
              "name": "alpha-beta T cell",
              "children": [
               {
-               "name": "any",
+               "name": "alpha-beta T cell (any)",
                "set": [
                 [
                  "ACAGAAACAGATCCAT",
@@ -272,7 +272,7 @@
            "name": "CD14-positive monocyte",
            "children": [
             {
-             "name": "any",
+             "name": "CD14-positive monocyte (any)",
              "set": [
               [
                "AATTCCTAGCATACTC",
@@ -307,7 +307,7 @@
            "name": "CD1c-positive myeloid dendritic cell",
            "children": [
             {
-             "name": "any",
+             "name": "CD1c-positive myeloid dendritic cell (any)",
              "set": [
               [
                "AGACCATAGTTCGCAT",
@@ -330,7 +330,7 @@
        "name": "hematopoietic stem cell",
        "children": [
         {
-         "name": "any",
+         "name": "hematopoietic stem cell (any)",
          "set": [
           [
            "TCAGGGCCATGGGATG",

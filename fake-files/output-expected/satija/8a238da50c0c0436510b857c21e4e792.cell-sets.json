@@ -154,7 +154,7 @@
                "name": "B cell",
                "children": [
                 {
-                 "name": "any",
+                 "name": "B cell (any)",
                  "set": [
                   [
                    "AGACAAACACTAACCA",
@@ -171,7 +171,7 @@
                  "name": "plasma cell",
                  "children": [
                   {
-                   "name": "any",
+                   "name": "plasma cell (any)",
                    "set": [
                     [
                      "GTGAGCCAGCTCGTGC",
@@ -267,7 +267,7 @@
              "name": "CD14-positive monocyte",
              "children": [
               {
-               "name": "any",
+               "name": "CD14-positive monocyte (any)",
                "set": [
                 [
                  "CAACGATTCGGTCTAA",
@@ -290,7 +290,7 @@
          "name": "hematopoietic stem cell",
          "children": [
           {
-           "name": "any",
+           "name": "hematopoietic stem cell (any)",
            "set": [
             [
              "TCAGCCTTCGAGCACC",
@@ -329,7 +329,7 @@
            "name": "splenic endothelial cell",
            "children": [
             {
-             "name": "any",
+             "name": "splenic endothelial cell (any)",
              "set": [
               [
                "GAGGCCTGTGCACATT",
