@@ -8,10 +8,12 @@ from utils import (
 )
 
 
-# Generate a tree of cell sets representing
-# the clusters from the Leiden clustering
-# algorithm.
 def generate_leiden_cluster_cell_sets(df):
+    """
+    Generate a tree of cell sets representing
+    the clusters from the Leiden clustering
+    algorithm.
+    """
     tree = init_cell_sets_tree()
 
     leiden_clusters_children = []
@@ -32,10 +34,12 @@ def generate_leiden_cluster_cell_sets(df):
     return tree
 
 
-# Generate a tree of cell sets
-# representing the cell type annotations,
-# arranged on one level (not heirarchical).
 def generate_cell_type_flat_cell_sets(df):
+    """
+    Generate a tree of cell sets
+    representing the cell type annotations,
+    arranged on one level (not heirarchical).
+    """
     tree = init_cell_sets_tree()
 
     cell_type_annotation_children = []
@@ -59,9 +63,11 @@ def generate_cell_type_flat_cell_sets(df):
     return tree
 
 
-# Generate a tree of cell sets
-# for hierarchical cell type annotations.
 def generate_cell_type_cell_sets(df, cl_obo_file):
+    """
+    Generate a tree of cell sets
+    for hierarchical cell type annotations.
+    """
     tree = init_cell_sets_tree()
 
     # Load the cell ontology DAG
