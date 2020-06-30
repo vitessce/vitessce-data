@@ -8,7 +8,7 @@ assert 'CLOUD_TARGET' in config
 assert 'annotations_spleen_0510' in config
 
 # Directory / file constants
-SRC_DIR = Path(".") / "src"
+SRC_DIR = Path("src")
 RAW_DIR = Path(config['INPUT'])
 PROCESSED_DIR = Path(config['OUTPUT'])
 
