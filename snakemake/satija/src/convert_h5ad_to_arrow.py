@@ -3,6 +3,7 @@ import argparse
 from anndata import read_h5ad
 import pyarrow as pa
 import pandas as pd
+import numpy as np
 
 
 def h5ad_to_arrow(h5ad_file, arrow_file):
@@ -15,11 +16,12 @@ def h5ad_to_arrow(h5ad_file, arrow_file):
         data={'umap_x': umap[0], 'umap_y': umap[1], 'leiden': leiden},
         index=index
     )
+    df['umap_x'] = df['umap_x'].astype(np.float32)
+    df['umap_y'] = df['umap_y'].astype(np.float32)
     table = pa.Table.from_pandas(df)
 
-    writer = pa.RecordBatchFileWriter(arrow_file, table.schema)
-    writer.write(table)
-    writer.close()
+    with pa.RecordBatchFileWriter(arrow_file, table.schema) as writer:
+        writer.write(table)
 
 
 if __name__ == '__main__':
