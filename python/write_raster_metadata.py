@@ -36,7 +36,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--raster_json",
-        type=argparse.FileType("x"),
+        type=argparse.FileType("w"),
         required=True,
         help="Write raster metadata into single output.",
     )

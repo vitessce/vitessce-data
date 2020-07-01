@@ -103,7 +103,7 @@ rule untar_cells_data:
         )
     shell:
         '''
-        tar -xvzf {input} -C {RAW_DIR}
+        tar -xvf {input} -C {RAW_DIR}
         '''
 
 # Download TAR file containing UMAP clustering data.
