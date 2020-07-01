@@ -208,24 +208,6 @@
                0.5254610579406571
               ]
              ]
-            },
-            {
-             "name": "antibody secreting cell",
-             "children": [
-              {
-               "name": "plasmablast",
-               "set": [
-                [
-                 "ATTACCTCAACACGTT",
-                 0.571830616952308
-                ],
-                [
-                 "ATTCAGGGTCAGACTT",
-                 0.671761691006812
-                ]
-               ]
-              }
-             ]
             }
            ]
           },
@@ -289,6 +271,29 @@
             [
              "AGACCATAGTTCGCAT",
              0.6656291150794549
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "professional antigen presenting cell",
+       "children": [
+        {
+         "name": "mature B cell",
+         "children": [
+          {
+           "name": "plasmablast",
+           "set": [
+            [
+             "ATTACCTCAACACGTT",
+             0.571830616952308
+            ],
+            [
+             "ATTCAGGGTCAGACTT",
+             0.671761691006812
             ]
            ]
           }

@@ -202,35 +202,6 @@
                  0.997361990442739
                 ]
                ]
-              },
-              {
-               "name": "plasmablast",
-               "set": [
-                [
-                 "CCTAAGACAGAACTCT",
-                 0.602587822401498
-                ],
-                [
-                 "GTTCATTCACTCATAG",
-                 0.7092986019126999
-                ],
-                [
-                 "CCTCCAAGTGCCCGTA",
-                 0.7114575684600641
-                ],
-                [
-                 "AGTACCAGTAGTAAGT",
-                 0.751685257508346
-                ],
-                [
-                 "TCTACATCACAGAGAC",
-                 0.700644881185326
-                ],
-                [
-                 "AGCCAGCTCCACCTCA",
-                 0.44273656191849897
-                ]
-               ]
               }
              ]
             }
@@ -266,6 +237,45 @@
             [
              "ACGCACGGTGTTTACG",
              0.841034599582662
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "professional antigen presenting cell",
+       "children": [
+        {
+         "name": "mature B cell",
+         "children": [
+          {
+           "name": "plasmablast",
+           "set": [
+            [
+             "CCTAAGACAGAACTCT",
+             0.602587822401498
+            ],
+            [
+             "GTTCATTCACTCATAG",
+             0.7092986019126999
+            ],
+            [
+             "CCTCCAAGTGCCCGTA",
+             0.7114575684600641
+            ],
+            [
+             "AGTACCAGTAGTAAGT",
+             0.751685257508346
+            ],
+            [
+             "TCTACATCACAGAGAC",
+             0.700644881185326
+            ],
+            [
+             "AGCCAGCTCCACCTCA",
+             0.44273656191849897
             ]
            ]
           }
