@@ -34,6 +34,23 @@ def init_cell_sets_tree():
 
 # Merge multiple cell sets trees.
 def merge_cell_sets_trees(*args):
+    '''
+    >>> tree_a = init_cell_sets_tree()
+    >>> tree_b = init_cell_sets_tree()
+    >>> tree_a["tree"].append({
+    ...   "name": "a",
+    ...   "set": [1, 2, 3]
+    ... })
+    >>> tree_b["tree"].append({
+    ...   "name": "b",
+    ...   "set": [4, 5, 6]
+    ... })
+    >>> tree_merged = merge_cell_sets_trees(tree_a, tree_b)
+    >>> len(tree_merged["tree"])
+    2
+    >>> [x["name"] for x in tree_merged["tree"]]
+    ['a', 'b']
+    '''
     assert len(args) > 1
 
     result = args[0]
@@ -43,8 +60,23 @@ def merge_cell_sets_trees(*args):
     return result
 
 
-# Recursively convert a nested dict to the tree schema.
+# Recursively convert a nested dict to a level zero node
+# of the cell-set hierarchy schema.
 def dict_to_tree(name, value):
+    '''
+    >>> h_dict = {
+    ...     "hematopoietic cell": {
+    ...         "leukocyte": [4, 5, 6],
+    ...         "hematopoietic precursor cell": [7, 8, 9]
+    ...     },
+    ...     "epithelial cell": [1, 2, 3]
+    ... }
+    >>> h_tree = dict_to_tree("test", h_dict)
+    >>> h_tree["name"]
+    'test'
+    >>> [x["name"] for x in h_tree["children"]]
+    ['hematopoietic cell', 'epithelial cell']
+    '''
     if isinstance(value, dict):
         return {
             "name": name,
@@ -63,6 +95,18 @@ def dict_to_tree(name, value):
 # Given a list of multiple paths up the DAG,
 # sort the list according to a heuristic.
 def sort_paths_up_cell_ontology(paths_up):
+    '''
+    >>> ex_paths_up = [
+    ...     ['b', 'motile cell', 'native cell', 'cell'],
+    ...     ['a', 'b', 'c', 'somatic cell', 'native cell', 'cell'],
+    ...     ['a', 'somatic cell', 'native cell', 'cell']
+    ... ]
+    >>> sorted_paths_up = sort_paths_up_cell_ontology(ex_paths_up)
+    >>> sorted_paths_up[0]
+    ['a', 'somatic cell', 'native cell', 'cell']
+    >>> sorted_paths_up[1]
+    ['a', 'b', 'c', 'somatic cell', 'native cell', 'cell']
+    '''
     PREFERENCES = [
         ['animal cell', 'eukaryotic cell', 'native cell', 'cell'],
         ['somatic cell', 'native cell', 'cell'],
@@ -114,3 +158,67 @@ def get_paths_up_cell_ontology(graph, node_id):
             for parent_path in parent_paths:
                 up_dag_paths.append([node_id] + parent_path)
     return up_dag_paths
+
+
+# Using a path through the DAG for a particular cell set,
+# recursively fill in a nested dict.
+def fill_in_dict_from_path(d, keys, child):
+    '''
+    >>> h = dict()
+    >>> path_set_tuple = (
+    ...     ["type a", "type b", "type c"],
+    ...     ["cell 1", "cell 2", "cell 3"]
+    ... )
+    >>> fill_in_dict_from_path(h, path_set_tuple[0], path_set_tuple[1])
+    {'any': ['cell 1', 'cell 2', 'cell 3']}
+    >>> h
+    {'type a': {'type b': {'type c': {'any': ['cell 1', 'cell 2', 'cell 3']}}}}
+    '''
+    """
+    d : dict The resulting dictionary so far.
+    keys : A list of keys representing the path down the cell ontology DAG.
+    child : A set value.
+    """
+    key = keys[0]
+
+    if key in d and isinstance(d[key], dict):
+        result = d[key]
+    else:
+        result = d[key] = dict()
+
+    if len(keys) == 1:
+        result["any"] = child
+        return result
+    else:
+        new_keys = keys.copy()
+        new_keys.pop(0)
+        return fill_in_dict_from_path(result, new_keys, child)
+
+
+# Try removing the extra hierarchy level for the "any" set,
+# if it is an "only-child"
+def remove_any_from_dict_levels(v):
+    '''
+    >>> h = {'type b': {'type c': {'any': ['cell 1', 'cell 2', 'cell 3']}}}
+    >>> new_h = remove_any_from_dict_levels(h)
+    >>> new_h
+    {'type b': {'type c': ['cell 1', 'cell 2', 'cell 3']}}
+    '''
+    if type(v) is dict:
+        keys = list(v.keys())
+        if len(keys) == 1 and keys[0] == "any":
+            # Return the value associated with the "any" property,
+            # since "any" has no siblings.
+            return v["any"]
+        else:
+            # This is a dict with multiple values, so recursively
+            # try this function on all of its values.
+            return dict(
+                zip(
+                    keys,
+                    list(map(remove_any_from_dict_levels, v.values()))
+                )
+            )
+    else:
+        # This is not a dict, so just return as-is.
+        return v

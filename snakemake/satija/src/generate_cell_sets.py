@@ -5,6 +5,8 @@ from utils import (
     dict_to_tree,
     sort_paths_up_cell_ontology,
     get_paths_up_cell_ontology,
+    fill_in_dict_from_path,
+    remove_any_from_dict_levels,
 )
 
 
@@ -134,27 +136,16 @@ def generate_cell_type_cell_sets(df, cl_obo_file):
         else:
             break
 
-    # Construct a hierarchy of cell types.
-    def find_or_create_parent(d, keys, child):
-        key = keys[0]
-
-        if key in d and isinstance(d[key], dict):
-            result = d[key]
-        else:
-            result = d[key] = dict()
-
-        if len(keys) == 1:
-            result[f"{key} (any)"] = child
-            return result
-        else:
-            new_keys = keys.copy()
-            new_keys.pop(0)
-            return find_or_create_parent(result, new_keys, child)
-
+    # Create the hierarchy as a dict.
     h = dict()
     for ancestors, cell_set in ancestors_and_sets:
-        find_or_create_parent(h, ancestors, cell_set)
+        fill_in_dict_from_path(h, ancestors, cell_set)
 
+    # Try removing all of the single-child "any" levels
+    # now that the hierarchy has been created as a dict.
+    h = remove_any_from_dict_levels(h)
+
+    # Transform the dict into an object matching the JSON schema.
     tree["tree"] = [
         dict_to_tree("Cell Type Annotations", h)
     ]

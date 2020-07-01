@@ -152,16 +152,11 @@
              "children": [
               {
                "name": "B cell",
-               "children": [
-                {
-                 "name": "B cell (any)",
-                 "set": [
-                  [
-                   "AGACAAACACTAACCA",
-                   1.0
-                  ]
-                 ]
-                }
+               "set": [
+                [
+                 "AGACAAACACTAACCA",
+                 1.0
+                ]
                ]
               },
               {
@@ -169,84 +164,79 @@
                "children": [
                 {
                  "name": "plasma cell",
-                 "children": [
-                  {
-                   "name": "plasma cell (any)",
-                   "set": [
-                    [
-                     "GTGAGCCAGCTCGTGC",
-                     0.954685116834304
-                    ],
-                    [
-                     "ATCCCTGCATCGTGGC",
-                     0.9423901098921
-                    ],
-                    [
-                     "CCTACGTAGCATCTTG",
-                     0.984341046923867
-                    ],
-                    [
-                     "TCCCAGTCATCGGCCA",
-                     0.977093926768105
-                    ],
-                    [
-                     "AGCTCAAAGCTATCTG",
-                     0.8254158465803071
-                    ],
-                    [
-                     "CTTGATTCAGCGTAGA",
-                     0.981796447376471
-                    ],
-                    [
-                     "CGGACACGTCCACACG",
-                     0.989510343787254
-                    ],
-                    [
-                     "TGCAGATGTCGCTGCA",
-                     0.8462148209767959
-                    ],
-                    [
-                     "CTAAGTGGTTTACGTG",
-                     0.934214275198265
-                    ],
-                    [
-                     "TGCACGGCATGGCACC",
-                     0.935882377413472
-                    ],
-                    [
-                     "TATCTTGTCATGTCAG",
-                     0.792478920882938
-                    ],
-                    [
-                     "ATTCTACGTACAACGG",
-                     0.9864416146968852
-                    ],
-                    [
-                     "ATGACCATCGACCAAT",
-                     0.978761061151326
-                    ],
-                    [
-                     "GAGTCATGTCCAGCGT",
-                     1.0
-                    ],
-                    [
-                     "TAAGTCGGTCCTGGTG",
-                     0.9641580809446658
-                    ],
-                    [
-                     "CGAGGCTGTTCTTAGG",
-                     1.0
-                    ],
-                    [
-                     "TCTCACGGTGATTCTG",
-                     0.528945144205175
-                    ],
-                    [
-                     "CACTGTCGTATACCCA",
-                     0.964143238132845
-                    ]
-                   ]
-                  }
+                 "set": [
+                  [
+                   "GTGAGCCAGCTCGTGC",
+                   0.954685116834304
+                  ],
+                  [
+                   "ATCCCTGCATCGTGGC",
+                   0.9423901098921
+                  ],
+                  [
+                   "CCTACGTAGCATCTTG",
+                   0.984341046923867
+                  ],
+                  [
+                   "TCCCAGTCATCGGCCA",
+                   0.977093926768105
+                  ],
+                  [
+                   "AGCTCAAAGCTATCTG",
+                   0.8254158465803071
+                  ],
+                  [
+                   "CTTGATTCAGCGTAGA",
+                   0.981796447376471
+                  ],
+                  [
+                   "CGGACACGTCCACACG",
+                   0.989510343787254
+                  ],
+                  [
+                   "TGCAGATGTCGCTGCA",
+                   0.8462148209767959
+                  ],
+                  [
+                   "CTAAGTGGTTTACGTG",
+                   0.934214275198265
+                  ],
+                  [
+                   "TGCACGGCATGGCACC",
+                   0.935882377413472
+                  ],
+                  [
+                   "TATCTTGTCATGTCAG",
+                   0.792478920882938
+                  ],
+                  [
+                   "ATTCTACGTACAACGG",
+                   0.9864416146968852
+                  ],
+                  [
+                   "ATGACCATCGACCAAT",
+                   0.978761061151326
+                  ],
+                  [
+                   "GAGTCATGTCCAGCGT",
+                   1.0
+                  ],
+                  [
+                   "TAAGTCGGTCCTGGTG",
+                   0.9641580809446658
+                  ],
+                  [
+                   "CGAGGCTGTTCTTAGG",
+                   1.0
+                  ],
+                  [
+                   "TCTCACGGTGATTCTG",
+                   0.528945144205175
+                  ],
+                  [
+                   "CACTGTCGTATACCCA",
+                   0.964143238132845
+                  ]
                  ]
                 }
                ]
@@ -265,16 +255,11 @@
            "children": [
             {
              "name": "CD14-positive monocyte",
-             "children": [
-              {
-               "name": "CD14-positive monocyte (any)",
-               "set": [
-                [
-                 "CAACGATTCGGTCTAA",
-                 0.9578128491645358
-                ]
-               ]
-              }
+             "set": [
+              [
+               "CAACGATTCGGTCTAA",
+               0.9578128491645358
+              ]
              ]
             }
            ]
@@ -288,28 +273,23 @@
        "children": [
         {
          "name": "hematopoietic stem cell",
-         "children": [
-          {
-           "name": "hematopoietic stem cell (any)",
-           "set": [
-            [
-             "TCAGCCTTCGAGCACC",
-             0.8999168151667829
-            ],
-            [
-             "AAGTACCTCAAGCGTT",
-             0.625182652990198
-            ],
-            [
-             "TGGGAGATCCTTCGAC",
-             0.9657602486516772
-            ],
-            [
-             "TCCAGAATCCGTCCTA",
-             0.9754282423018892
-            ]
-           ]
-          }
+         "set": [
+          [
+           "TCAGCCTTCGAGCACC",
+           0.8999168151667829
+          ],
+          [
+           "AAGTACCTCAAGCGTT",
+           0.625182652990198
+          ],
+          [
+           "TGGGAGATCCTTCGAC",
+           0.9657602486516772
+          ],
+          [
+           "TCCAGAATCCGTCCTA",
+           0.9754282423018892
+          ]
          ]
         }
        ]
@@ -327,16 +307,11 @@
          "children": [
           {
            "name": "splenic endothelial cell",
-           "children": [
-            {
-             "name": "splenic endothelial cell (any)",
-             "set": [
-              [
-               "GAGGCCTGTGCACATT",
-               0.999993267038973
-              ]
-             ]
-            }
+           "set": [
+            [
+             "GAGGCCTGTGCACATT",
+             0.999993267038973
+            ]
            ]
           }
          ]
