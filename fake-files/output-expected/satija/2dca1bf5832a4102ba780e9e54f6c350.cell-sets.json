@@ -1,0 +1,266 @@
+{
+ "datatype": "cell",
+ "version": "0.1.3",
+ "tree": [
+  {
+   "name": "Leiden Clustering",
+   "children": [
+    {
+     "name": "Cluster 05",
+     "set": [
+      [
+       "AGACACTGTCTCAGAT",
+       null
+      ],
+      [
+       "TCATGCCAGTTGAATG",
+       null
+      ],
+      [
+       "CATCAAGCAGATCCTA",
+       null
+      ],
+      [
+       "TCATCCGTCGTCTAAG",
+       null
+      ],
+      [
+       "GTCATTTCAGATCCTA",
+       null
+      ],
+      [
+       "TAACACGTCATCGCCT",
+       null
+      ],
+      [
+       "TACCCGTCACGGTGCT",
+       null
+      ],
+      [
+       "GGGCGTTCAAATGAAC",
+       null
+      ],
+      [
+       "TCTGCCATCACGGGCT",
+       null
+      ],
+      [
+       "GTTTGGAAGTTACGAA",
+       null
+      ],
+      [
+       "CAACCAAGTTTAGAGA",
+       null
+      ],
+      [
+       "ACCAACATCGTAGCCG",
+       null
+      ],
+      [
+       "AGATGCTGTGTGGACA",
+       null
+      ],
+      [
+       "AGACACTCACTTCCTG",
+       null
+      ],
+      [
+       "TCATCCGCACGAAAGC",
+       null
+      ],
+      [
+       "GCATCGGGTCTGTGGC",
+       null
+      ],
+      [
+       "TCTTAGTCAACGATTC",
+       null
+      ],
+      [
+       "TTGGTTTGTACGAGCA",
+       null
+      ],
+      [
+       "TCATTGTCACACTGGC",
+       null
+      ]
+     ]
+    },
+    {
+     "name": "Cluster 18",
+     "set": [
+      [
+       "TTTGACTCAGAGGACT",
+       null
+      ],
+      [
+       "TCATTACTCGATCCAA",
+       null
+      ],
+      [
+       "TGATTTCCAAGCGAAC",
+       null
+      ],
+      [
+       "GCAGCTGCATACTTTC",
+       null
+      ],
+      [
+       "GTTAGTGGTCCCTGTT",
+       null
+      ],
+      [
+       "CGCATGGCACTTGACA",
+       null
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cell Type Annotations",
+   "children": [
+    {
+     "name": "mononuclear cell",
+     "children": [
+      {
+       "name": "lymphocyte",
+       "children": [
+        {
+         "name": "lymphocyte of B lineage",
+         "children": [
+          {
+           "name": "antibody secreting cell",
+           "children": [
+            {
+             "name": "plasma cell",
+             "set": [
+              [
+               "AGACACTGTCTCAGAT",
+               1.0
+              ],
+              [
+               "TCATGCCAGTTGAATG",
+               1.0
+              ],
+              [
+               "CATCAAGCAGATCCTA",
+               1.0
+              ],
+              [
+               "TCATCCGTCGTCTAAG",
+               1.0
+              ],
+              [
+               "GTCATTTCAGATCCTA",
+               1.0
+              ],
+              [
+               "TAACACGTCATCGCCT",
+               1.0
+              ],
+              [
+               "TACCCGTCACGGTGCT",
+               1.0
+              ],
+              [
+               "GGGCGTTCAAATGAAC",
+               1.0
+              ],
+              [
+               "TCTGCCATCACGGGCT",
+               1.0
+              ],
+              [
+               "GTTTGGAAGTTACGAA",
+               1.0
+              ],
+              [
+               "CAACCAAGTTTAGAGA",
+               1.0
+              ],
+              [
+               "ACCAACATCGTAGCCG",
+               1.0
+              ],
+              [
+               "AGATGCTGTGTGGACA",
+               1.0
+              ],
+              [
+               "AGACACTCACTTCCTG",
+               1.0
+              ],
+              [
+               "TCATCCGCACGAAAGC",
+               1.0
+              ],
+              [
+               "GCATCGGGTCTGTGGC",
+               1.0
+              ],
+              [
+               "TCTTAGTCAACGATTC",
+               1.0
+              ],
+              [
+               "TTGGTTTGTACGAGCA",
+               1.0
+              ],
+              [
+               "TCATTGTCACACTGGC",
+               1.0
+              ]
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "professional antigen presenting cell",
+     "children": [
+      {
+       "name": "mature B cell",
+       "children": [
+        {
+         "name": "plasmablast",
+         "set": [
+          [
+           "TTTGACTCAGAGGACT",
+           1.0
+          ],
+          [
+           "TCATTACTCGATCCAA",
+           1.0
+          ],
+          [
+           "TGATTTCCAAGCGAAC",
+           1.0
+          ],
+          [
+           "GCAGCTGCATACTTTC",
+           1.0
+          ],
+          [
+           "GTTAGTGGTCCCTGTT",
+           1.0
+          ],
+          [
+           "CGCATGGCACTTGACA",
+           1.0
+          ]
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,327 @@
+{
+ "AATTCCTAGCATACTC": {
+  "mappings": {
+   "UMAP": [
+    3.1129322052001953,
+    7.457456588745117
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "CD14-positive monocyte",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCAGGGCCATGGGATG": {
+  "mappings": {
+   "UMAP": [
+    14.221271514892578,
+    3.421823024749756
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "hematopoietic stem cell",
+   "Cell Type Annotation Prediction Score": "0.64"
+  }
+ },
+ "ACTTATCGTCCAATCA": {
+  "mappings": {
+   "UMAP": [
+    14.069754600524902,
+    3.7645792961120605
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "hematopoietic stem cell",
+   "Cell Type Annotation Prediction Score": "0.25"
+  }
+ },
+ "AAGCCATCATCCGAAT": {
+  "mappings": {
+   "UMAP": [
+    15.707490921020508,
+    -0.27426156401634216
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TGCCGAGTCAGACTGT": {
+  "mappings": {
+   "UMAP": [
+    11.70411205291748,
+    -0.18383903801441193
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 03",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "0.99"
+  }
+ },
+ "AGACCATAGTTCGCAT": {
+  "mappings": {
+   "UMAP": [
+    4.3111348152160645,
+    3.996384620666504
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 08",
+   "Cell Type Annotation": "CD1c-positive myeloid dendritic cell",
+   "Cell Type Annotation Prediction Score": "0.67"
+  }
+ },
+ "AGGGTCCCACATACGT": {
+  "mappings": {
+   "UMAP": [
+    13.955876350402832,
+    -2.0402305126190186
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 01",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "ATTCCCGAGTCACTCA": {
+  "mappings": {
+   "UMAP": [
+    3.049201250076294,
+    8.061066627502441
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "CD14-positive monocyte",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "CGCATAAAGCGAGTAC": {
+  "mappings": {
+   "UMAP": [
+    4.0861496925354,
+    5.006081581115723
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 08",
+   "Cell Type Annotation": "CD14-positive monocyte",
+   "Cell Type Annotation Prediction Score": "0.98"
+  }
+ },
+ "CACGTTCCAGAACCGA": {
+  "mappings": {
+   "UMAP": [
+    15.611271858215332,
+    -0.3405543267726898
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 01",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "ACAGAAACAGATCCAT": {
+  "mappings": {
+   "UMAP": [
+    13.957635879516602,
+    5.774977684020996
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 02",
+   "Cell Type Annotation": "alpha-beta T cell",
+   "Cell Type Annotation Prediction Score": "0.86"
+  }
+ },
+ "CCGAACGGTCTGTCCT": {
+  "mappings": {
+   "UMAP": [
+    14.050145149230957,
+    1.8570172786712646
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "0.93"
+  }
+ },
+ "CACCGTTCAACAAAGT": {
+  "mappings": {
+   "UMAP": [
+    3.5616352558135986,
+    4.95303201675415
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "CD14-positive monocyte",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "ATCAGGTTCAAGCCGC": {
+  "mappings": {
+   "UMAP": [
+    13.605466842651367,
+    -1.561227560043335
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 03",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCAAGTGCATCGAACT": {
+  "mappings": {
+   "UMAP": [
+    13.028449058532715,
+    -0.4448819160461426
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 01",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "GCATTAGCAAGCTACT": {
+  "mappings": {
+   "UMAP": [
+    4.727012634277344,
+    4.08357048034668
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 08",
+   "Cell Type Annotation": "hematopoietic stem cell",
+   "Cell Type Annotation Prediction Score": "0.8"
+  }
+ },
+ "AGCGCCATCCGGCAAC": {
+  "mappings": {
+   "UMAP": [
+    4.511479377746582,
+    3.8689637184143066
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 08",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "0.67"
+  }
+ },
+ "TCACAAGGTGTTCGAT": {
+  "mappings": {
+   "UMAP": [
+    14.035028457641602,
+    0.1531675159931183
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "0.99"
+  }
+ },
+ "GGTCACGGTGGGATTG": {
+  "mappings": {
+   "UMAP": [
+    14.609174728393555,
+    0.4181425869464874
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 01",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "ATTACCTCAACACGTT": {
+  "mappings": {
+   "UMAP": [
+    14.644265174865723,
+    2.245840549468994
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "0.57"
+  }
+ },
+ "TAGACTGTCCTCACGT": {
+  "mappings": {
+   "UMAP": [
+    13.704412460327148,
+    -0.2603658437728882
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 01",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCATTACAGGCGATAC": {
+  "mappings": {
+   "UMAP": [
+    4.0544962882995605,
+    4.8711771965026855
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 08",
+   "Cell Type Annotation": "CD14-positive monocyte",
+   "Cell Type Annotation Prediction Score": "0.9"
+  }
+ },
+ "GCCCGAACAAAGCAAT": {
+  "mappings": {
+   "UMAP": [
+    14.200265884399414,
+    0.49533212184906006
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 01",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "ACCAAACGTGTGTGTT": {
+  "mappings": {
+   "UMAP": [
+    14.442206382751465,
+    2.3094098567962646
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "0.53"
+  }
+ },
+ "ATTCAGGGTCAGACTT": {
+  "mappings": {
+   "UMAP": [
+    14.520613670349121,
+    3.0908689498901367
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 09",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "0.67"
+  }
+ }
+}

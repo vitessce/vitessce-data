@@ -1,0 +1,331 @@
+{
+ "datatype": "cell",
+ "version": "0.1.3",
+ "tree": [
+  {
+   "name": "Leiden Clustering",
+   "children": [
+    {
+     "name": "Cluster 01",
+     "set": [
+      [
+       "AGGGTCCCACATACGT",
+       null
+      ],
+      [
+       "CACGTTCCAGAACCGA",
+       null
+      ],
+      [
+       "TCAAGTGCATCGAACT",
+       null
+      ],
+      [
+       "GGTCACGGTGGGATTG",
+       null
+      ],
+      [
+       "TAGACTGTCCTCACGT",
+       null
+      ],
+      [
+       "GCCCGAACAAAGCAAT",
+       null
+      ]
+     ]
+    },
+    {
+     "name": "Cluster 02",
+     "set": [
+      [
+       "ACAGAAACAGATCCAT",
+       null
+      ]
+     ]
+    },
+    {
+     "name": "Cluster 03",
+     "set": [
+      [
+       "TGCCGAGTCAGACTGT",
+       null
+      ],
+      [
+       "ATCAGGTTCAAGCCGC",
+       null
+      ]
+     ]
+    },
+    {
+     "name": "Cluster 04",
+     "set": [
+      [
+       "AATTCCTAGCATACTC",
+       null
+      ],
+      [
+       "ATTCCCGAGTCACTCA",
+       null
+      ],
+      [
+       "CACCGTTCAACAAAGT",
+       null
+      ]
+     ]
+    },
+    {
+     "name": "Cluster 08",
+     "set": [
+      [
+       "AGACCATAGTTCGCAT",
+       null
+      ],
+      [
+       "CGCATAAAGCGAGTAC",
+       null
+      ],
+      [
+       "GCATTAGCAAGCTACT",
+       null
+      ],
+      [
+       "AGCGCCATCCGGCAAC",
+       null
+      ],
+      [
+       "TCATTACAGGCGATAC",
+       null
+      ]
+     ]
+    },
+    {
+     "name": "Cluster 09",
+     "set": [
+      [
+       "TCAGGGCCATGGGATG",
+       null
+      ],
+      [
+       "ACTTATCGTCCAATCA",
+       null
+      ],
+      [
+       "AAGCCATCATCCGAAT",
+       null
+      ],
+      [
+       "CCGAACGGTCTGTCCT",
+       null
+      ],
+      [
+       "TCACAAGGTGTTCGAT",
+       null
+      ],
+      [
+       "ATTACCTCAACACGTT",
+       null
+      ],
+      [
+       "ACCAAACGTGTGTGTT",
+       null
+      ],
+      [
+       "ATTCAGGGTCAGACTT",
+       null
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cell Type Annotations",
+   "children": [
+    {
+     "name": "leukocyte",
+     "children": [
+      {
+       "name": "mononuclear cell",
+       "children": [
+        {
+         "name": "lymphocyte",
+         "children": [
+          {
+           "name": "lymphocyte of B lineage",
+           "children": [
+            {
+             "name": "B cell",
+             "set": [
+              [
+               "AAGCCATCATCCGAAT",
+               1.0
+              ],
+              [
+               "TGCCGAGTCAGACTGT",
+               0.9916034707196708
+              ],
+              [
+               "AGGGTCCCACATACGT",
+               1.0
+              ],
+              [
+               "CACGTTCCAGAACCGA",
+               1.0
+              ],
+              [
+               "CCGAACGGTCTGTCCT",
+               0.928604540205567
+              ],
+              [
+               "ATCAGGTTCAAGCCGC",
+               1.0
+              ],
+              [
+               "TCAAGTGCATCGAACT",
+               1.0
+              ],
+              [
+               "AGCGCCATCCGGCAAC",
+               0.673623987941405
+              ],
+              [
+               "TCACAAGGTGTTCGAT",
+               0.99450084176935
+              ],
+              [
+               "GGTCACGGTGGGATTG",
+               1.0
+              ],
+              [
+               "TAGACTGTCCTCACGT",
+               1.0
+              ],
+              [
+               "GCCCGAACAAAGCAAT",
+               1.0
+              ],
+              [
+               "ACCAAACGTGTGTGTT",
+               0.5254610579406571
+              ]
+             ]
+            }
+           ]
+          },
+          {
+           "name": "T cell",
+           "children": [
+            {
+             "name": "alpha-beta T cell",
+             "set": [
+              [
+               "ACAGAAACAGATCCAT",
+               0.8624672991852479
+              ]
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "myeloid leukocyte",
+       "children": [
+        {
+         "name": "monocyte",
+         "children": [
+          {
+           "name": "CD14-positive monocyte",
+           "set": [
+            [
+             "AATTCCTAGCATACTC",
+             1.0
+            ],
+            [
+             "ATTCCCGAGTCACTCA",
+             1.0
+            ],
+            [
+             "CGCATAAAGCGAGTAC",
+             0.9770750445403652
+            ],
+            [
+             "CACCGTTCAACAAAGT",
+             1.0
+            ],
+            [
+             "TCATTACAGGCGATAC",
+             0.900647013580642
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "name": "myeloid dendritic cell",
+         "children": [
+          {
+           "name": "CD1c-positive myeloid dendritic cell",
+           "set": [
+            [
+             "AGACCATAGTTCGCAT",
+             0.6656291150794549
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "professional antigen presenting cell",
+       "children": [
+        {
+         "name": "mature B cell",
+         "children": [
+          {
+           "name": "plasmablast",
+           "set": [
+            [
+             "ATTACCTCAACACGTT",
+             0.571830616952308
+            ],
+            [
+             "ATTCAGGGTCAGACTT",
+             0.671761691006812
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "hematopoietic precursor cell",
+     "children": [
+      {
+       "name": "hematopoietic stem cell",
+       "set": [
+        [
+         "TCAGGGCCATGGGATG",
+         0.642579626565972
+        ],
+        [
+         "ACTTATCGTCCAATCA",
+         0.25016325753812696
+        ],
+        [
+         "GCATTAGCAAGCTACT",
+         0.798423447891237
+        ]
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

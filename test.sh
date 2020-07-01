@@ -25,6 +25,7 @@ end flake8
 
 start doctest
 python -m doctest python/*.py -o ELLIPSIS
+python -m doctest snakemake/*/src/*.py -o ELLIPSIS
 end doctest
 
 start endtoend

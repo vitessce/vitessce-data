@@ -1,0 +1,327 @@
+{
+ "CAACGATTCGGTCTAA": {
+  "mappings": {
+   "UMAP": [
+    10.665369033813477,
+    7.836226463317871
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "CD14-positive monocyte",
+   "Cell Type Annotation Prediction Score": "0.96"
+  }
+ },
+ "GTGAGCCAGCTCGTGC": {
+  "mappings": {
+   "UMAP": [
+    11.090866088867188,
+    1.1795804500579834
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.95"
+  }
+ },
+ "TCAGCCTTCGAGCACC": {
+  "mappings": {
+   "UMAP": [
+    10.049006462097168,
+    2.342209577560425
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 12",
+   "Cell Type Annotation": "hematopoietic stem cell",
+   "Cell Type Annotation Prediction Score": "0.9"
+  }
+ },
+ "AAGTACCTCAAGCGTT": {
+  "mappings": {
+   "UMAP": [
+    -3.0646207332611084,
+    -5.486851692199707
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 12",
+   "Cell Type Annotation": "hematopoietic stem cell",
+   "Cell Type Annotation Prediction Score": "0.63"
+  }
+ },
+ "AGACAAACACTAACCA": {
+  "mappings": {
+   "UMAP": [
+    -2.304100275039673,
+    -1.655921220779419
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 00",
+   "Cell Type Annotation": "B cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "ATCCCTGCATCGTGGC": {
+  "mappings": {
+   "UMAP": [
+    10.919060707092285,
+    1.3280682563781738
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.94"
+  }
+ },
+ "CCTACGTAGCATCTTG": {
+  "mappings": {
+   "UMAP": [
+    11.583558082580566,
+    1.0884180068969727
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.98"
+  }
+ },
+ "TCCCAGTCATCGGCCA": {
+  "mappings": {
+   "UMAP": [
+    11.021198272705078,
+    1.3307721614837646
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.98"
+  }
+ },
+ "AGCTCAAAGCTATCTG": {
+  "mappings": {
+   "UMAP": [
+    10.813429832458496,
+    1.2899625301361084
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.83"
+  }
+ },
+ "TGGGAGATCCTTCGAC": {
+  "mappings": {
+   "UMAP": [
+    10.077462196350098,
+    2.2896862030029297
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 12",
+   "Cell Type Annotation": "hematopoietic stem cell",
+   "Cell Type Annotation Prediction Score": "0.97"
+  }
+ },
+ "CTTGATTCAGCGTAGA": {
+  "mappings": {
+   "UMAP": [
+    11.4531831741333,
+    1.017048716545105
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.98"
+  }
+ },
+ "CGGACACGTCCACACG": {
+  "mappings": {
+   "UMAP": [
+    11.149761199951172,
+    1.7782206535339355
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.99"
+  }
+ },
+ "TGCAGATGTCGCTGCA": {
+  "mappings": {
+   "UMAP": [
+    10.81824016571045,
+    1.282766342163086
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.85"
+  }
+ },
+ "TCCAGAATCCGTCCTA": {
+  "mappings": {
+   "UMAP": [
+    9.92408275604248,
+    2.332735300064087
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 12",
+   "Cell Type Annotation": "hematopoietic stem cell",
+   "Cell Type Annotation Prediction Score": "0.98"
+  }
+ },
+ "CTAAGTGGTTTACGTG": {
+  "mappings": {
+   "UMAP": [
+    10.943268775939941,
+    1.182876467704773
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.93"
+  }
+ },
+ "TGCACGGCATGGCACC": {
+  "mappings": {
+   "UMAP": [
+    10.964630126953125,
+    1.2098281383514404
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.94"
+  }
+ },
+ "GAGGCCTGTGCACATT": {
+  "mappings": {
+   "UMAP": [
+    17.19468879699707,
+    7.981273651123047
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 14",
+   "Cell Type Annotation": "splenic endothelial cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TATCTTGTCATGTCAG": {
+  "mappings": {
+   "UMAP": [
+    10.730546951293945,
+    1.2490811347961426
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.79"
+  }
+ },
+ "ATTCTACGTACAACGG": {
+  "mappings": {
+   "UMAP": [
+    11.397676467895508,
+    1.4661524295806885
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.99"
+  }
+ },
+ "ATGACCATCGACCAAT": {
+  "mappings": {
+   "UMAP": [
+    11.562272071838379,
+    1.0077601671218872
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.98"
+  }
+ },
+ "GAGTCATGTCCAGCGT": {
+  "mappings": {
+   "UMAP": [
+    11.967241287231445,
+    1.324804663658142
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TAAGTCGGTCCTGGTG": {
+  "mappings": {
+   "UMAP": [
+    11.088444709777832,
+    0.9963386654853821
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.96"
+  }
+ },
+ "CGAGGCTGTTCTTAGG": {
+  "mappings": {
+   "UMAP": [
+    11.799677848815918,
+    1.5171010494232178
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCTCACGGTGATTCTG": {
+  "mappings": {
+   "UMAP": [
+    10.458234786987305,
+    1.4928431510925293
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.53"
+  }
+ },
+ "CACTGTCGTATACCCA": {
+  "mappings": {
+   "UMAP": [
+    11.12122631072998,
+    1.092671513557434
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 04",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "0.96"
+  }
+ }
+}

@@ -1,0 +1,327 @@
+{
+ "TTTGACTCAGAGGACT": {
+  "mappings": {
+   "UMAP": [
+    -2.7608864307403564,
+    -2.733384132385254
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 18",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "AGACACTGTCTCAGAT": {
+  "mappings": {
+   "UMAP": [
+    -1.8320672512054443,
+    -3.4190213680267334
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCATGCCAGTTGAATG": {
+  "mappings": {
+   "UMAP": [
+    -1.7480849027633667,
+    -3.9919772148132324
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "CATCAAGCAGATCCTA": {
+  "mappings": {
+   "UMAP": [
+    -2.115739583969116,
+    -3.051748752593994
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCATCCGTCGTCTAAG": {
+  "mappings": {
+   "UMAP": [
+    -2.0945181846618652,
+    -3.094886302947998
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "GTCATTTCAGATCCTA": {
+  "mappings": {
+   "UMAP": [
+    -1.8681858777999878,
+    -3.3837850093841553
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCATTACTCGATCCAA": {
+  "mappings": {
+   "UMAP": [
+    -3.1335039138793945,
+    -2.5595295429229736
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 18",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TAACACGTCATCGCCT": {
+  "mappings": {
+   "UMAP": [
+    -1.1449514627456665,
+    -3.9822700023651123
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TACCCGTCACGGTGCT": {
+  "mappings": {
+   "UMAP": [
+    -1.6674870252609253,
+    -3.3332345485687256
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TGATTTCCAAGCGAAC": {
+  "mappings": {
+   "UMAP": [
+    -3.5893020629882812,
+    -2.3132097721099854
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 18",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "GCAGCTGCATACTTTC": {
+  "mappings": {
+   "UMAP": [
+    -3.293246030807495,
+    -2.4354352951049805
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 18",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "GGGCGTTCAAATGAAC": {
+  "mappings": {
+   "UMAP": [
+    -2.193638324737549,
+    -2.9844822883605957
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "GTTAGTGGTCCCTGTT": {
+  "mappings": {
+   "UMAP": [
+    -2.539903163909912,
+    -2.8477909564971924
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 18",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCTGCCATCACGGGCT": {
+  "mappings": {
+   "UMAP": [
+    -2.1383461952209473,
+    -2.9580836296081543
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "GTTTGGAAGTTACGAA": {
+  "mappings": {
+   "UMAP": [
+    -2.0297207832336426,
+    -3.2164275646209717
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "CGCATGGCACTTGACA": {
+  "mappings": {
+   "UMAP": [
+    -3.1816718578338623,
+    -2.489763021469116
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 18",
+   "Cell Type Annotation": "plasmablast",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "CAACCAAGTTTAGAGA": {
+  "mappings": {
+   "UMAP": [
+    -1.6660763025283813,
+    -3.6620705127716064
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "ACCAACATCGTAGCCG": {
+  "mappings": {
+   "UMAP": [
+    -1.3254090547561646,
+    -4.73754358291626
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "AGATGCTGTGTGGACA": {
+  "mappings": {
+   "UMAP": [
+    -1.2567784786224365,
+    -4.257238864898682
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "AGACACTCACTTCCTG": {
+  "mappings": {
+   "UMAP": [
+    -1.868765950202942,
+    -3.2703475952148438
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCATCCGCACGAAAGC": {
+  "mappings": {
+   "UMAP": [
+    -1.4445126056671143,
+    -4.0105671882629395
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "GCATCGGGTCTGTGGC": {
+  "mappings": {
+   "UMAP": [
+    -1.7425800561904907,
+    -3.83552885055542
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCTTAGTCAACGATTC": {
+  "mappings": {
+   "UMAP": [
+    -2.1679821014404297,
+    -2.9816999435424805
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TTGGTTTGTACGAGCA": {
+  "mappings": {
+   "UMAP": [
+    -2.1077394485473633,
+    -3.0751960277557373
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ },
+ "TCATTGTCACACTGGC": {
+  "mappings": {
+   "UMAP": [
+    -1.8339965343475342,
+    -3.483921527862549
+   ]
+  },
+  "factors": {
+   "Leiden Clustering": "Cluster 05",
+   "Cell Type Annotation": "plasma cell",
+   "Cell Type Annotation Prediction Score": "1"
+  }
+ }
+}
