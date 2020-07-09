@@ -87,7 +87,7 @@ process_linnarson_images() {
     HDF5_IN="$INPUT/linnarsson.imagery.hdf5"
     JSON_OUT="$OUTPUT/linnarsson.raster.json"
     ZARR_OUT="$OUTPUT/linnarsson.images.zarr"
-    RASTER_NAME="Linnarsson"
+    RASTER_NAME="smFISH"
 
     RELEASE=${CLOUD_TARGET//vitessce-data\//}
     DEST_URL="https://vitessce-data.storage.googleapis.com/$RELEASE/linnarsson/"
