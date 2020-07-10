@@ -23,6 +23,9 @@ conda env create -f environment.yml
 
 ```sh
 conda activate vitessce-data
+
+# To update with new packages:
+conda env update --file environment.yml --prune
 ```
 
 - `test.sh` exercises all the scripts, using the fixtures in `fake-files/`,
