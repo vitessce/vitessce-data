@@ -5,7 +5,7 @@ configfile: 'config.yml'
 assert 'INPUT' in config
 assert 'OUTPUT' in config
 assert 'CLOUD_TARGET' in config
-assert 'annotations_spleen_0510' in config
+assert 'annotations_spleen' in config
 
 # Directory / file constants
 SRC_DIR = Path("src")
@@ -16,12 +16,12 @@ PROCESSED_DIR = Path(config['OUTPUT'])
 CLOUD_TARGET = config['CLOUD_TARGET']
 
 # URL constants
-CELL_ANNOTATIONS_URL = "https://vitessce-data.s3.amazonaws.com/source-data/satija/annotations_spleen_0510.csv"
+CELL_ANNOTATIONS_URL = "https://vitessce-data.s3.amazonaws.com/source-data/satija/annotations_spleen_0721.csv"
 CELLS_URL = "https://vitessce-data.s3.amazonaws.com/source-data/satija/uf-processed.tar.xz"
 CL_OBO_URL = "https://vitessce-data.s3.amazonaws.com/source-data/satija/cl.obo"
 
 # Datasets
-GLOBUS_IDS = config['annotations_spleen_0510']
+GLOBUS_IDS = config['annotations_spleen']
 
 # Rules
 rule all:
@@ -29,16 +29,17 @@ rule all:
         expand(str(PROCESSED_DIR / "{globus_id}.cells.json"), globus_id=GLOBUS_IDS),
         expand(str(PROCESSED_DIR / "{globus_id}.factors.json"), globus_id=GLOBUS_IDS),
         expand(str(PROCESSED_DIR / "{globus_id}.cell-sets.json"), globus_id=GLOBUS_IDS),
+        expand(str(PROCESSED_DIR / "{globus_id}.expression-matrix.zarr"), globus_id=GLOBUS_IDS),
 
 rule process_dataset:
     input:
         cells_arrow=(RAW_DIR / "uf-processed" / "{globus_id}" / "cluster_marker_genes.arrow"),
-        annotations_csv=(RAW_DIR / "annotations_spleen_0510" / "{globus_id}.csv"),
+        annotations_csv=(RAW_DIR / "annotations_spleen" / "{globus_id}.csv"),
         cl_obo=(RAW_DIR / "cl.obo")
     output:
         cells_json=(PROCESSED_DIR / "{globus_id}.cells.json"),
         factors_json=(PROCESSED_DIR / "{globus_id}.factors.json"),
-        cell_sets_json=(PROCESSED_DIR / "{globus_id}.cell-sets.json")
+        cell_sets_json=(PROCESSED_DIR / "{globus_id}.cell-sets.json"),
     params:
         script=(SRC_DIR / "process_dataset.py")
     shell:
@@ -52,11 +53,25 @@ rule process_dataset:
             -ocs {output.cell_sets_json}
         '''
 
+rule convert_h5ad_to_zarr:
+    input:
+        (RAW_DIR / "uf-processed" / "{globus_id}" / "cluster_marker_genes.h5ad")
+    output:
+        directory(PROCESSED_DIR / "{globus_id}.expression-matrix.zarr")
+    params:
+        script=(SRC_DIR / "convert_h5ad_to_zarr.py")
+    shell:
+        '''
+        python {params.script} \
+            -i {input} \
+            -o {output}
+        '''
+
 rule split_annotation_csv:
     input:
-        (RAW_DIR / "annotations_spleen_0510.csv")
+        (RAW_DIR / "annotations_spleen.csv")
     output:
-        (RAW_DIR / "annotations_spleen_0510" / "{globus_id}.csv")
+        (RAW_DIR / "annotations_spleen" / "{globus_id}.csv")
     params:
         script=(SRC_DIR / "split_annotation_csv.py")
     shell:
@@ -84,7 +99,7 @@ rule convert_h5ad_to_arrow:
 # Download CSV file containing cell type annotations.
 rule download_cell_annotations_data:
     output:
-        (RAW_DIR / "annotations_spleen_0510.csv")
+        (RAW_DIR / "annotations_spleen.csv")
     params:
         file_url=CELL_ANNOTATIONS_URL
     shell:
