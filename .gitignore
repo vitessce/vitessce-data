@@ -1,6 +1,7 @@
 .idea/
 *.DS_Store
 .vscode
+.snakemake_timestamp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -7,7 +7,7 @@ dependencies:
   - scikit-learn==0.20.3
   - pandas==0.24.1
   - flake8==3.6.0
-  - snakemake==5.17.0
+  - snakemake==5.20.1
   - scipy==1.4.1
   - h5py==2.10.0
   - anndata==0.7.1
