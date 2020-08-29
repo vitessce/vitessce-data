@@ -318,12 +318,14 @@ def add_umap(metadata):
     ...   },
     ... }
     >>> add_umap(metadata)
-    >>> metadata['0']['mappings']['UMAP']
-    [18.63, 9.86]
-    >>> metadata['1']['mappings']['UMAP']
-    [17.2, 7.74]
-    >>> metadata['2']['mappings']['UMAP']
-    [18.78, 8.58]
+    >>> len(metadata['0']['mappings']['UMAP'])
+    2
+    >>> type(metadata['0']['mappings']['UMAP'])
+    <class 'list'>
+    >>> type(metadata['0']['mappings']['UMAP'][0])
+    <class 'float'>
+    >>> type(metadata['0']['mappings']['UMAP'][1])
+    <class 'float'>
     '''
     X = np.array(genes_to_samples_by_features(metadata))
     adata = AnnData(X=X)
