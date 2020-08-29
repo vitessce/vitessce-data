@@ -11,8 +11,6 @@ import pandas
 from loom_reader import LoomReader
 from cluster import cluster as get_clusters
 from delaunay import DictDelaunay2d
-from sklearn import decomposition
-from sklearn.preprocessing import MinMaxScaler
 import scanpy as sc
 from anndata import AnnData
 
@@ -300,30 +298,41 @@ def add_umap(metadata):
     >>> metadata = {
     ...   '0': {
     ...     'mappings': {},
-    ...     'genes': {'A': 0, 'B': 0, 'A2': 1, 'B2': 0}
+    ...     'genes': {'A': 0, 'B': 0, 'C': 1, 'D': 0}
     ...   },
     ...   '1': {
     ...     'mappings': {},
-    ...     'genes': {'A': 1, 'B': 1, 'A2': 0, 'B2': 1}
+    ...     'genes': {'A': 1, 'B': 1, 'C': 0, 'D': 1}
     ...   },
     ...   '2': {
     ...     'mappings': {},
-    ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
-    ...   }
+    ...     'genes': {'A': 3, 'B': 4, 'C': 5, 'D': 2}
+    ...   },
+    ...   '3': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 3, 'B': 4, 'C': 0, 'D': 4}
+    ...   },
+    ...   '4': {
+    ...     'mappings': {},
+    ...     'genes': {'A': 1, 'B': 0, 'C': 1, 'D': 2}
+    ...   },
     ... }
     >>> add_umap(metadata)
     >>> metadata['0']['mappings']['UMAP']
-    [-2.41, -0.57]
+    [15.75, 7.63]
     >>> metadata['1']['mappings']['UMAP']
-    [-0.92, 0.77]
+    [17.95, 6.37]
     >>> metadata['2']['mappings']['UMAP']
-    [3.33, -0.2]
+    [16.22, 6.31]
     '''
     X = np.array(genes_to_samples_by_features(metadata))
     adata = AnnData(X=X)
     sc.pp.normalize_total(adata, inplace=True)
     sc.pp.log1p(adata)
-    sc.pp.highly_variable_genes(adata, flavor="seurat", n_top_genes=15)
+    try:
+        sc.pp.highly_variable_genes(adata, flavor="seurat", n_top_genes=15)
+    except:
+        pass
     sc.pp.pca(adata)
     sc.pp.neighbors(adata)
     sc.tl.umap(adata)
