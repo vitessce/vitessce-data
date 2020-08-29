@@ -331,7 +331,7 @@ def add_umap(metadata):
     sc.pp.log1p(adata)
     try:
         sc.pp.highly_variable_genes(adata, flavor='seurat', n_top_genes=15)
-    except:
+    except IndexError:
         pass
     sc.pp.pca(adata)
     sc.pp.neighbors(adata)
