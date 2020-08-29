@@ -319,11 +319,11 @@ def add_umap(metadata):
     ... }
     >>> add_umap(metadata)
     >>> metadata['0']['mappings']['UMAP']
-    [14.11, -5.7]
+    [18.63, 9.86]
     >>> metadata['1']['mappings']['UMAP']
-    [16.58, -5.99]
+    [17.2, 7.74]
     >>> metadata['2']['mappings']['UMAP']
-    [15.35, -5.7]
+    [18.78, 8.58]
     '''
     X = np.array(genes_to_samples_by_features(metadata))
     adata = AnnData(X=X)
@@ -335,7 +335,7 @@ def add_umap(metadata):
         pass
     sc.pp.pca(adata)
     sc.pp.neighbors(adata)
-    sc.tl.umap(adata, random_state=20742)
+    sc.tl.umap(adata, random_state=np.random.RandomState(2115))
     embedding = adata.obsm['X_umap'].tolist()
 
     for (k, pc) in zip(metadata.keys(), embedding):
