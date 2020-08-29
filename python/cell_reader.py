@@ -12,6 +12,9 @@ from loom_reader import LoomReader
 from cluster import cluster as get_clusters
 from delaunay import DictDelaunay2d
 from sklearn import decomposition
+from sklearn.preprocessing import MinMaxScaler
+import scanpy as sc
+from anndata import AnnData
 
 
 def octagon(poly):
@@ -292,7 +295,7 @@ def genes_to_samples_by_features(metadata):
     return pandas.DataFrame.from_dict(records, orient='index')
 
 
-def add_pca(metadata):
+def add_umap(metadata):
     '''
     >>> metadata = {
     ...   '0': {
@@ -308,20 +311,26 @@ def add_pca(metadata):
     ...     'genes': {'A': 0, 'B': 4, 'A2': 0, 'B2': 4}
     ...   }
     ... }
-    >>> add_pca(metadata)
-    >>> metadata['0']['mappings']['PCA']
+    >>> add_umap(metadata)
+    >>> metadata['0']['mappings']['UMAP']
     [-2.41, -0.57]
-    >>> metadata['1']['mappings']['PCA']
+    >>> metadata['1']['mappings']['UMAP']
     [-0.92, 0.77]
-    >>> metadata['2']['mappings']['PCA']
+    >>> metadata['2']['mappings']['UMAP']
     [3.33, -0.2]
     '''
-    pca = decomposition.PCA(n_components=2)
-    principle_components = pca.fit_transform(
-        genes_to_samples_by_features(metadata)
-    ).tolist()
-    for (k, pc) in zip(metadata.keys(), principle_components):
-        metadata[k]['mappings']['PCA'] = [
+    X = np.array(genes_to_samples_by_features(metadata))
+    adata = AnnData(X=X)
+    sc.pp.normalize_total(adata, inplace=True)
+    sc.pp.log1p(adata)
+    sc.pp.highly_variable_genes(adata, flavor="seurat", n_top_genes=15)
+    sc.pp.pca(adata)
+    sc.pp.neighbors(adata)
+    sc.tl.umap(adata)
+    embedding = adata.obsm['X_umap'].tolist()
+
+    for (k, pc) in zip(metadata.keys(), embedding):
+        metadata[k]['mappings']['UMAP'] = [
             round(component, 2) for component in pc
         ]
 
@@ -361,7 +370,7 @@ if __name__ == '__main__':
 
     lr = LoomReader(args.loom)
     metadata = lr.data()
-    add_pca(metadata)
+    add_umap(metadata)
 
     for cell in metadata.values():
         # "Clusters" in the raw data are called "subclusters"
@@ -389,7 +398,8 @@ if __name__ == '__main__':
             ]
 
     if args.cells_file:
-        json.dump(metadata, args.cells_file, indent=1)
+        with args.cells_file as f:
+            json.dump(metadata, f, indent=1)
 
     if args.cell_sets_file:
         clusters = lr.clusters()
