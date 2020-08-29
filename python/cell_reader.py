@@ -13,8 +13,8 @@ from cluster import cluster as get_clusters
 from delaunay import DictDelaunay2d
 from sklearn import decomposition
 from sklearn.preprocessing import MinMaxScaler
-from ivis import Ivis
-import umap
+import scanpy as sc
+from anndata import AnnData
 
 
 def octagon(poly):
@@ -320,25 +320,15 @@ def add_umap(metadata):
     [3.33, -0.2]
     '''
     X = np.array(genes_to_samples_by_features(metadata))
-    # Normalize counts per cell.
-    print(X.shape)
-    median_count_per_cell = np.median(np.sum(X, axis=1))
-    print(np.sum(X, axis=1).shape)
-    X = (X.T / np.sum(X, axis=1)).T
-    print(X.shape)
-    X = (X.T * np.array([median_count_per_cell] * X.shape[0])).T
-    X = np.log(X + 1)
-    # Take the top n/2 most variable genes.
-    X_var = np.var(X, axis=0)
-    num_genes = X_var.shape[0]
-    X_var_argsort = np.argsort(X_var)[-8:]
-    X_most_variable_half = X[:,X_var_argsort]
-    print(X_var_argsort)
-    # Adopt Seurat UMAP hyperparameters.
-    model = umap.UMAP(n_components=2, metric="cosine", n_neighbors=30, min_dist=0.3, random_state=20742)
-    embedding = model.fit_transform(
-        X_most_variable_half
-    ).tolist()
+    adata = AnnData(X=X)
+    sc.pp.normalize_total(adata, inplace=True)
+    sc.pp.log1p(adata)
+    sc.pp.highly_variable_genes(adata, flavor="seurat", n_top_genes=15)
+    sc.pp.pca(adata)
+    sc.pp.neighbors(adata)
+    sc.tl.umap(adata)
+    embedding = adata.obsm['X_umap'].tolist()
+
     for (k, pc) in zip(metadata.keys(), embedding):
         metadata[k]['mappings']['UMAP'] = [
             round(component, 2) for component in pc
