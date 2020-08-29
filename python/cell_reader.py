@@ -330,7 +330,7 @@ def add_umap(metadata):
     sc.pp.normalize_total(adata, inplace=True)
     sc.pp.log1p(adata)
     try:
-        sc.pp.highly_variable_genes(adata, flavor="seurat", n_top_genes=15)
+        sc.pp.highly_variable_genes(adata, flavor='seurat', n_top_genes=15)
     except:
         pass
     sc.pp.pca(adata)
