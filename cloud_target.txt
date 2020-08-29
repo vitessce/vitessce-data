@@ -1,1 +1,1 @@
-vitessce-data/0.0.30/master_release
+vitessce-data/0.0.31/master_release
