@@ -19,6 +19,13 @@ Set up the `vitessce-data` environment using conda:
 ```sh
 conda env create -f environment.yml
 ```
+
+Users may also install the dependencies with pip:
+
+```sh
+pip install -r requirements.txt
+```
+
 ## Develop and run
 
 ```sh
