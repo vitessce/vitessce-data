@@ -10,7 +10,7 @@ networkx==2.4
 loompy==2.0.16
 numcodecs==0.6.3 # 0.6.4 not working on MacOS: https://github.com/napari/napari/issues/665
 zarr==2.3.2
-dask==2.11.0
+dask==2021.10.0
 toolz==0.9.0
 fsspec==0.3.3
 tifffile==2020.2.16
